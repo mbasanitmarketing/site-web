@@ -1,0 +1,148 @@
+/* ---------------------------------------------------------------------
+   Section 3 — « paysage scroll »
+   Carrousel 3D horizontal piloté par le scroll vertical.
+
+     p 0    -> 0.10   le blanc monte depuis le bas, bord plat (mesuré sur
+                      la vidéo : les deux bords arrivent au même niveau)
+     p 0.14 -> 0.94   le cylindre tourne, les diapos défilent de droite
+                      à gauche et se présentent à tour de rôle
+
+   Les diapos sont posées sur un cylindre : chacune est tournée de
+   i × --step autour de l'axe vertical puis poussée de --radius vers
+   l'avant. Faire tourner le rail de -turn ramène chaque diapo face à
+   l'écran à son tour, et celles des côtés se présentent naturellement
+   de biais — c'est ce qui donne la perspective de la vidéo.
+   --------------------------------------------------------------------- */
+
+.track {
+  position: relative;
+  z-index: 3;
+  height: 620vh;
+  /* chevauche la fin de la section précédente : le blanc doit monter
+     par-dessus elle, pas après elle */
+  margin-top: -95svh;
+}
+
+.stage {
+  --step: 34deg; /* écart angulaire entre deux diapos */
+  --radius: 88vw; /* rayon du cylindre */
+  --count: 4; /* nombre d'intervalles = diapos - 1 */
+
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  /* transparente : pendant la montée, la section précédente doit se voir */
+  background: transparent;
+}
+
+/* --- L'arrivée : le blanc monte, bord plat --- */
+
+.curtain {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  transform: translateY(calc((1 - clamp(0, calc(var(--p, 0) / 0.1), 1)) * 100%));
+  will-change: transform;
+}
+
+/* --- Titre et texte, en haut à droite --- */
+
+.head {
+  position: absolute;
+  top: clamp(28px, 6svh, 72px);
+  right: clamp(20px, 4vw, 60px);
+  z-index: 2;
+  width: min(46ch, 42vw);
+  text-align: right;
+  color: #0b0b0c;
+  /* apparaissent une fois le blanc en place */
+  opacity: clamp(0, calc((var(--p, 0) - 0.08) / 0.08), 1);
+}
+
+.title {
+  margin: 0 0 0.7em;
+  font-size: clamp(1.1rem, 2.1vw, 1.9rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.lede {
+  margin: 0;
+  font-size: clamp(11px, 0.92vw, 14px);
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(11, 11, 12, 0.82);
+}
+
+/* --- Le carrousel --- */
+
+.viewport {
+  position: absolute;
+  inset: 0;
+  perspective: 132vw;
+  /* surtout pas d'overflow ici : ça aplatirait la scène 3D */
+}
+
+.rail {
+  --turn: calc(
+    clamp(0, calc((var(--p, 0) - 0.14) / 0.8), 1) * var(--count) * var(--step)
+  );
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: translateZ(calc(-1 * var(--radius))) rotateY(calc(-1 * var(--turn)));
+  will-change: transform;
+}
+
+.slide {
+  position: absolute;
+  width: min(46vw, 760px);
+  aspect-ratio: 3 / 2;
+  margin-left: calc(min(46vw, 760px) / -2);
+  margin-top: calc(min(46vw, 760px) / 3 * -1);
+  transform: rotateY(calc(var(--i) * var(--step))) translateZ(var(--radius));
+  backface-visibility: hidden;
+}
+
+/* Aplats gris en attendant les photos. Les nuances varient légèrement :
+   des gris tous identiques rendraient le défilement illisible. */
+.slide > div {
+  position: absolute;
+  inset: 0;
+  background: var(--tone);
+}
+
+@media (max-width: 720px) {
+  .stage {
+    --radius: 150vw;
+    --step: 40deg;
+  }
+  .slide {
+    width: 74vw;
+    margin-left: -37vw;
+    margin-top: calc(74vw / 3 * -1);
+  }
+  .head {
+    width: 68vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .curtain {
+    transform: none;
+  }
+  .head {
+    opacity: 1;
+  }
+  .rail {
+    --turn: 0deg;
+  }
+}

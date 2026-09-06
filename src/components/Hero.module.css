@@ -1,0 +1,206 @@
+/*
+ * Toutes les valeurs sont dérivées de --p (progression du scroll, 0 -> 1),
+ * écrite sur .stage par Hero.tsx à chaque frame.
+ */
+
+/* Très rallongée : l'animation aboutit tôt (cf. le `span` passé à
+   useScrollProgress), puis la hero reste épinglée et FIGÉE — immobile —
+   pendant tout le temps que la section escalier monte par-dessus elle et
+   s'aligne. Elle ne se retire (invisible, recouverte) qu'ensuite.
+   NB : si tu touches à cette hauteur, refais le calage avec .track de
+   EscalierSection (margin-top + height + span). */
+.track {
+  position: relative;
+  z-index: 1;
+  height: 540vh;
+}
+
+.stage {
+  /* Header à deux hauteurs, comme sur la maquette : une barre fine sur
+     toute la largeur, et un décrochement plus haut dans la zone du logo.
+     C'est cette asymétrie qui fait le dessin. */
+  --band-h: 60px; /* zone du logo */
+  --band-thin: 50px; /* reste de la largeur */
+  --band-step: clamp(200px, 17vw, 280px); /* largeur de la zone haute */
+
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: #0b0b0c;
+}
+
+/* --- Photos : fondu sombre -> clair + « lever » de l'image ---
+ * Pas de zoom : dans les maquettes le meuble garde la même largeur,
+ * seule la position verticale change. Le bloc déborde de 14% pour que
+ * la translation ne découvre jamais de bord.
+ */
+
+.media {
+  position: absolute;
+  inset: -14%;
+  pointer-events: none;
+  user-select: none;
+  transform: translateY(calc(var(--p, 0) * -9%));
+  will-change: transform;
+}
+
+.media img {
+  object-fit: cover;
+}
+
+/* 0 -> 1 sur p 0..0.55 */
+.light {
+  position: absolute;
+  inset: 0;
+  opacity: clamp(0, calc(var(--p, 0) / 0.55), 1);
+  will-change: opacity;
+}
+
+/* voile qui se lève : 0.22 -> 0.05 sur p 0..0.6 */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  pointer-events: none;
+  opacity: clamp(0.05, calc(0.22 - var(--p, 0) * 0.28333), 0.22);
+}
+
+/* dégradé de lisibilité, seulement en haut et en bas */
+.veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.02) 42%,
+    rgba(0, 0, 0, 0.5)
+  );
+}
+
+/* --- Header : bandeau dépoli qui se dissipe, logo qui rétrécit ---
+ * Le bandeau floute la photo derrière lui puis disparaît. Le logo est
+ * au-dessus, donc jamais flouté. Mesuré sur les maquettes : le logo
+ * passe à 58 % en rétrécissant autour de son centre, et remonte un peu.
+ */
+
+/* Pas de backdrop-filter : trop dépendant du moteur (invisible dans
+   certains contextes d'affichage, et impossible à vérifier de façon
+   fiable). On floute une copie des photos et on la découpe à la hauteur
+   du header — même rendu, comportement prévisible partout. */
+.band {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  z-index: 15;
+  height: var(--band-h);
+  overflow: hidden;
+  pointer-events: none;
+  /* le décrochement : pleine hauteur à gauche, barre fine ensuite */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% var(--band-thin),
+    var(--band-step) var(--band-thin),
+    var(--band-step) var(--band-h),
+    0 var(--band-h)
+  );
+  opacity: clamp(0, calc(1 - var(--p, 0) / 0.35), 1);
+  /* TEST bandeau blanc — bord franc. Pour revenir au dépoli, réactiver :
+     mask-image: linear-gradient(to bottom, #000 62%, transparent); */
+  will-change: opacity;
+}
+
+/* Boîte à la taille de la scène : la copie floutée se superpose ainsi
+   exactement au fond net. Le .media qu'elle contient déborde vers le haut,
+   donc le flou a de la matière à échantillonner au ras du bord. */
+.bandInner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100svh;
+  filter: blur(28px);
+}
+
+/* Blanc à 50 % : la copie floutée dessous transparaît à travers,
+   ce qui donne le verre dépoli. */
+.bandTint {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Le logo est centré dans le décrochement haut, pas dans la barre fine. */
+.header {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  height: var(--band-h);
+  padding-inline: clamp(22px, 3.2vw, 46px);
+}
+
+.logo {
+  transform-origin: center center;
+  scale: calc(1 - clamp(0, calc(var(--p, 0) / 0.32), 1) * 0.42);
+  transform: translateY(calc(clamp(0, calc(var(--p, 0) / 0.32), 1) * -18px));
+  will-change: transform, scale;
+}
+
+/* Dimensionné pour respirer dans les 60px du décrochement */
+.logo img {
+  display: block;
+  width: clamp(92px, 8vw, 120px);
+  height: auto;
+}
+
+/* --- Titre : se lève, 2e segment s'illumine --- */
+
+/* Course exprimée en hauteur d'écran pour tenir sur tous les formats,
+   bornée pour ne pas devenir absurde en très petit / très grand. */
+.headline {
+  --rise: clamp(180px, 33svh, 320px);
+  transform: translateY(calc(var(--rise) / 2 - var(--p, 0) * var(--rise)));
+  will-change: transform;
+}
+
+/* 0.18 -> 1 sur p 0.15..0.62 */
+.sub {
+  opacity: clamp(0.18, calc(0.18 + (var(--p, 0) - 0.15) * 1.7447), 1);
+}
+
+.hint {
+  opacity: clamp(0, calc(1 - var(--p, 0) / 0.12), 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media {
+    transform: none;
+  }
+  .light {
+    opacity: 1;
+  }
+  .scrim {
+    opacity: 0.06;
+  }
+  .band {
+    opacity: 0;
+  }
+  .logo {
+    scale: 0.58;
+    transform: none;
+  }
+  .headline {
+    transform: none;
+  }
+  .sub {
+    opacity: 1;
+  }
+  .hint {
+    opacity: 0;
+  }
+}

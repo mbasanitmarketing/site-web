@@ -1,0 +1,319 @@
+/* ---------------------------------------------------------------------
+   Section « escalier ».
+
+   Tout dérive de --p (progression du scroll, 0 -> 1), écrite sur .stage
+   par EscalierSection.tsx.
+
+   1 · MONTÉE     (--p 0.06 -> 0.30)
+       le panneau bleu monte du bas et s'arrête à 80% de l'écran
+       (bord haut à --hold). Son décrochement passe de --panel-step-y à
+       --panel-step-min.
+
+   2 · DÉFILÉ     (--p 0.30 -> 0.82)
+       le panneau est bloqué à 80%. Une colonne de 3 images défile vers
+       le haut à droite ; le texte de gauche change à chaque image centrée.
+
+   3 · ALIGNEMENT (--p 0.82 -> 1)
+       le panneau finit de monter : bord haut de --hold -> 0 (il touche
+       le haut de la page) et le décrochement s'aligne à plat (-> 0).
+
+   Le décrochement est à l'inverse du header : palier HAUT à gauche.
+   --------------------------------------------------------------------- */
+
+.track {
+  position: relative;
+  z-index: 2;
+  height: 480vh;
+  /* Grand recouvrement : le panneau monte par-dessus la hero FIGÉE
+     (animation finie, toujours épinglée derrière), s'arrête à 80%,
+     défile, puis s'aligne à 100% — tout ça pendant que la hero reste
+     immobile. La hero ne se retire qu'après, recouverte.
+     Calage : hero .track 540vh + span 0.36 ; ici -360svh + span 0.63.
+     Si tu changes l'un, refais les quatre. */
+  margin-top: -360svh;
+}
+
+.stage {
+  --step-x: 34%; /* abscisse du décrochement */
+  --panel-step-y: 12svh; /* décrochement du panneau à l'arrivée */
+  --panel-step-min: 6svh; /* ... pendant le palier à 80% */
+  --hold: 10svh; /* bord haut du panneau quand il est bloqué (100% - 90%) */
+
+  --frame-h: 58svh; /* hauteur de la fenêtre d'images (droite) */
+
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* --- 1 & 3 · le panneau bleu ------------------------------------- */
+
+.panel {
+  --pin: clamp(0, calc((var(--p, 0) - 0.02) / 0.21), 1); /* montée -> 80% */
+  --pal: clamp(0, calc((var(--p, 0) - 0.77) / 0.23), 1); /* alignement -> haut */
+
+  --panel-y: calc(
+    (1 - var(--pin)) * (100svh - var(--hold)) + (1 - var(--pal)) * var(--hold)
+  );
+  --pstep: calc(
+    var(--panel-step-y) - (var(--panel-step-y) - var(--panel-step-min)) *
+      var(--pin) - var(--panel-step-min) * var(--pal)
+  );
+
+  position: absolute;
+  inset: 0;
+  background: #070b20; /* navy de la maquette */
+  transform: translateY(var(--panel-y));
+  will-change: transform;
+  /* palier HAUT à gauche (0), palier BAS à droite (--pstep) */
+  clip-path: polygon(
+    0 0,
+    var(--step-x) 0,
+    var(--step-x) var(--pstep),
+    100% var(--pstep),
+    100% 100%,
+    0 100%
+  );
+}
+
+/* Intitulé de section, en haut à gauche du panneau. */
+.eyebrow {
+  position: absolute;
+  top: clamp(14px, 3svh, 34px);
+  left: clamp(16px, 2.2vw, 40px);
+  margin: 0;
+  font-size: clamp(0.95rem, 1.15vw, 1.15rem);
+  font-weight: 600;
+  color: #f5f5f4;
+}
+
+/* --- 3 · texte de gauche (3 descriptions superposées) -------------- */
+
+.copy {
+  position: absolute;
+  left: clamp(16px, 4vw, 64px);
+  bottom: 32svh;
+  display: grid;
+  width: min(38ch, 42vw);
+}
+
+.copyItem {
+  grid-area: 1 / 1;
+  margin: 0;
+}
+
+.copyItem:nth-child(1) {
+  opacity: clamp(0, calc((0.41 - var(--p, 0)) / 0.05), 1);
+}
+.copyItem:nth-child(2) {
+  opacity: clamp(
+    0,
+    min(calc((var(--p, 0) - 0.39) / 0.05), calc((0.63 - var(--p, 0)) / 0.05)),
+    1
+  );
+}
+.copyItem:nth-child(3) {
+  opacity: clamp(0, calc((var(--p, 0) - 0.61) / 0.05), 1);
+}
+
+.heading {
+  margin: 0;
+  font-size: clamp(1.3rem, 2vw, 2.15rem);
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: #f5f5f4;
+}
+
+.sub {
+  margin: 0.9rem 0 0;
+  font-size: clamp(0.9rem, 1.05vw, 1.05rem);
+  line-height: 1.5;
+  color: rgba(245, 245, 244, 0.66);
+}
+
+/* --- 3 · fenêtre d'images : elles montent l'une SUR l'autre --------
+
+   3 calques plein cadre dans la fenêtre. Pendant le blocage, la slide 2
+   monte du bas et recouvre la 1 ; puis la 3 recouvre la 2. Le calque
+   recouvert dérive un peu vers le haut (parallaxe) = profondeur.
+   ----------------------------------------------------------------- */
+
+.viewport {
+  /* slide 2 recouvre sur --p 0.27..0.45 (palier), slide 3 sur 0.52..0.70. */
+  --s2: clamp(0, calc((var(--p, 0) - 0.27) / 0.18), 1);
+  --s3: clamp(0, calc((var(--p, 0) - 0.52) / 0.18), 1);
+
+  position: absolute;
+  right: clamp(16px, 3vw, 48px);
+  bottom: 24svh; /* remontée pour loger la rangée d'accordéons dessous */
+  width: clamp(280px, 40vw, 600px);
+  height: var(--frame-h);
+  overflow: hidden;
+  background: #76767a;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #76767a;
+  will-change: transform;
+}
+
+.slide img {
+  object-fit: cover;
+}
+
+.slide:nth-child(1) {
+  transform: translateY(calc(var(--s2) * -14%));
+}
+.slide:nth-child(2) {
+  z-index: 2;
+  transform: translateY(calc((1 - var(--s2)) * 100% + var(--s3) * -14%));
+}
+.slide:nth-child(3) {
+  z-index: 3;
+  transform: translateY(calc((1 - var(--s3)) * 100%));
+}
+
+/* --- rangée d'accordéons (bas du panneau) ----------------------- */
+
+/* Apparaît en fondu quand le panneau est aligné (--p ~0.88 -> ~0.98). */
+.accordions {
+  position: absolute;
+  left: clamp(16px, 4vw, 64px);
+  right: clamp(16px, 3vw, 48px);
+  bottom: clamp(64px, 12svh, 130px);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(24px, 4.5vw, 80px);
+  opacity: clamp(0, calc((var(--p, 0) - 0.88) / 0.1), 1);
+}
+
+.accordion {
+  position: relative;
+  border-top: 1px solid #b6b3b3;
+  padding-top: clamp(12px, 1.6svh, 20px);
+}
+
+.accHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+}
+
+.accIcon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #fff;
+  color: #070b20; /* symbole navy, comme le fond */
+}
+
+.accTitle {
+  color: #f5f5f4; /* titre blanc */
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+/* Ouverture douce (ease type GSAP expo.out). Le corps reste toujours dans
+   le DOM ; hors flux (position: absolute) : l'ouvrir ne décale pas les
+   titres. max-height plafonnée juste au-dessus de la hauteur réelle du
+   texte pour que la course visible occupe bien la durée. */
+.accBody {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    max-height 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 240ms ease-out,
+    transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.accBodyOpen {
+  max-height: 120px; /* plafond au-dessus de la hauteur réelle du texte */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.accBody p {
+  margin: 0;
+  padding-top: clamp(10px, 1.4svh, 18px);
+  color: #b6b3b3;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* --- petits écrans ---------------------------------------------- */
+
+@media (max-width: 720px) {
+  .stage {
+    --step-x: 46%;
+    --frame-h: 36svh;
+    --hold: 8svh;
+  }
+  .copy {
+    bottom: 44svh;
+    width: min(40ch, 82vw);
+  }
+  .viewport {
+    right: 4vw;
+    left: 4vw;
+    width: auto;
+    bottom: 34svh;
+    height: 30svh;
+  }
+  /* mobile : accordéons empilés, corps dans le flux (à peaufiner) */
+  .accordions {
+    grid-template-columns: 1fr;
+    gap: clamp(10px, 2svh, 18px);
+    bottom: clamp(16px, 4svh, 40px);
+  }
+  .accBody {
+    position: static;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    transform: translateY(var(--hold));
+    clip-path: none;
+  }
+  .slide {
+    transform: none;
+  }
+  .slide:nth-child(2),
+  .slide:nth-child(3) {
+    display: none;
+  }
+  .copyItem:nth-child(1) {
+    opacity: 1;
+  }
+  .copyItem:nth-child(2),
+  .copyItem:nth-child(3) {
+    opacity: 0;
+  }
+  .accBody {
+    transition: none;
+  }
+}
