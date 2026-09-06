@@ -13,9 +13,10 @@ Le projet vit **entièrement** dans `/Users/rosiemvl/Clients/MBA Sanit/Site Web 
 Consigne explicite du client : ne rien créer ni modifier en dehors de ce dossier.
 
 Périmètre volontairement réduit : **pas de CMS, pas de base de données**. Juste
-un site. À terme, un dépôt Git sur son compte et un projet Vercel — **rien de
-tout ça n'est encore fait**, et c'est délibéré : on construit et on valide en
-local d'abord.
+un site. Le code est hébergé sur le compte GitHub **du client** :
+<https://github.com/mbasanitmarketing/site-web> (privé). Le compte agence
+`atelierwebromand-art` y est **collaborateur en écriture**. Le projet Vercel
+reste à créer — délibérément repoussé, on valide en local d'abord.
 
 ### Où on en est
 
@@ -24,7 +25,8 @@ local d'abord.
 | Hero « les lumières s'allument » | Fonctionnelle, validée par le client |
 | Section 2 (arrivée d'image + panneau) | Fonctionnelle, validée sur le principe |
 | Suite du site | Rien |
-| Git / Vercel | Rien |
+| Git | **Fait** — dépôt privé `mbasanitmarketing/site-web` |
+| Vercel | Rien, volontairement repoussé |
 
 ---
 
@@ -262,8 +264,20 @@ planche-contact, mesure de netteté, détourage du logo).
    ipsum et des aplats gris. Quatre photos client sont disponibles dans le dossier
    parent (chaufferie, salles de bain, réalisations).
 4. **La suite du site** — sections non définies à ce jour.
-5. **Git puis Vercel**, une fois le local validé. Rien n'est initialisé : pas de
-   `.git`, pas de dépôt distant, pas de projet Vercel.
+5. **Vercel** — à brancher sur le dépôt GitHub quand le client le voudra. Rien
+   n'y dépend du code : c'est une étape isolée. Question ouverte : le projet
+   Vercel se crée sous le compte du client (cohérent avec le dépôt) ou sous
+   celui de l'agence ?
+
+### Git — en place
+
+`git init` fait, premier commit poussé sur `main`. **Les vidéos de référence
+sont exclues** (`*.mov`, `*.mp4`) : `section 3 animation.mov` pèse 141 Mo, très
+au-delà de la limite de 100 Mo par fichier de GitHub. Elles restent en local —
+ne pas tenter de les committer.
+
+Avec deux sessions qui travaillent sur le même dossier, **committer souvent**
+est la seule protection contre un écrasement mutuel.
 
 ### Dette technique connue
 
