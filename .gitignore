@@ -44,3 +44,8 @@ next-env.d.ts
 # au-delà de la limite de 100 Mo par fichier). Elles restent en local.
 *.mov
 *.mp4
+
+# Section 3 « paysage scroll » : en cours, hors dépôt tant qu'elle n'est pas
+# terminée. Les fichiers restent en local. À retirer d'ici une fois validée.
+src/components/PaysageScroll.tsx
+src/components/PaysageScroll.module.css
