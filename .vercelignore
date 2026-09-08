@@ -1,0 +1,15 @@
+# Ne pas envoyer au déploiement — ce ne sont pas des fichiers du site.
+# (Vercel n'applique PAS .gitignore ; il faut cette liste à part.)
+
+# Références de design : maquettes Figma, vidéos d'inspiration
+/Inspirations/
+
+# Photos originales (haute déf) : seule public/ est servie
+/Photos/
+
+# Vidéos partout
+*.mov
+*.mp4
+
+# Docs de travail
+passation.md
