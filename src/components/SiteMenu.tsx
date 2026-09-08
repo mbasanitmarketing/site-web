@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLenis } from "lenis/react";
-import { REALISATIONS } from "@/lib/pages";
+import { CATEGORIES, SERVICES } from "@/lib/pages";
 import { useHeaderAutoHide } from "@/lib/useHeaderAutoHide";
 import { GoogleReviews } from "./GoogleReviews";
 import styles from "./SiteMenu.module.css";
@@ -20,16 +20,14 @@ const ENTRIES: Entry[] = [
   {
     label: "Services",
     href: "/services",
-    children: [
-      { label: "Lorem ipsum dolor", href: "/services" },
-      { label: "Sit amet consectetur", href: "/services" },
-      { label: "Adipiscing elit sed", href: "/services" },
-    ],
+    children: SERVICES.map((s) => ({ label: s.title, href: s.href })),
   },
   {
+    // Les catégories, pas les réalisations : celles-ci sont listées en
+    // vignettes sur la page de chaque catégorie.
     label: "Réalisations",
     href: "/realisations",
-    children: REALISATIONS.map((r) => ({ label: r.title, href: r.href })),
+    children: CATEGORIES.map((c) => ({ label: c.title, href: c.href })),
   },
   { label: "L’équipe", href: "/equipe" },
   { label: "Demander un devis", href: "/devis" },

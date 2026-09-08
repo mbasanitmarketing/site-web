@@ -32,6 +32,12 @@ export type PageContent = {
 const LEDE =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.";
 
+
+/** Une réalisation appartient à une catégorie (son slug). */
+export type Realisation = PageContent & { category: string };
+
+/* --- Pages de premier niveau ------------------------------------- */
+
 export const PAGES: PageContent[] = [
   {
     href: "/services",
@@ -71,24 +77,92 @@ export const PAGES: PageContent[] = [
   },
 ];
 
+/* --- Les trois métiers, sous /services ---------------------------- */
+
+export const SERVICES: PageContent[] = [
+  {
+    href: "/services/sanitaire-salles-de-bain",
+    title: "Sanitaire & salles de bain",
+    image: "/realisation-salle-de-bain.jpg",
+    alt: "Salle de bain réalisée par MBA Sanit",
+    lede: LEDE,
+    cue: "Demander un devis",
+    kicker: "Suisse romande",
+    display: "Sur mesure",
+  },
+  {
+    href: "/services/chauffage-pompes-a-chaleur",
+    title: "Chauffage & pompes à chaleur",
+    image: "/realisation-chaufferie.jpg",
+    alt: "Chaufferie installée par MBA Sanit",
+    lede: LEDE,
+    cue: "Demander un devis",
+    kicker: "Suisse romande",
+    display: "Production",
+  },
+  {
+    href: "/services/entretien-depannage",
+    title: "Entretien & dépannage",
+    image: "/realisation-salle-deau.jpg",
+    alt: "Salle d’eau réalisée par MBA Sanit",
+    lede: LEDE,
+    cue: "Nous appeler",
+    kicker: "Suisse romande",
+    display: "Réactivité",
+  },
+];
+
+/* --- Les trois catégories de réalisations ------------------------- */
+
+/** L'image d'une catégorie est celle de sa première réalisation. */
+export const CATEGORIES: PageContent[] = [
+  {
+    href: "/realisations/sanitaire-salles-de-bain",
+    title: "Sanitaire & salles de bain",
+    image: "/realisation-salle-de-bain.jpg",
+    alt: "Salle de bain réalisée par MBA Sanit",
+    lede: LEDE,
+    cue: "Voir les réalisations",
+    kicker: "Suisse romande",
+    display: "Sur mesure",
+  },
+  {
+    href: "/realisations/chauffage-pompes-a-chaleur",
+    title: "Chauffage & pompes à chaleur",
+    image: "/realisation-chaufferie.jpg",
+    alt: "Chaufferie installée par MBA Sanit",
+    lede: LEDE,
+    cue: "Voir les réalisations",
+    kicker: "Suisse romande",
+    display: "Production",
+  },
+  {
+    href: "/realisations/piscines-exterieurs",
+    title: "Piscines et extérieurs",
+    image: "/realisation-piscine-1.jpg",
+    alt: "Piscine équipée par MBA Sanit",
+    lede: LEDE,
+    cue: "Voir les réalisations",
+    kicker: "Suisse romande",
+    display: "Extérieur",
+  },
+];
+
+/* --- Les réalisations, rangées par catégorie ---------------------- */
+
 /**
- * Les réalisations — source unique.
- *
- * Le carrousel de la section 3, la liste /realisations, les sous-liens du
- * menu et les pages /realisations/[slug] lisent tous d'ici. L'image d'une
- * diapo est donc littéralement celle de sa page : cliquer « Voir le
- * projet » amène la photo qu'on vient de voir, en hero plein cadre, et la
- * transition la balaie sans raccord.
- *
- * Photos client (1536 × 1024, 3:2). Textes encore en lorem.
+ * Photos client (1536 × 1024, 3:2). Le `href` est imbriqué sous sa
+ * catégorie : c'est ce qui évite que catégories et réalisations se
+ * disputent le même segment d'URL.
  *
  * NB : « Piscine » et « Douche extérieure » apparaissent deux fois — ce
  * sont deux vues, chacune avec sa page. À fusionner si ce sont bien les
  * mêmes chantiers.
  */
-export const REALISATIONS: PageContent[] = [
+export const REALISATIONS: Realisation[] = [
   {
-    href: "/realisations/salle-de-bain",
+    category: "sanitaire-salles-de-bain",
+    href: "/realisations/sanitaire-salles-de-bain/salle-de-bain",
     title: "Salle de bain",
     image: "/realisation-salle-de-bain.jpg",
     alt: "Salle de bain réalisée par MBA Sanit",
@@ -98,37 +172,8 @@ export const REALISATIONS: PageContent[] = [
     display: "Sur mesure",
   },
   {
-    href: "/realisations/chaufferie",
-    title: "Chaufferie",
-    image: "/realisation-chaufferie.jpg",
-    alt: "Chaufferie installée par MBA Sanit",
-    lede: LEDE,
-    cue: "Réalisation suivante",
-    kicker: "Suisse romande",
-    display: "Production",
-  },
-  {
-    href: "/realisations/piscine",
-    title: "Piscine",
-    image: "/realisation-piscine-1.jpg",
-    alt: "Piscine équipée par MBA Sanit",
-    lede: LEDE,
-    cue: "Réalisation suivante",
-    kicker: "Suisse romande",
-    display: "Traitement",
-  },
-  {
-    href: "/realisations/piscine-vue-2",
-    title: "Piscine",
-    image: "/realisation-piscine-2.jpg",
-    alt: "Piscine équipée par MBA Sanit, seconde vue",
-    lede: LEDE,
-    cue: "Réalisation suivante",
-    kicker: "Suisse romande",
-    display: "Traitement",
-  },
-  {
-    href: "/realisations/salle-deau",
+    category: "sanitaire-salles-de-bain",
+    href: "/realisations/sanitaire-salles-de-bain/salle-deau",
     title: "Salle d’eau",
     image: "/realisation-salle-deau.jpg",
     alt: "Salle d’eau réalisée par MBA Sanit",
@@ -138,7 +183,41 @@ export const REALISATIONS: PageContent[] = [
     display: "Aménagement",
   },
   {
-    href: "/realisations/douche-exterieure",
+    category: "chauffage-pompes-a-chaleur",
+    href: "/realisations/chauffage-pompes-a-chaleur/chaufferie",
+    title: "Chaufferie",
+    image: "/realisation-chaufferie.jpg",
+    alt: "Chaufferie installée par MBA Sanit",
+    lede: LEDE,
+    cue: "Réalisation suivante",
+    kicker: "Suisse romande",
+    display: "Production",
+  },
+  {
+    category: "piscines-exterieurs",
+    href: "/realisations/piscines-exterieurs/piscine",
+    title: "Piscine",
+    image: "/realisation-piscine-1.jpg",
+    alt: "Piscine équipée par MBA Sanit",
+    lede: LEDE,
+    cue: "Réalisation suivante",
+    kicker: "Suisse romande",
+    display: "Traitement",
+  },
+  {
+    category: "piscines-exterieurs",
+    href: "/realisations/piscines-exterieurs/piscine-vue-2",
+    title: "Piscine",
+    image: "/realisation-piscine-2.jpg",
+    alt: "Piscine équipée par MBA Sanit, seconde vue",
+    lede: LEDE,
+    cue: "Réalisation suivante",
+    kicker: "Suisse romande",
+    display: "Traitement",
+  },
+  {
+    category: "piscines-exterieurs",
+    href: "/realisations/piscines-exterieurs/douche-exterieure",
     title: "Douche extérieure",
     image: "/realisation-douche-exterieure-1.jpg",
     alt: "Douche extérieure réalisée par MBA Sanit",
@@ -148,7 +227,8 @@ export const REALISATIONS: PageContent[] = [
     display: "Extérieur",
   },
   {
-    href: "/realisations/douche-exterieure-vue-2",
+    category: "piscines-exterieurs",
+    href: "/realisations/piscines-exterieurs/douche-exterieure-vue-2",
     title: "Douche extérieure",
     image: "/realisation-douche-exterieure-2.jpg",
     alt: "Douche extérieure réalisée par MBA Sanit, seconde vue",
@@ -159,7 +239,14 @@ export const REALISATIONS: PageContent[] = [
   },
 ];
 
-const ALL = [...PAGES, ...REALISATIONS];
+/* --- Accès ------------------------------------------------------- */
+
+const ALL: PageContent[] = [
+  ...PAGES,
+  ...SERVICES,
+  ...CATEGORIES,
+  ...REALISATIONS,
+];
 
 export function getPage(href: string): PageContent | undefined {
   return ALL.find((p) => p.href === href);
@@ -172,6 +259,29 @@ export function requirePage(href: string): PageContent {
   return page;
 }
 
-export function getRealisation(slug: string): PageContent | undefined {
-  return REALISATIONS.find((p) => p.href === `/realisations/${slug}`);
+/** Le dernier segment d'une route, qui sert de paramètre dynamique. */
+export function slugOf(href: string): string {
+  return href.split("/").filter(Boolean).pop() as string;
+}
+
+export function getCategory(slug: string): PageContent | undefined {
+  return CATEGORIES.find((c) => slugOf(c.href) === slug);
+}
+
+export function getService(slug: string): PageContent | undefined {
+  return SERVICES.find((s) => slugOf(s.href) === slug);
+}
+
+/** Les réalisations d'une catégorie, dans l'ordre de déclaration. */
+export function realisationsOf(categorySlug: string): Realisation[] {
+  return REALISATIONS.filter((r) => r.category === categorySlug);
+}
+
+export function getRealisation(
+  categorySlug: string,
+  slug: string,
+): Realisation | undefined {
+  return REALISATIONS.find(
+    (r) => r.category === categorySlug && slugOf(r.href) === slug,
+  );
 }

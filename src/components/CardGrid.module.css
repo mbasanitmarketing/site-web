@@ -1,7 +1,5 @@
-/* Liste provisoire des réalisations — sert surtout à déclencher la
-   transition depuis « Voir la réalisation ». Design à faire. */
-
-.list {
+/* Grille de vignettes (catégories, réalisations). Design à affiner. */
+.grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: clamp(12px, 1.6vw, 24px);
@@ -49,7 +47,7 @@
 }
 
 @media (max-width: 720px) {
-  .list {
+  .grid {
     grid-template-columns: 1fr;
     gap: clamp(24px, 5vw, 36px);
   }
