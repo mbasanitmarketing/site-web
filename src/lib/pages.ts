@@ -34,7 +34,17 @@ const LEDE =
 
 
 /** Une réalisation appartient à une catégorie (son slug). */
-export type Realisation = PageContent & { category: string };
+export type Realisation = PageContent & {
+  category: string;
+  /** Lieu, affiché sous le titre dans les grilles de projets. */
+  lieu: string;
+  /** Description : un paragraphe par entrée. */
+  body: string[];
+  /** Fiche technique, en colonnes sous la description. */
+  meta: { label: string; value: string }[];
+  /** Galerie « un aperçu du projet ». */
+  gallery: { src: string; alt: string }[];
+};
 
 /* --- Pages de premier niveau ------------------------------------- */
 
@@ -148,6 +158,20 @@ export const CATEGORIES: PageContent[] = [
   },
 ];
 
+/* Contenus provisoires des fiches projet. Le vrai texte, l'année, le lieu
+   et les prestations sont à remplir projet par projet. */
+const BODY = [
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+];
+
+const meta = (categorie: string) => [
+  { label: "Catégorie", value: categorie },
+  { label: "Année", value: "À définir" },
+  { label: "Lieu", value: "À définir" },
+  { label: "Prestations", value: "Lorem ipsum, dolor sit amet" },
+];
+
 /* --- Les réalisations, rangées par catégorie ---------------------- */
 
 /**
@@ -170,6 +194,14 @@ export const REALISATIONS: Realisation[] = [
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Sur mesure",
+ 
+    lieu: "Suisse romande",
+    body: BODY,
+    meta: meta("Sanitaire & salles de bain"),
+    gallery: [
+      { src: "/realisation-salle-de-bain.jpg", alt: "Salle de bain réalisée par MBA Sanit" },
+      { src: "/realisation-salle-deau.jpg", alt: "Salle d’eau réalisée par MBA Sanit" },
+    ],
   },
   {
     category: "sanitaire-salles-de-bain",
@@ -181,6 +213,14 @@ export const REALISATIONS: Realisation[] = [
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Aménagement",
+ 
+    lieu: "Suisse romande",
+    body: BODY,
+    meta: meta("Sanitaire & salles de bain"),
+    gallery: [
+      { src: "/realisation-salle-de-bain.jpg", alt: "Salle de bain réalisée par MBA Sanit" },
+      { src: "/realisation-salle-deau.jpg", alt: "Salle d’eau réalisée par MBA Sanit" },
+    ],
   },
   {
     category: "chauffage-pompes-a-chaleur",
@@ -192,6 +232,13 @@ export const REALISATIONS: Realisation[] = [
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Production",
+ 
+    lieu: "Suisse romande",
+    body: BODY,
+    meta: meta("Chauffage & pompes à chaleur"),
+    gallery: [
+      { src: "/realisation-chaufferie.jpg", alt: "Chaufferie installée par MBA Sanit" },
+    ],
   },
   {
     category: "piscines-exterieurs",
@@ -203,6 +250,16 @@ export const REALISATIONS: Realisation[] = [
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Traitement",
+ 
+    lieu: "Suisse romande",
+    body: BODY,
+    meta: meta("Piscines et extérieurs"),
+    gallery: [
+      { src: "/realisation-piscine-1.jpg", alt: "Piscine équipée par MBA Sanit" },
+      { src: "/realisation-piscine-2.jpg", alt: "Piscine équipée par MBA Sanit, seconde vue" },
+      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure réalisée par MBA Sanit" },
+      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure réalisée par MBA Sanit, seconde vue" },
+    ],
   },
   {
     category: "piscines-exterieurs",
@@ -214,6 +271,16 @@ export const REALISATIONS: Realisation[] = [
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Traitement",
+ 
+    lieu: "Suisse romande",
+    body: BODY,
+    meta: meta("Piscines et extérieurs"),
+    gallery: [
+      { src: "/realisation-piscine-1.jpg", alt: "Piscine équipée par MBA Sanit" },
+      { src: "/realisation-piscine-2.jpg", alt: "Piscine équipée par MBA Sanit, seconde vue" },
+      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure réalisée par MBA Sanit" },
+      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure réalisée par MBA Sanit, seconde vue" },
+    ],
   },
   {
     category: "piscines-exterieurs",
@@ -225,6 +292,16 @@ export const REALISATIONS: Realisation[] = [
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Extérieur",
+ 
+    lieu: "Suisse romande",
+    body: BODY,
+    meta: meta("Piscines et extérieurs"),
+    gallery: [
+      { src: "/realisation-piscine-1.jpg", alt: "Piscine équipée par MBA Sanit" },
+      { src: "/realisation-piscine-2.jpg", alt: "Piscine équipée par MBA Sanit, seconde vue" },
+      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure réalisée par MBA Sanit" },
+      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure réalisée par MBA Sanit, seconde vue" },
+    ],
   },
   {
     category: "piscines-exterieurs",
@@ -236,6 +313,16 @@ export const REALISATIONS: Realisation[] = [
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Extérieur",
+ 
+    lieu: "Suisse romande",
+    body: BODY,
+    meta: meta("Piscines et extérieurs"),
+    gallery: [
+      { src: "/realisation-piscine-1.jpg", alt: "Piscine équipée par MBA Sanit" },
+      { src: "/realisation-piscine-2.jpg", alt: "Piscine équipée par MBA Sanit, seconde vue" },
+      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure réalisée par MBA Sanit" },
+      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure réalisée par MBA Sanit, seconde vue" },
+    ],
   },
 ];
 

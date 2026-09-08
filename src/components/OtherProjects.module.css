@@ -1,0 +1,147 @@
+/* « Autres réalisations » — une grande carte à gauche, deux empilées à
+   droite (cf. « realisations projets.mov »). */
+
+.wrap {
+  padding: clamp(28px, 6svh, 64px) var(--page-x) clamp(36px, 8svh, 88px);
+  background: #f5f5f4;
+  color: #0b0b0c;
+}
+
+.title {
+  margin: 0 0 clamp(12px, 2svh, 20px);
+  font-size: clamp(1.35rem, 2.4vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.rule {
+  height: 1px;
+  margin-bottom: clamp(16px, 3svh, 28px);
+  background: rgba(11, 11, 12, 0.85);
+}
+
+/* Deux colonnes, deux rangées : la première carte occupe toute la
+   hauteur à gauche, les deux autres s'empilent à droite. */
+.grid {
+  display: grid;
+  grid-template-columns: 1.75fr 1fr;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.2vw, 16px);
+  height: clamp(400px, 62svh, 620px);
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  background: #76767a;
+  color: #f5f5f4;
+  text-decoration: none;
+}
+
+.lead {
+  grid-row: 1 / span 2;
+}
+
+.card img {
+  object-fit: cover;
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card:hover img,
+.card:focus-visible img {
+  transform: scale(1.03);
+}
+
+/* Dégradé de lisibilité sous la légende */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.62),
+    rgba(0, 0, 0, 0.08) 42%,
+    transparent 62%
+  );
+}
+
+.caption {
+  position: absolute;
+  left: clamp(14px, 1.6vw, 26px);
+  right: clamp(14px, 1.6vw, 26px);
+  bottom: clamp(12px, 1.6vw, 22px);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.name {
+  font-size: clamp(1.05rem, 1.7vw, 1.6rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.lieu {
+  font-size: clamp(11px, 0.9vw, 13px);
+  color: rgba(245, 245, 244, 0.82);
+}
+
+/* Pastille « Voir le projet » sur la grande carte, au survol. */
+.badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: clamp(84px, 7vw, 104px);
+  height: clamp(84px, 7vw, 104px);
+  border-radius: 50%;
+  background: #a8763e;
+  color: #fff;
+  font-size: clamp(11px, 0.85vw, 13px);
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
+  transition:
+    opacity 220ms ease,
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.lead:hover .badge,
+.lead:focus-visible .badge {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* --- Mobile -------------------------------------------------------- */
+
+@media (max-width: 720px) {
+  /* En colonne : chaque carte garde un format 3:2, la hauteur suit. */
+  .grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    height: auto;
+    gap: clamp(12px, 3vw, 18px);
+  }
+  .lead {
+    grid-row: auto;
+  }
+  .card {
+    aspect-ratio: 3 / 2;
+  }
+  /* pas de survol au doigt : la pastille n'apparaîtrait jamais */
+  .badge {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card img,
+  .badge {
+    transition: none;
+  }
+  .card:hover img {
+    transform: none;
+  }
+}
