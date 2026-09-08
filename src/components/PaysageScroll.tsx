@@ -5,13 +5,28 @@ import { useScrollProgress } from "@/lib/useScrollProgress";
 import styles from "./PaysageScroll.module.css";
 
 /** Nuances légèrement différentes : des gris identiques rendraient le
- *  défilement illisible. À remplacer par les photos + vrais titres. */
+ *  défilement illisible. À remplacer par les photos + vrais titres.
+ *
+ *  Les trois premières pointent sur les pages de réalisation existantes ;
+ *  les deux dernières renvoient à l'index en attendant les leurs. */
 const SLIDES = [
-  { tone: "#6e6e73", title: "Lorem ipsum" },
-  { tone: "#78787d", title: "Dolor sit amet" },
-  { tone: "#828287", title: "Consectetur elit" },
-  { tone: "#74747a", title: "Adipiscing sed" },
-  { tone: "#7c7c81", title: "Eiusmod tempor" },
+  {
+    tone: "#6e6e73",
+    title: "Lorem ipsum",
+    href: "/realisations/lorem-ipsum",
+  },
+  {
+    tone: "#78787d",
+    title: "Dolor sit amet",
+    href: "/realisations/dolor-sit-amet",
+  },
+  {
+    tone: "#828287",
+    title: "Consectetur elit",
+    href: "/realisations/consectetur-elit",
+  },
+  { tone: "#74747a", title: "Adipiscing sed", href: "/realisations" },
+  { tone: "#7c7c81", title: "Eiusmod tempor", href: "/realisations" },
 ];
 
 /**
@@ -46,6 +61,13 @@ export function PaysageScroll() {
               >
                 <div />
                 <p className={styles.slideTitle}>{s.title}</p>
+                <a
+                  className={styles.slideCta}
+                  href={s.href}
+                  data-page-transition
+                >
+                  Voir le projet
+                </a>
               </div>
             ))}
           </div>

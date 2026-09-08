@@ -140,6 +140,23 @@
      va de --p 0.14 à 0.94 et présente une diapo tous les 1/4 (0.2 de --p). */
   --face-p: calc(0.14 + var(--i) * 0.2);
 
+  /* 1 quand la diapo est frontale, 0 sinon (fenêtre ±0.09, fondu 0.04 aux
+     bords). Le titre ET le bouton en dérivent : ils apparaissent ensemble. */
+  --face-in: clamp(
+    0,
+    min(
+      calc((var(--p, 0) - (var(--face-p) - 0.09)) / 0.04),
+      calc((var(--face-p) + 0.09 - var(--p, 0)) / 0.04)
+    ),
+    1
+  );
+
+  /* Légende sous l'image : image -> titre -> bouton, écarts égaux comme
+     sur la maquette. --cap-h = la hauteur de ligne du titre. */
+  --cap-gap: clamp(12px, 2.2svh, 26px);
+  --cap-h: clamp(13px, 1.15vw, 17px);
+  --cta-gap: clamp(12px, 2.2svh, 26px);
+
   position: absolute;
   width: var(--slide-w);
   aspect-ratio: 3 / 2;
@@ -157,29 +174,69 @@
   background: var(--tone);
 }
 
-/* Titre sous l'image : n'apparaît que quand la diapo est frontale
-   (fenêtre de ±0.09 autour de --face-p, fondu de 0.04 aux bords). */
+/* Titre sous l'image : n'apparaît que quand la diapo est frontale. */
 .slideTitle {
   position: absolute;
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  margin-top: clamp(12px, 2.2svh, 26px);
+  margin-top: var(--cap-gap);
   white-space: nowrap;
   font-size: clamp(11px, 0.95vw, 14px);
   font-weight: 600;
+  line-height: 1.2;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #0b0b0c;
-  opacity: clamp(
-    0,
-    min(
-      calc((var(--p, 0) - (var(--face-p) - 0.09)) / 0.04),
-      calc((var(--face-p) + 0.09 - var(--p, 0)) / 0.04)
-    ),
-    1
-  );
+  opacity: var(--face-in);
   will-change: opacity;
+}
+
+/* Bouton sous le titre (cf. maquette) : filet fin, fond transparent,
+   capitales tracées. Apparaît avec le titre, sur la même fenêtre.
+
+   Le clic : la piste porte `pointer-events: none` (elle chevauche la
+   section Escalier sur 200svh et intercepterait ses accordéons). On le
+   réactive ici, mais UNIQUEMENT sur la diapo frontale — le `clip-path`
+   ci-dessous, replié à néant hors fenêtre, supprime aussi la zone
+   cliquable. Un bouton invisible ne peut donc jamais voler un clic. */
+.slideCta {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: calc(var(--cap-gap) + var(--cap-h) + var(--cta-gap));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(9px, 1.15svh, 13px) clamp(16px, 1.7vw, 26px);
+  border: 1px solid rgba(11, 11, 12, 0.85);
+  border-radius: 2px;
+  white-space: nowrap;
+  font-size: clamp(10px, 0.85vw, 12px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #0b0b0c;
+  background: transparent;
+  opacity: var(--face-in);
+  pointer-events: auto;
+  /* passe de « replié à néant » à « plein » dès le début du fondu */
+  clip-path: inset(
+    calc((1 - clamp(0, calc(var(--face-in) * 20), 1)) * 50%)
+  );
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+  will-change: opacity;
+}
+
+.slideCta:hover,
+.slideCta:focus-visible {
+  background: #0b0b0c;
+  color: #fff;
 }
 
 @media (max-width: 720px) {
@@ -207,10 +264,16 @@
   .rail {
     --turn: 0deg;
   }
-  .slideTitle {
+  .slideTitle,
+  .slideCta {
     opacity: 0;
   }
-  .slide:first-child .slideTitle {
+  .slide:first-child .slideTitle,
+  .slide:first-child .slideCta {
     opacity: 1;
+    clip-path: none;
+  }
+  .slideCta {
+    transition: none;
   }
 }
