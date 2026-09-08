@@ -32,6 +32,17 @@
   cursor: pointer;
   /* couleur réelle des traits = inverse du fond derrière le bouton */
   mix-blend-mode: difference;
+  transition:
+    transform 380ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 240ms ease;
+}
+
+/* Header classique : se retire vers le haut quand on descend, revient dès
+   qu'on remonte (état posé sur <html> par useHeaderAutoHide). */
+:global(html[data-header-hidden]) .burger {
+  transform: translateY(calc(-100% - clamp(16px, 2.3vw, 28px)));
+  opacity: 0;
+  pointer-events: none;
 }
 
 .bars {
@@ -273,6 +284,7 @@
 /* --- Accessibilité mouvement -------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
+  .burger,
   .bar,
   .scrim,
   .panel,

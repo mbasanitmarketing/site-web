@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { PageIntro } from "@/components/PageIntro";
+import { Footer } from "@/components/Footer";
 import { REALISATIONS, getRealisation } from "@/lib/pages";
 
 export function generateStaticParams() {
@@ -13,5 +14,10 @@ export default async function Page({
   const page = getRealisation(slug);
   if (!page) notFound();
 
-  return <PageIntro page={page} />;
+  return (
+    <>
+      <PageIntro page={page} />
+      <Footer />
+    </>
+  );
 }

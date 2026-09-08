@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { PageIntro } from "@/components/PageIntro";
+import { Footer } from "@/components/Footer";
 import { REALISATIONS, requirePage } from "@/lib/pages";
 import styles from "./realisations.module.css";
 
@@ -30,6 +31,8 @@ export default function Page() {
           </a>
         ))}
       </section>
+
+      <Footer />
     </>
   );
 }

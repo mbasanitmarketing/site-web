@@ -11,10 +11,16 @@ import styles from "./Footer.module.css";
  * puis un fin disclaimer pleine largeur.
  *
  * Contenus provisoires (horaires, disclaimer) — à remplacer.
+ *
+ * `overlap` : remonte le footer de la profondeur de son encoche, pour que
+ * le blanc de la section 3 apparaisse dans les zones découpées. Réservé à
+ * l'accueil ; ailleurs il mordrait sur les textes du bas de PageIntro.
  */
-export function Footer() {
+export function Footer({ overlap = false }: { overlap?: boolean }) {
   return (
-    <footer className={styles.footer}>
+    <footer
+      className={`${styles.footer} ${overlap ? styles.overlap : ""}`}
+    >
       <div className={styles.top}>
         <a className={styles.contact} href="#contact">
           Contact

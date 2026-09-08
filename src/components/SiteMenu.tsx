@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLenis } from "lenis/react";
 import { REALISATIONS } from "@/lib/pages";
+import { useHeaderAutoHide } from "@/lib/useHeaderAutoHide";
 import { GoogleReviews } from "./GoogleReviews";
 import styles from "./SiteMenu.module.css";
 
@@ -49,6 +50,10 @@ export function SiteMenu() {
   const panelRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);
   const lenis = useLenis();
+
+  // Header qui se retire au scroll vers le bas. Figé visible quand le menu
+  // est ouvert : le burger sert alors de bouton de fermeture.
+  useHeaderAutoHide(open);
 
   // Verrou de scroll : on coupe Lenis tant que le menu est ouvert.
   useEffect(() => {

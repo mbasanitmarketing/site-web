@@ -9,7 +9,7 @@ export default function Home() {
       <Hero />
       <EscalierSection />
       <PaysageScroll />
-      <Footer />
+      <Footer overlap />
     </>
   );
 }
