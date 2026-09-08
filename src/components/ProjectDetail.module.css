@@ -5,14 +5,17 @@
    Fond clair : la page bascule du hero photo à un bloc éditorial.
    --------------------------------------------------------------------- */
 
-.body,
-.meta,
-.gallery,
-.rule,
-.ruleDot {
-  padding-inline: var(--page-x);
+/* Le fond clair est porté par le conteneur, pas par chaque bloc :
+   sinon le noir du body transparaît dans les marges qui les séparent. */
+.wrap {
   background: #f5f5f4;
   color: #0b0b0c;
+}
+
+.body,
+.meta,
+.gallery {
+  padding-inline: var(--page-x);
 }
 
 .body {
@@ -32,15 +35,12 @@
 
 /* --- Filets ------------------------------------------------------- */
 
+/* Un filet d'un pixel, rentré des mêmes gouttières que le contenu. */
 .rule,
 .ruleDot {
   height: 1px;
-  padding-block: 0;
-  background:
-    linear-gradient(#0b0b0c, #0b0b0c) center / calc(100% - var(--page-x) * 2)
-      1px no-repeat,
-    #f5f5f4;
-  opacity: 0.85;
+  margin-inline: var(--page-x);
+  background: rgba(11, 11, 12, 0.85);
 }
 
 .rule {

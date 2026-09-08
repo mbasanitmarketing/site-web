@@ -35,7 +35,9 @@ export function ProjectDetail({ project }: { project: Realisation }) {
   }
 
   return (
-    <>
+    /* Un seul conteneur porte le fond clair. Avant, chaque bloc avait le
+       sien et le noir du body transparaissait dans les marges entre eux. */
+    <div className={styles.wrap}>
       <section className={styles.body}>
         {project.body.map((p, i) => (
           <p key={i} className={styles.paragraph}>
@@ -144,6 +146,6 @@ export function ProjectDetail({ project }: { project: Realisation }) {
           </>
         )}
       </dialog>
-    </>
+    </div>
   );
 }
