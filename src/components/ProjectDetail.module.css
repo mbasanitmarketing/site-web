@@ -194,7 +194,12 @@
   width: clamp(74px, 6.6vw, 92px);
   height: clamp(74px, 6.6vw, 92px);
   border-radius: 50%;
-  background: #a8763e;
+  /* Même traitement que le bouton d'appel flottant : disque sombre
+     translucide, flou d'arrière-plan et anneau blanc fin. */
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  background: rgba(16, 16, 20, 0.26);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   color: #fff;
   font-size: clamp(11px, 0.85vw, 13px);
   font-weight: 500;
