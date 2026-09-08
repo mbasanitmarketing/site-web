@@ -271,20 +271,35 @@
 @media (max-width: 720px) {
   .stage {
     --step-x: 46%;
-    --frame-h: 36svh;
+    --frame-h: 30svh;
     --hold: 8svh;
   }
-  .copy {
-    bottom: 44svh;
-    width: min(40ch, 82vw);
-  }
+
+  /* Sur desktop c'est côte à côte : texte à gauche, images à droite.
+     En colonne étroite les deux se superposaient — et comme .viewport
+     vient après .copy dans le DOM, l'image passait par-dessus le texte,
+     qui devenait invisible. Ici on empile, de haut en bas :
+       intitulé (~4svh) · images 15 -> 45svh · texte 48 -> ~62svh
+       · accordéons ancrés en bas (~80 -> 96svh).
+     Les trois blocs sont calés sur la même gouttière que l'intitulé. */
   .viewport {
-    right: 4vw;
-    left: 4vw;
+    left: clamp(16px, 2.2vw, 40px);
+    right: clamp(16px, 2.2vw, 40px);
     width: auto;
-    bottom: 34svh;
-    height: 30svh;
+    top: 15svh;
+    bottom: auto;
   }
+  .copy {
+    left: clamp(16px, 2.2vw, 40px);
+    right: clamp(16px, 2.2vw, 40px);
+    width: auto;
+    top: 48svh;
+    bottom: auto;
+  }
+  .heading {
+    font-size: 1.25rem;
+  }
+
   /* mobile : accordéons empilés, corps dans le flux (à peaufiner) */
   .accordions {
     grid-template-columns: 1fr;
