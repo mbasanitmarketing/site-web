@@ -2,64 +2,9 @@
 
 import Image from "next/image";
 import { useRef } from "react";
+import { REALISATIONS } from "@/lib/pages";
 import { useScrollProgress } from "@/lib/useScrollProgress";
 import styles from "./PaysageScroll.module.css";
-
-/**
- * Les 7 photos client. Toutes en 1536 × 1024, soit exactement le 3:2 des
- * diapos — aucun recadrage.
- *
- * Les liens pointent tous sur l'index : les pages par réalisation
- * n'existent pas encore pour ces projets-là (les trois routes actuelles
- * portent du lorem). À recâbler quand elles seront écrites.
- *
- * Le nombre de diapos est libre : la géométrie se déduit de --count dans
- * le module CSS (à tenir à jour : ici 7 diapos = 6 intervalles).
- */
-const SLIDES = [
-  {
-    image: "/realisation-salle-de-bain.jpg",
-    title: "Salle de bain",
-    alt: "Salle de bain réalisée par MBA Sanit",
-    href: "/realisations",
-  },
-  {
-    image: "/realisation-chaufferie.jpg",
-    title: "Chaufferie",
-    alt: "Chaufferie installée par MBA Sanit",
-    href: "/realisations",
-  },
-  {
-    image: "/realisation-piscine-1.jpg",
-    title: "Piscine",
-    alt: "Piscine équipée par MBA Sanit",
-    href: "/realisations",
-  },
-  {
-    image: "/realisation-piscine-2.jpg",
-    title: "Piscine",
-    alt: "Piscine équipée par MBA Sanit, seconde vue",
-    href: "/realisations",
-  },
-  {
-    image: "/realisation-salle-deau.jpg",
-    title: "Salle d’eau",
-    alt: "Salle d’eau réalisée par MBA Sanit",
-    href: "/realisations",
-  },
-  {
-    image: "/realisation-douche-exterieure-1.jpg",
-    title: "Douche extérieure",
-    alt: "Douche extérieure réalisée par MBA Sanit",
-    href: "/realisations",
-  },
-  {
-    image: "/realisation-douche-exterieure-2.jpg",
-    title: "Douche extérieure",
-    alt: "Douche extérieure réalisée par MBA Sanit, seconde vue",
-    href: "/realisations",
-  },
-];
 
 /**
  * Section 3 — « paysage scroll ».
@@ -78,29 +23,38 @@ export function PaysageScroll() {
 
   return (
     <section ref={trackRef} className={styles.track}>
-      <div ref={stageRef} className={styles.stage}>
+      {/* --count = nombre d'intervalles. Posé ici plutôt qu'en dur dans le
+          CSS : la géométrie du cylindre suit le nombre de réalisations,
+          elle ne peut pas se désynchroniser en ajoutant une photo. */}
+      <div
+        ref={stageRef}
+        className={styles.stage}
+        style={
+          { "--count": REALISATIONS.length - 1 } as React.CSSProperties
+        }
+      >
         <div className={styles.curtain} />
 
         <div className={styles.viewport}>
           <div className={styles.rail}>
-            {SLIDES.map((s, i) => (
+            {REALISATIONS.map((r, i) => (
               <div
-                key={s.image}
+                key={r.href}
                 className={styles.slide}
                 style={{ "--i": i } as React.CSSProperties}
               >
                 <div className={styles.slideMedia}>
                   <Image
-                    src={s.image}
-                    alt={s.alt}
+                    src={r.image}
+                    alt={r.alt ?? ""}
                     fill
                     sizes="(max-width: 720px) 74vw, min(46vw, 760px)"
                   />
                 </div>
-                <p className={styles.slideTitle}>{s.title}</p>
+                <p className={styles.slideTitle}>{r.title}</p>
                 <a
                   className={styles.slideCta}
-                  href={s.href}
+                  href={r.href}
                   data-page-transition
                 >
                   Voir le projet

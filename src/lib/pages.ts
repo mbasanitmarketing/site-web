@@ -12,8 +12,13 @@ export type PageContent = {
   href: string;
   /** Le nom repris en bas à gauche de la page d'arrivée. */
   title: string;
-  /** Image plein cadre. */
+  /** Image plein cadre. Sert aussi de vignette au carrousel et d'image
+   *  balayée par la transition : c'est la même partout, donc l'image
+   *  cliquée est forcément celle de la page d'arrivée. */
   image: string;
+  /** Texte alternatif, quand l'image porte du sens (carrousel). Sur la
+   *  page, l'image est décorative : le titre est juste à côté. */
+  alt?: string;
   /** Paragraphe sous le titre. */
   lede: string;
   /** Petit lien en capitales, sous le paragraphe. */
@@ -66,34 +71,91 @@ export const PAGES: PageContent[] = [
   },
 ];
 
-/** Réalisations d'exemple, pour la route /realisations/[slug]. */
+/**
+ * Les réalisations — source unique.
+ *
+ * Le carrousel de la section 3, la liste /realisations, les sous-liens du
+ * menu et les pages /realisations/[slug] lisent tous d'ici. L'image d'une
+ * diapo est donc littéralement celle de sa page : cliquer « Voir le
+ * projet » amène la photo qu'on vient de voir, en hero plein cadre, et la
+ * transition la balaie sans raccord.
+ *
+ * Photos client (1536 × 1024, 3:2). Textes encore en lorem.
+ *
+ * NB : « Piscine » et « Douche extérieure » apparaissent deux fois — ce
+ * sont deux vues, chacune avec sa page. À fusionner si ce sont bien les
+ * mêmes chantiers.
+ */
 export const REALISATIONS: PageContent[] = [
   {
-    href: "/realisations/lorem-ipsum",
-    title: "Lorem ipsum",
-    image: "/services-1.jpg",
+    href: "/realisations/salle-de-bain",
+    title: "Salle de bain",
+    image: "/realisation-salle-de-bain.jpg",
+    alt: "Salle de bain réalisée par MBA Sanit",
     lede: LEDE,
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
-    display: "Dolor sit",
+    display: "Sur mesure",
   },
   {
-    href: "/realisations/dolor-sit-amet",
-    title: "Dolor sit amet",
-    image: "/services-2.jpg",
+    href: "/realisations/chaufferie",
+    title: "Chaufferie",
+    image: "/realisation-chaufferie.jpg",
+    alt: "Chaufferie installée par MBA Sanit",
     lede: LEDE,
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
-    display: "Amet elit",
+    display: "Production",
   },
   {
-    href: "/realisations/consectetur-elit",
-    title: "Consectetur elit",
-    image: "/services-3.jpg",
+    href: "/realisations/piscine",
+    title: "Piscine",
+    image: "/realisation-piscine-1.jpg",
+    alt: "Piscine équipée par MBA Sanit",
     lede: LEDE,
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
-    display: "Sed eiusmod",
+    display: "Traitement",
+  },
+  {
+    href: "/realisations/piscine-vue-2",
+    title: "Piscine",
+    image: "/realisation-piscine-2.jpg",
+    alt: "Piscine équipée par MBA Sanit, seconde vue",
+    lede: LEDE,
+    cue: "Réalisation suivante",
+    kicker: "Suisse romande",
+    display: "Traitement",
+  },
+  {
+    href: "/realisations/salle-deau",
+    title: "Salle d’eau",
+    image: "/realisation-salle-deau.jpg",
+    alt: "Salle d’eau réalisée par MBA Sanit",
+    lede: LEDE,
+    cue: "Réalisation suivante",
+    kicker: "Suisse romande",
+    display: "Aménagement",
+  },
+  {
+    href: "/realisations/douche-exterieure",
+    title: "Douche extérieure",
+    image: "/realisation-douche-exterieure-1.jpg",
+    alt: "Douche extérieure réalisée par MBA Sanit",
+    lede: LEDE,
+    cue: "Réalisation suivante",
+    kicker: "Suisse romande",
+    display: "Extérieur",
+  },
+  {
+    href: "/realisations/douche-exterieure-vue-2",
+    title: "Douche extérieure",
+    image: "/realisation-douche-exterieure-2.jpg",
+    alt: "Douche extérieure réalisée par MBA Sanit, seconde vue",
+    lede: LEDE,
+    cue: "Réalisation suivante",
+    kicker: "Suisse romande",
+    display: "Extérieur",
   },
 ];
 
