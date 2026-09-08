@@ -133,11 +133,15 @@
   .left {
     width: calc(100% - var(--page-x) * 2);
   }
+  /* En colonne, ce bloc repasse en haut à gauche — donc dans la zone du
+     burger (16 -> 60 px) et du logo (0 -> 60 px). On le descend sous
+     l'en-tête : à --page-y il empiétait de 14 px sur le burger. */
   .right {
     left: var(--page-x);
+    right: var(--page-x);
     text-align: left;
     bottom: auto;
-    top: var(--page-y);
+    top: clamp(80px, 11svh, 104px);
   }
   .display {
     font-size: clamp(1.9rem, 11vw, 3rem);
