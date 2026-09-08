@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { SiteMenu } from "@/components/SiteMenu";
+import { SiteLogo } from "@/components/SiteLogo";
+import { CallButton } from "@/components/CallButton";
+import { PageTransition } from "@/components/PageTransition";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,7 +27,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="fr" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="antialiased">
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll>
+          <SiteMenu />
+          <SiteLogo />
+          {/* Enveloppe ciblée par la transition de page (globals.css) */}
+          <div id="page-root">{children}</div>
+          <CallButton />
+          <PageTransition />
+        </SmoothScroll>
       </body>
     </html>
   );

@@ -1,0 +1,43 @@
+/* Bouton d'appel flottant, permanent (cf. maquette « allumer le feu »).
+   Fixe en bas à droite, sous le burger dans l'ordre d'empilement. */
+
+.call {
+  position: fixed;
+  right: clamp(18px, 4.5vw, 56px);
+  bottom: clamp(18px, 4.5vw, 56px);
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  width: clamp(52px, 5.4vw, 62px);
+  height: clamp(52px, 5.4vw, 62px);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  color: #fff;
+  /* léger disque sombre flouté : garde l'anneau blanc lisible sur les
+     sections claires ; quasi invisible sur la hero / le navy. */
+  background: rgba(16, 16, 20, 0.26);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  transition:
+    background-color 200ms ease,
+    transform 200ms ease;
+}
+
+.call:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+
+.call svg {
+  width: 44%;
+  height: 44%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .call {
+    transition: none;
+  }
+  .call:hover {
+    transform: none;
+  }
+}

@@ -1,0 +1,31 @@
+/* Logo des pages intérieures — calé exactement comme celui de la hero au
+   repos (même gouttière, même hauteur de bandeau, même largeur d'image),
+   pour qu'il ne saute pas d'une page à l'autre. Cf. Hero.module.css
+   .header / .logo img. */
+
+.logo {
+  position: fixed;
+  top: 0;
+  right: clamp(22px, 3.2vw, 46px);
+  z-index: 99; /* juste sous le burger (100) */
+  display: flex;
+  align-items: center;
+  height: 60px;
+}
+
+.logo img {
+  display: block;
+  width: clamp(92px, 8vw, 120px);
+  height: auto;
+  transition: opacity 200ms ease;
+}
+
+.logo:hover img {
+  opacity: 0.8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo img {
+    transition: none;
+  }
+}

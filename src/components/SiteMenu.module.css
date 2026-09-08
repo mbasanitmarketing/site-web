@@ -1,0 +1,292 @@
+/* ---------------------------------------------------------------------
+   Menu burger global — fixe en haut à droite, sur toutes les sections.
+   Réf. : vidéo « Menu déroulant MBA inspiration ».
+
+   · Bouton : 3 traits -> 1 seul trait à l'ouverture.
+     `mix-blend-mode: difference` : les traits s'inversent sur le fond
+     (clairs sur navy/hero, sombres sur blanc) sans JS ni marquage des
+     sections. Repli propre plus bas si le rendu photo ne convient pas :
+     passer en variante pilotée par IntersectionObserver.
+   · Panneau : glisse depuis la droite, verre dépoli clair (flou + blanc
+     translucide), pleine hauteur, ~58vw (100 % en mobile).
+   · Liste : Services / L'équipe / Réalisations + numéro d'appel.
+     Services et Réalisations sont des accordéons (sous-liens lorem).
+   --------------------------------------------------------------------- */
+
+/* --- Bouton burger ------------------------------------------------- */
+
+.burger {
+  position: fixed;
+  top: clamp(16px, 2.3vw, 28px);
+  /* à GAUCHE : symétrique du logo, qui est passé à droite (cf. Hero) */
+  left: clamp(16px, 3.2vw, 46px);
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  /* couleur réelle des traits = inverse du fond derrière le bouton */
+  mix-blend-mode: difference;
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  /* aligné à gauche : au survol les traits s'allongent vers la droite,
+     dans le sens de lecture, le bouton étant maintenant à gauche. */
+  align-items: flex-start;
+  gap: 6px;
+  width: 26px;
+}
+
+.bar {
+  width: 100%;
+  height: 1.5px;
+  background: #fff;
+  transition:
+    width 260ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 380ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 200ms ease;
+}
+
+/* survol (fermé) : le trait du bas s'allonge, les autres se rétractent */
+.burger:not(.burgerOpen):hover .bar:nth-child(1) {
+  width: 72%;
+}
+.burger:not(.burgerOpen):hover .bar:nth-child(2) {
+  width: 88%;
+}
+.burger:not(.burgerOpen):hover .bar:nth-child(3) {
+  width: 100%;
+}
+
+/* ouvert : les 3 traits convergent en un seul (gap 6 + trait 1.5 = 7.5) */
+.burgerOpen .bar:nth-child(1) {
+  transform: translateY(7.5px);
+  opacity: 0;
+}
+.burgerOpen .bar:nth-child(3) {
+  transform: translateY(-7.5px);
+  opacity: 0;
+}
+
+/* Menu ouvert : le bouton est toujours sur le panneau clair -> on quitte
+   le blend et on passe le trait en navy plein, sinon il devient un gris
+   sale par-dessus le verre dépoli. */
+.burgerOpen {
+  mix-blend-mode: normal;
+}
+.burgerOpen .bar {
+  background: #070b20;
+}
+
+/* --- Voile de fond (clic pour fermer) ---------------------------- */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(11, 11, 12, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms ease;
+}
+.scrimOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* --- Panneau ---------------------------------------------------- */
+
+/* Glisse depuis la GAUCHE, du même côté que le bouton burger. */
+.panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  /* aligné en haut ; les avis Google sont poussés en bas (margin-top:auto) */
+  width: min(560px, 58vw);
+  height: 100svh;
+  padding: clamp(88px, 12svh, 128px) clamp(28px, 4vw, 64px)
+    clamp(28px, 5svh, 56px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: rgba(244, 244, 245, 0.82);
+  color: #070b20;
+  border-right: 1px solid rgba(7, 11, 32, 0.08);
+  box-shadow: 32px 0 64px -32px rgba(11, 11, 12, 0.25);
+  transform: translateX(-100%);
+  transition: transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Le vrai verre dépoli seulement là où le moteur sait le rendre ;
+   sinon le blanc translucide ci-dessus suffit à garder le texte lisible. */
+@supports ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+  .panel {
+    background: rgba(244, 244, 245, 0.62);
+    -webkit-backdrop-filter: blur(22px) saturate(140%);
+    backdrop-filter: blur(22px) saturate(140%);
+  }
+}
+
+.panelOpen {
+  transform: translateX(0);
+}
+
+/* Avis Google, collés en bas du panneau */
+.reviews {
+  margin-top: auto;
+  padding-top: clamp(28px, 6svh, 56px);
+  opacity: 0;
+  transition: opacity 380ms ease 260ms;
+}
+.panelOpen .reviews {
+  opacity: 1;
+}
+
+/* --- Liste -------------------------------------------------------- */
+
+.nav {
+  width: 100%;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  border-bottom: 1px solid rgba(7, 11, 32, 0.16);
+  /* entrée en léger décalé, seulement à l'ouverture du panneau */
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 380ms ease,
+    transform 480ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.item:first-child {
+  border-top: 1px solid rgba(7, 11, 32, 0.16);
+}
+.panelOpen .item {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--idx, 0) * 45ms + 140ms);
+}
+
+/* rangée cliquable : lien simple OU bouton d'accordéon */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  margin: 0;
+  padding: clamp(16px, 3vh, 30px) 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Même typo que le h1 de la hero (Geist semi-bold, capitales, interlettrage
+   serré = Tailwind `tracking-tight`), mais à la moitié de l'échelle : le
+   plein format était trop gros pour une liste. */
+.label {
+  font-size: clamp(0.8rem, 1vw, 1.3rem);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+}
+
+.arrow {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: rgba(7, 11, 32, 0.7);
+  transition: transform 380ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.arrow svg {
+  width: 100%;
+  height: 100%;
+}
+.arrowUp {
+  transform: rotate(90deg);
+}
+
+/* corps d'accordéon : hors flux visuel, s'ouvre en douceur */
+.sub {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition:
+    max-height 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 240ms ease;
+}
+.subOpen {
+  max-height: 340px;
+  opacity: 1;
+}
+
+.subList {
+  margin: 0;
+  padding: 0 0 clamp(10px, 1.8svh, 20px);
+  list-style: none;
+}
+.subLink {
+  display: block;
+  padding: clamp(7px, 1svh, 11px) 0;
+  color: rgba(7, 11, 32, 0.66);
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+.subLink:hover,
+.subLink:focus-visible {
+  color: #070b20;
+}
+
+/* --- Mobile ---------------------------------------------------- */
+
+@media (max-width: 720px) {
+  .panel {
+    width: 100%;
+    border-right: 0;
+    padding-top: clamp(72px, 16vw, 104px);
+  }
+}
+
+/* --- Accessibilité mouvement -------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .bar,
+  .scrim,
+  .panel,
+  .arrow,
+  .sub {
+    transition: none;
+  }
+  .panel .item {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+  .reviews {
+    transition: none;
+    opacity: 1;
+  }
+}

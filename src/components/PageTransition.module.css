@@ -1,0 +1,65 @@
+/* ---------------------------------------------------------------------
+   Calque de transition de page.
+
+   Il balaie depuis la DROITE : `inset(0 0 0 100%)` ne laisse rien voir,
+   et en ramenant le côté gauche à 0 la zone visible grandit vers la
+   gauche — c'est le mouvement de la vidéo, où le panneau cliqué s'élargit
+   en poussant les autres hors champ.
+
+   z-index 200 : au-dessus du burger (100) et du panneau de menu (95),
+   pour que rien ne flotte par-dessus pendant le balayage.
+   --------------------------------------------------------------------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  overflow: hidden;
+  background: #0b0b0c;
+  animation: sweep 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Léger zoom arrière de l'image pendant le balayage. */
+.overlay img {
+  animation: settle 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Retrait, une fois la vraie page montée dessous : elle est identique,
+   donc le fondu est invisible. */
+.overlayOut {
+  animation: fade 280ms ease forwards;
+}
+
+@keyframes sweep {
+  from {
+    clip-path: inset(0 0 0 100%);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes settle {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes fade {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .overlay img {
+    animation: none;
+  }
+  .overlayOut {
+    animation: fade 120ms linear forwards;
+  }
+}

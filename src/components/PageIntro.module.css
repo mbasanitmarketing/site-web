@@ -1,0 +1,154 @@
+/* ---------------------------------------------------------------------
+   Gabarit des pages intérieures (cf. « Animation nouvelle page site MBA »).
+
+   Positions relevées sur la vidéo : bloc gauche calé en bas à gauche
+   (titre / paragraphe / petit lien), bloc droit aligné à droite en bas
+   (petite ligne capitales + grande ligne). Les gouttières viennent de
+   --page-x / --page-y (globals.css), partagées avec PageTransition.
+   --------------------------------------------------------------------- */
+
+.intro {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: #0b0b0c;
+  color: #f5f5f4;
+}
+
+.image {
+  object-fit: cover;
+}
+
+/* Dégradé de lisibilité, surtout en bas où sont tous les textes. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.04) 38%,
+    rgba(0, 0, 0, 0.62)
+  );
+}
+
+/* --- Bloc bas-gauche : le nom repris + son texte ------------------- */
+
+.left {
+  position: absolute;
+  left: var(--page-x);
+  bottom: var(--page-y);
+  z-index: 2;
+  width: min(46ch, 38vw);
+}
+
+/* Pas d'animation : le calque de transition l'a déjà amené ici. */
+.title {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.3vw, 2.05rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.lede {
+  margin: clamp(12px, 1.8svh, 20px) 0 0;
+  font-size: clamp(10px, 0.82vw, 12px);
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  color: rgba(245, 245, 244, 0.72);
+  animation: rise 620ms cubic-bezier(0.16, 1, 0.3, 1) 280ms both;
+}
+
+.cue {
+  display: inline-block;
+  margin-top: clamp(10px, 1.6svh, 18px);
+  font-size: clamp(10px, 0.78vw, 11px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 244, 0.62);
+  animation: rise 620ms cubic-bezier(0.16, 1, 0.3, 1) 380ms both;
+}
+
+/* --- Bloc bas-droite : petite ligne + grande ligne ----------------- */
+
+.right {
+  position: absolute;
+  right: var(--page-x);
+  bottom: var(--page-y);
+  z-index: 2;
+  text-align: right;
+}
+
+.kicker {
+  margin: 0;
+  font-size: clamp(11px, 1vw, 15px);
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 244, 0.9);
+  animation: rise 620ms cubic-bezier(0.16, 1, 0.3, 1) 340ms both;
+}
+
+/* Grande ligne. La référence utilise un didone ; le site n'a que Geist,
+   donc on l'évoque avec une graisse très légère et un fort interlettrage.
+   Si on veut vraiment le sérif, il faudra ajouter une police au projet. */
+.display {
+  margin: clamp(2px, 0.6svh, 8px) 0 0;
+  font-size: clamp(2.2rem, 5.6vw, 5rem);
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  animation: rise 720ms cubic-bezier(0.16, 1, 0.3, 1) 440ms both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --- Variante « calque de transition » ---------------------------- */
+
+/* `visibility` et non `display` : les textes gardent leur place, donc le
+   titre est exactement au même pixel que sur la vraie page. */
+.titleOnly .lede,
+.titleOnly .cue,
+.titleOnly .kicker,
+.titleOnly .display {
+  visibility: hidden;
+}
+
+.titleOnly .title {
+  animation: rise 520ms cubic-bezier(0.16, 1, 0.3, 1) 200ms both;
+}
+
+@media (max-width: 720px) {
+  .left {
+    width: calc(100% - var(--page-x) * 2);
+  }
+  .right {
+    left: var(--page-x);
+    text-align: left;
+    bottom: auto;
+    top: var(--page-y);
+  }
+  .display {
+    font-size: clamp(1.9rem, 11vw, 3rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lede,
+  .cue,
+  .kicker,
+  .display {
+    animation: none;
+  }
+}

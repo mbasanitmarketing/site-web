@@ -3,6 +3,11 @@
 :root {
   --background: #0b0b0c;
   --foreground: #f5f5f4;
+  /* Gouttières des pages intérieures. Partagées entre le gabarit de page
+     et le calque de transition : c'est ce qui fait que le titre repris ne
+     bouge pas d'un pixel au moment du raccord. */
+  --page-x: clamp(20px, 4vw, 58px);
+  --page-y: clamp(22px, 5.5svh, 54px);
 }
 
 @theme inline {
@@ -17,4 +22,22 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   font-size: 15px; /* norme du site */
+}
+
+/* Transition de page : la page qu'on quitte s'assombrit pendant que le
+   calque balaie l'image d'arrivée par-dessus (cf. PageTransition). */
+#page-root {
+  transition: opacity 320ms ease;
+}
+html[data-leaving] #page-root {
+  opacity: 0.25;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #page-root {
+    transition: none;
+  }
+  html[data-leaving] #page-root {
+    opacity: 1;
+  }
 }

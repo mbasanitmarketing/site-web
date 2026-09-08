@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRef } from "react";
 import { useScrollProgress } from "@/lib/useScrollProgress";
 import styles from "./Hero.module.css";
@@ -36,21 +37,8 @@ export function Hero() {
         <div className={styles.scrim} />
         <div className={styles.veil} />
 
-        {/* Bandeau dépoli : copie floutée des mêmes photos, découpée à la
-            hauteur du header et calée sur le fond net. */}
-        <div className={styles.band} aria-hidden>
-          <div className={styles.bandInner}>
-            <div className={styles.media}>
-              <Image src="/hero-dark.png" alt="" fill sizes="120vw" />
-              <div className={styles.light}>
-                <Image src="/hero-light.jpg" alt="" fill sizes="120vw" />
-              </div>
-            </div>
-          </div>
-          <div className={styles.bandTint} />
-        </div>
-
-        {/* Header : le logo seul, comme sur les maquettes */}
+        {/* Header : le logo seul (plus de bandeau — la nav est le menu
+            burger global, cf. SiteMenu). */}
         <header className={styles.header}>
           <div className={styles.logo}>
             <Logo />
@@ -59,7 +47,7 @@ export function Hero() {
 
         {/* Titre */}
         <div
-          className={`${styles.headline} absolute bottom-[42%] right-[6vw] z-10 w-[82vw] text-right md:right-[10vw] md:w-[46vw] lg:w-[42vw]`}
+          className={`${styles.headline} absolute z-10 w-[82vw] text-right md:w-[46vw] lg:w-[42vw]`}
         >
           <h1 className="text-[1.35rem] font-semibold uppercase leading-[1.14] tracking-tight text-white drop-shadow-[0_2px_20px_rgba(0,0,0,0.55)] md:text-[2.2vw] lg:text-[clamp(1.6rem,2vw,2.6rem)]">
             Installations sanitaires{" "}
@@ -68,6 +56,14 @@ export function Hero() {
             </span>
           </h1>
         </div>
+
+        {/* Trait titre -> CTA : se trace au scroll, monte avec le groupe */}
+        <span className={styles.trait} aria-hidden="true" />
+
+        {/* CTA — apparaît en fondu au scroll et suit la montée du titre */}
+        <a className={styles.cta} href="/devis" data-page-transition>
+          Demander un devis
+        </a>
 
         {/* Indice de scroll */}
         <div
@@ -87,12 +83,14 @@ export function Hero() {
  */
 function Logo() {
   return (
-    <Image
-      src="/logo-mba.png"
-      alt="MBA Sanit"
-      width={600}
-      height={221}
-      priority
-    />
+    <Link href="/" aria-label="MBA Sanit — accueil">
+      <Image
+        src="/logo-mba.png"
+        alt="MBA Sanit"
+        width={600}
+        height={221}
+        priority
+      />
+    </Link>
   );
 }

@@ -16,12 +16,24 @@
 }
 
 .stage {
-  /* Header à deux hauteurs, comme sur la maquette : une barre fine sur
-     toute la largeur, et un décrochement plus haut dans la zone du logo.
-     C'est cette asymétrie qui fait le dessin. */
-  --band-h: 60px; /* zone du logo */
-  --band-thin: 50px; /* reste de la largeur */
-  --band-step: clamp(200px, 17vw, 280px); /* largeur de la zone haute */
+  --header-h: 60px; /* hauteur de la zone logo */
+  /* course verticale partagée : le titre, le trait et le CTA montent
+     ensemble de cette valeur au fil du scroll (cf. .headline / .trait /
+     .cta). */
+  --rise: clamp(180px, 33svh, 320px);
+
+  /* --- Bloc droit : titre / trait / CTA ---
+     Toutes les valeurs sont relevées au pixel sur la maquette
+     « Hero section - allumer le feu » (export @2x d'un cadre 1280 × 832).
+     Le trait et le CTA sont ancrés SUR le titre : les écarts restent donc
+     exacts quelle que soit la hauteur d'écran, et le groupe monte d'un
+     bloc. Ne pas les repositionner séparément. */
+  --gutter: clamp(24px, 12.7vw, 200px); /* 163 px @1280 : bord droit commun */
+  --headline-bottom: 37.3%; /* + rise/2 -> bas du titre à 46,2 % @p=1 */
+  --gap-title-trait: clamp(16px, 3.2svh, 34px); /* 27 px @832 */
+  --trait-h: clamp(70px, 14.7svh, 150px); /* 122 px @832 */
+  --gap-trait-cta: clamp(18px, 3.7svh, 40px); /* 31 px @832 */
+  --cta-h: clamp(38px, 5.4svh, 54px); /* 45 px @832 */
 
   position: sticky;
   top: 0;
@@ -79,60 +91,12 @@
   );
 }
 
-/* --- Header : bandeau dépoli qui se dissipe, logo qui rétrécit ---
- * Le bandeau floute la photo derrière lui puis disparaît. Le logo est
- * au-dessus, donc jamais flouté. Mesuré sur les maquettes : le logo
- * passe à 58 % en rétrécissant autour de son centre, et remonte un peu.
+/* --- Header : le logo seul, qui rétrécit au scroll ---
+ * Plus de bandeau (la nav est le menu burger global). Mesuré sur les
+ * maquettes : le logo passe à 58 % en rétrécissant autour de son centre,
+ * et remonte un peu.
  */
 
-/* Pas de backdrop-filter : trop dépendant du moteur (invisible dans
-   certains contextes d'affichage, et impossible à vérifier de façon
-   fiable). On floute une copie des photos et on la découpe à la hauteur
-   du header — même rendu, comportement prévisible partout. */
-.band {
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  z-index: 15;
-  height: var(--band-h);
-  overflow: hidden;
-  pointer-events: none;
-  /* le décrochement : pleine hauteur à gauche, barre fine ensuite */
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    100% var(--band-thin),
-    var(--band-step) var(--band-thin),
-    var(--band-step) var(--band-h),
-    0 var(--band-h)
-  );
-  opacity: clamp(0, calc(1 - var(--p, 0) / 0.35), 1);
-  /* TEST bandeau blanc — bord franc. Pour revenir au dépoli, réactiver :
-     mask-image: linear-gradient(to bottom, #000 62%, transparent); */
-  will-change: opacity;
-}
-
-/* Boîte à la taille de la scène : la copie floutée se superpose ainsi
-   exactement au fond net. Le .media qu'elle contient déborde vers le haut,
-   donc le flou a de la matière à échantillonner au ras du bord. */
-.bandInner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100svh;
-  filter: blur(28px);
-}
-
-/* Blanc à 50 % : la copie floutée dessous transparaît à travers,
-   ce qui donne le verre dépoli. */
-.bandTint {
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.5);
-}
-
-/* Le logo est centré dans le décrochement haut, pas dans la barre fine. */
 .header {
   position: absolute;
   inset-inline: 0;
@@ -140,7 +104,9 @@
   z-index: 20;
   display: flex;
   align-items: center;
-  height: var(--band-h);
+  /* logo à DROITE ; le burger global est passé à gauche (cf. SiteMenu) */
+  justify-content: flex-end;
+  height: var(--header-h);
   padding-inline: clamp(22px, 3.2vw, 46px);
 }
 
@@ -151,7 +117,11 @@
   will-change: transform, scale;
 }
 
-/* Dimensionné pour respirer dans les 60px du décrochement */
+.logo a {
+  display: block;
+}
+
+/* Dimensionné pour respirer dans la hauteur du header (--header-h) */
 .logo img {
   display: block;
   width: clamp(92px, 8vw, 120px);
@@ -162,8 +132,11 @@
 
 /* Course exprimée en hauteur d'écran pour tenir sur tous les formats,
    bornée pour ne pas devenir absurde en très petit / très grand. */
+/* Positionné ici (et plus en classes Tailwind) pour partager --gutter
+   avec le trait et le CTA : un seul endroit règle l'alignement à droite. */
 .headline {
-  --rise: clamp(180px, 33svh, 320px);
+  right: var(--gutter);
+  bottom: var(--headline-bottom);
   transform: translateY(calc(var(--rise) / 2 - var(--p, 0) * var(--rise)));
   will-change: transform;
 }
@@ -173,8 +146,90 @@
   opacity: clamp(0.18, calc(0.18 + (var(--p, 0) - 0.15) * 1.7447), 1);
 }
 
+/* --- Trait qui relie le titre au CTA ---
+ * Fin trait vertical sur la gouttière droite, entre le bas du titre et le
+ * haut du CTA (cf. maquette « allumer le feu »). Il se TRACE au scroll
+ * (opacité + scaleY depuis le haut) et MONTE avec le titre et le CTA
+ * (même terme `--rise`), pour que le groupe reste solidaire.
+ */
+.trait {
+  --lin: clamp(0, calc((var(--p, 0) - 0.06) / 0.16), 1);
+
+  position: absolute;
+  right: var(--gutter);
+  bottom: calc(
+    var(--headline-bottom) - var(--gap-title-trait) - var(--trait-h)
+  );
+  z-index: 10;
+  width: 1px;
+  height: var(--trait-h);
+  /* blanc plein et uniforme, comme relevé sur la maquette */
+  background: rgba(255, 255, 255, 0.95);
+  transform-origin: top;
+  opacity: var(--lin);
+  transform: translateY(calc(var(--rise) / 2 - var(--p, 0) * var(--rise)))
+    scaleY(var(--lin));
+  will-change: opacity, transform;
+}
+
+/* --- CTA « Demander un devis » ---
+ * Bouton fantôme (bord blanc, fond transparent, coins nets), calé à droite
+ * sous le titre, comme la maquette « Hero section - allumer le feu ».
+ * Il APPARAÎT au scroll (fondu) ET suit la montée du titre : même terme
+ * `--rise` que .headline, plus un petit rattrapage de 12px à l'apparition.
+ */
+.cta {
+  --in: clamp(0, calc((var(--p, 0) - 0.14) / 0.2), 1);
+
+  position: absolute;
+  right: var(--gutter);
+  bottom: calc(
+    var(--headline-bottom) - var(--gap-title-trait) - var(--trait-h) -
+      var(--gap-trait-cta) - var(--cta-h)
+  );
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* maquette : boîte 168 × 45, padding latéral 12 px, texte ~17 px */
+  height: var(--cta-h);
+  padding: 0 clamp(10px, 0.95vw, 16px);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+  color: #fff;
+  font-size: clamp(0.9rem, 1.33vw, 1.2rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  text-decoration: none;
+  background: transparent;
+  opacity: var(--in);
+  transform: translateY(
+    calc(
+      var(--rise) / 2 - var(--p, 0) * var(--rise) + (1 - var(--in)) * 12px
+    )
+  );
+  transition:
+    background-color 220ms ease,
+    color 220ms ease;
+  will-change: opacity, transform;
+}
+
+.cta:hover {
+  background: #fff;
+  color: #0b0b0c;
+}
+
 .hint {
   opacity: clamp(0, calc(1 - var(--p, 0) / 0.12), 1);
+}
+
+/* En colonne étroite, 12,7vw ferait une gouttière énorme : on revient au
+   retrait mobile d'origine (le groupe reste aligné, il se resserre juste). */
+@media (max-width: 720px) {
+  .stage {
+    --gutter: 6vw;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -187,9 +242,6 @@
   .scrim {
     opacity: 0.06;
   }
-  .band {
-    opacity: 0;
-  }
   .logo {
     scale: 0.58;
     transform: none;
@@ -199,6 +251,15 @@
   }
   .sub {
     opacity: 1;
+  }
+  .trait {
+    opacity: 1;
+    transform: none;
+  }
+  .cta {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
   .hint {
     opacity: 0;

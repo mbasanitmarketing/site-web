@@ -1,0 +1,186 @@
+/* ---------------------------------------------------------------------
+   Footer — mesuré sur likova.space (viewport 1280) :
+     · bloc navy, ~50svh, pas pleine hauteur
+     · haut : bouton Contact (blanc, coin bas-droite mordu 18px) + mot-marque ~71px
+     · horaires : petit bloc calé à ~50% de large, blanc 60%, 9px
+     · mentions : © à gauche · confidentialité au centre · agence à droite, 9px
+     · disclaimer : pleine largeur, 9px, blanc 30%, fin filet au-dessus
+   Tout le petit texte est en 9px, capitales, légèrement tracké.
+   --------------------------------------------------------------------- */
+
+.footer {
+  --pad-x: clamp(16px, 2.6vw, 40px);
+  --small: clamp(9px, 0.72vw, 10px);
+  /* Bord haut d'après la maquette Footer.png :
+     · un léger retrait (--lip) sur toute la largeur -> fine bande de blanc
+       de la section précédente au-dessus du footer
+     · une encoche plus profonde (--plate-h) dans le coin haut-DROITE
+       (de --notch-x à 100%) -> la « plaque blanche » du coin */
+  --lip: clamp(24px, 3.8svh, 34px);
+  --plate-h: clamp(48px, 7.6svh, 68px);
+  /* largeur de l'encoche depuis le bord droit ; le logo se cale par
+     rapport à elle (même unité vw) pour ne jamais être rogné. */
+  --notch-w: 16.5vw;
+  --notch-x: calc(100% - var(--notch-w));
+
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  min-height: 40svh;
+  /* chevauchement = profondeur de l'encoche : le blanc apparaît dans les
+     zones découpées, jamais du noir. */
+  margin-top: calc(-1 * var(--plate-h));
+  padding: calc(var(--lip) + 2px) var(--pad-x) clamp(14px, 2svh, 22px);
+  background: #070b20;
+  color: #f5f5f4;
+  overflow: hidden;
+  clip-path: polygon(
+    0 var(--lip),
+    var(--notch-x) var(--lip),
+    var(--notch-x) var(--plate-h),
+    100% var(--plate-h),
+    100% 100%,
+    0 100%
+  );
+}
+
+/* --- Haut : bouton Contact + mot-marque -------------------------- */
+
+.top {
+  display: flex;
+  align-items: flex-start;
+}
+
+.contact {
+  --bite: 18px; /* taille du coin bas-droite mordu */
+
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-width: clamp(136px, 12.5vw, 172px);
+  height: 34px;
+  padding: 0 34px 0 22px;
+  background: #fff;
+  color: #070b20;
+  font-size: var(--small);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--bite)),
+    calc(100% - var(--bite)) calc(100% - var(--bite)),
+    calc(100% - var(--bite)) 100%,
+    0 100%
+  );
+}
+
+/* Logo MBA — contraint EXACTEMENT à la boîte de la maquette Footer.png :
+   112 × 34 à 1280 (ratio 112/34), bord droit juste à gauche de l'encoche.
+   La maquette étire le logo, on l'étire pareil pour coller au pixel. */
+.logo {
+  --lw: clamp(92px, 8.75vw, 130px);
+
+  margin-left: auto;
+  /* bord droit du logo = juste à gauche de l'encoche, quelle que soit la
+     largeur d'écran (sinon il passe dedans et se fait rogner). */
+  margin-right: calc(var(--notch-w) - var(--pad-x) + clamp(10px, 1.1vw, 18px));
+  margin-top: 0;
+  width: var(--lw);
+  height: calc(var(--lw) * 34 / 112);
+  object-fit: fill;
+}
+
+/* --- Avis Google -------------------------------------------------- */
+
+.reviews {
+  margin-top: clamp(18px, 3.4svh, 32px);
+}
+
+/* --- Horaires : petit bloc calé vers le milieu ----------------- */
+
+.hours {
+  margin: clamp(34px, 7svh, 64px) 0 clamp(26px, 5svh, 48px);
+  margin-left: clamp(0px, 50%, 640px);
+  max-width: 30ch;
+  font-size: var(--small);
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 244, 0.6);
+}
+
+/* --- Mentions : © / confidentialité / mentions légales / agence --- */
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: clamp(12px, 2vw, 34px);
+  margin-top: auto; /* pousse le bas du footer vers le bas */
+  font-size: var(--small);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 244, 0.6);
+}
+
+/* l'agence est repoussée à droite */
+.agency {
+  margin-left: auto;
+}
+
+.meta a {
+  color: inherit;
+  text-decoration: none;
+}
+.meta a:hover {
+  color: #f5f5f4;
+}
+
+/* --- Disclaimer pleine largeur -------------------------------- */
+
+/* Filet pleine largeur (déborde du padding) au-dessus du disclaimer,
+   comme sur likova : blanc à 30 %, bord à bord. */
+.footnote {
+  margin: clamp(14px, 2.2svh, 24px) calc(-1 * var(--pad-x)) 0;
+  padding: clamp(13px, 2svh, 20px) var(--pad-x) 0;
+  border-top: 1px solid rgba(245, 245, 244, 0.3);
+  font-size: var(--small);
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 244, 0.3);
+}
+
+/* --- Petits écrans ------------------------------------------- */
+
+@media (max-width: 720px) {
+  /* pas de décrochement en colonne étroite : bord haut droit */
+  .footer {
+    margin-top: 0;
+    padding-top: clamp(20px, 6vw, 32px);
+    clip-path: none;
+  }
+  .top {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .logo {
+    --lw: clamp(120px, 34vw, 180px);
+    margin: 0;
+  }
+  .hours {
+    margin-left: 0;
+    margin-top: clamp(40px, 10svh, 80px);
+  }
+  .meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .agency {
+    margin-left: 0;
+  }
+}

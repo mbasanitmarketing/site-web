@@ -1,0 +1,27 @@
+/* Note Google — utilisée dans le menu (texte navy) et le footer (texte
+   clair). Le texte hérite (`currentColor`), l'étoile reste dorée. */
+
+.reviews {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
+  font-size: clamp(11px, 0.85vw, 13px);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+.star {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  fill: #f5b301;
+}
+
+.note {
+  font-weight: 600;
+}
+
+.count {
+  opacity: 0.62;
+}

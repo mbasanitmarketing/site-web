@@ -45,7 +45,6 @@ next-env.d.ts
 *.mov
 *.mp4
 
-# Section 3 « paysage scroll » : en cours, hors dépôt tant qu'elle n'est pas
-# terminée. Les fichiers restent en local. À retirer d'ici une fois validée.
-src/components/PaysageScroll.tsx
-src/components/PaysageScroll.module.css
+# Maquettes / références de design (exports Figma, captures). Utiles au
+# travail mais pas au site : elles restent en local.
+/Inspirations/

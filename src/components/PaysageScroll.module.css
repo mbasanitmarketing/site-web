@@ -1,0 +1,216 @@
+/* ---------------------------------------------------------------------
+   Section 3 — « paysage scroll »
+   Carrousel 3D horizontal piloté par le scroll vertical.
+
+     p 0    -> 0.10   le blanc monte depuis le bas, bord plat (mesuré sur
+                      la vidéo : les deux bords arrivent au même niveau)
+     p 0.14 -> 0.94   le cylindre tourne, les diapos défilent de droite
+                      à gauche et se présentent à tour de rôle
+
+   Les diapos sont posées sur un cylindre : chacune est tournée de
+   i × --step autour de l'axe vertical puis poussée de --radius vers
+   l'avant. Faire tourner le rail de -turn ramène chaque diapo face à
+   l'écran à son tour, et celles des côtés se présentent naturellement
+   de biais — c'est ce qui donne la perspective de la vidéo.
+   --------------------------------------------------------------------- */
+
+.track {
+  position: relative;
+  z-index: 3;
+  height: 620vh;
+  /* Chevauche la fin de EscalierSection : le blanc monte par-dessus le
+     panneau navy pendant qu'il est encore là.
+     Chronologie (unités vh, cf. passation § 5) :
+       hero     540vh / span 0.36  -> figée 158, désépinglée 440, sortie 540
+       escalier 480vh / span 0.63 / -360svh
+                -> démarre 180, panneau aligné 419, désépinglé 560, sorti 660
+       ici : natural top = 660 ; -200svh -> --p 0 au scroll 460 (panneau
+       escalier aligné et immobile depuis 419) ; blanc plein cadre
+       (--p 0.10) au scroll ~512, soit avant que l'escalier ne glisse
+       (560). Il se retire ensuite, recouvert.
+     Si tu changes une hauteur / un span : refais ce calcul. */
+  margin-top: -200svh;
+  /* La piste (620vh, z-index 3) chevauche l'Escalier de 200svh : sans
+     ça, elle intercepte les clics des accordéons en dessous alors qu'elle
+     est encore transparente. Pas de contenu cliquable ici pour l'instant ;
+     réactiver (pointer-events: auto) sur un lien/CTA le cas échéant. */
+  pointer-events: none;
+}
+
+.stage {
+  --step: 34deg; /* écart angulaire entre deux diapos */
+  --radius: 88vw; /* rayon du cylindre */
+  --count: 4; /* nombre d'intervalles = diapos - 1 */
+  --slide-w: min(46vw, 760px); /* largeur d'une diapo (3:2) */
+
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  /* overflow seul clippe mal les enfants 3D (preserve-3d) : les diapos
+     pivotées débordaient et faisaient un bord « en escalier » au raccord
+     avec le footer. clip-path force un rognage rectangulaire net. */
+  overflow: hidden;
+  clip-path: inset(0);
+  /* transparente : pendant la montée, la section précédente doit se voir */
+  background: transparent;
+}
+
+/* --- L'arrivée : le blanc monte, bord plat --- */
+
+.curtain {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  transform: translateY(calc((1 - clamp(0, calc(var(--p, 0) / 0.1), 1)) * 100%));
+  will-change: transform;
+}
+
+/* --- Titre et texte, en haut à droite --- */
+
+.head {
+  /* Le texte arrive APRÈS les images (cf. .viewport) : le blanc monte du
+     bas -> le carrousel se révèle d'abord, puis le titre + le paragraphe
+     en haut à droite, sur une plage large. Léger « lever » de 16px. */
+  --in: clamp(0, calc((var(--p, 0) - 0.14) / 0.2), 1);
+
+  position: absolute;
+  top: clamp(28px, 6svh, 72px);
+  right: clamp(20px, 4vw, 60px);
+  z-index: 2;
+  width: min(46ch, 42vw);
+  text-align: right;
+  color: #0b0b0c;
+  opacity: var(--in);
+  transform: translateY(calc((1 - var(--in)) * 16px));
+  will-change: opacity, transform;
+}
+
+.title {
+  margin: 0 0 0.7em;
+  font-size: clamp(1.1rem, 2.1vw, 1.9rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.lede {
+  margin: 0;
+  font-size: clamp(11px, 0.92vw, 14px);
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(11, 11, 12, 0.82);
+}
+
+/* --- Le carrousel --- */
+
+.viewport {
+  position: absolute;
+  inset: 0;
+  perspective: 132vw;
+  /* surtout pas d'overflow ici : ça aplatirait la scène 3D */
+  /* Apparaît EN PREMIER, avec la montée du blanc (--p 0.03 -> 0.15) — les
+     images d'abord, le texte après (cf. .head). Se retire de nouveau sur
+     la toute fin (--p 0.95 -> 1) pour que le raccord avec le footer se
+     fasse sur du blanc net, jamais sur une diapo. */
+  opacity: calc(
+    clamp(0, calc((var(--p, 0) - 0.03) / 0.12), 1) *
+      clamp(0, calc((1 - var(--p, 0)) / 0.05), 1)
+  );
+}
+
+.rail {
+  --turn: calc(
+    clamp(0, calc((var(--p, 0) - 0.14) / 0.8), 1) * var(--count) * var(--step)
+  );
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: translateZ(calc(-1 * var(--radius))) rotateY(calc(-1 * var(--turn)));
+  will-change: transform;
+}
+
+.slide {
+  /* --p auquel la diapo i est PILE EN FACE du viewer : la rotation du rail
+     va de --p 0.14 à 0.94 et présente une diapo tous les 1/4 (0.2 de --p). */
+  --face-p: calc(0.14 + var(--i) * 0.2);
+
+  position: absolute;
+  width: var(--slide-w);
+  aspect-ratio: 3 / 2;
+  margin-left: calc(var(--slide-w) / -2);
+  margin-top: calc(var(--slide-w) / 3 * -1);
+  transform: rotateY(calc(var(--i) * var(--step))) translateZ(var(--radius));
+  backface-visibility: hidden;
+}
+
+/* Aplats gris en attendant les photos. Nuances légèrement différentes :
+   des gris tous identiques rendraient le défilement illisible. */
+.slide > div {
+  position: absolute;
+  inset: 0;
+  background: var(--tone);
+}
+
+/* Titre sous l'image : n'apparaît que quand la diapo est frontale
+   (fenêtre de ±0.09 autour de --face-p, fondu de 0.04 aux bords). */
+.slideTitle {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: clamp(12px, 2.2svh, 26px);
+  white-space: nowrap;
+  font-size: clamp(11px, 0.95vw, 14px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #0b0b0c;
+  opacity: clamp(
+    0,
+    min(
+      calc((var(--p, 0) - (var(--face-p) - 0.09)) / 0.04),
+      calc((var(--face-p) + 0.09 - var(--p, 0)) / 0.04)
+    ),
+    1
+  );
+  will-change: opacity;
+}
+
+@media (max-width: 720px) {
+  .stage {
+    --radius: 150vw;
+    --step: 40deg;
+    --slide-w: 74vw;
+  }
+  .head {
+    width: 68vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .curtain {
+    transform: none;
+  }
+  .head {
+    opacity: 1;
+    transform: none;
+  }
+  .viewport {
+    opacity: 1;
+  }
+  .rail {
+    --turn: 0deg;
+  }
+  .slideTitle {
+    opacity: 0;
+  }
+  .slide:first-child .slideTitle {
+    opacity: 1;
+  }
+}
