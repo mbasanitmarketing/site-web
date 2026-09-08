@@ -41,7 +41,11 @@
   --step: 34deg; /* écart angulaire entre deux diapos */
   --radius: 88vw; /* rayon du cylindre */
   --count: 6; /* nombre d'intervalles = diapos - 1 */
-  --slide-w: min(46vw, 760px); /* largeur d'une diapo (3:2) */
+  --slide-w: min(46vw, 760px); /* largeur d'une diapo */
+  /* Hauteur explicite plutôt qu'aspect-ratio : le centrage vertical vaut
+     la moitié de cette hauteur, les deux ne peuvent pas se désynchroniser
+     quand on change de format (paysage au bureau, portrait sur mobile). */
+  --slide-h: calc(var(--slide-w) / 1.5);
 
   position: sticky;
   top: 0;
@@ -168,9 +172,9 @@
 
   position: absolute;
   width: var(--slide-w);
-  aspect-ratio: 3 / 2;
+  height: var(--slide-h);
   margin-left: calc(var(--slide-w) / -2);
-  margin-top: calc(var(--slide-w) / 3 * -1);
+  margin-top: calc(var(--slide-h) / -2);
   transform: rotateY(calc(var(--i) * var(--step))) translateZ(var(--radius));
   backface-visibility: hidden;
 }
@@ -257,7 +261,19 @@
   .stage {
     --radius: 150vw;
     --step: 40deg;
-    --slide-w: 74vw;
+    /* Portrait sur mobile : en 3:2 l'image ne prenait que 23 % de la
+       hauteur d'écran. Les photos sont recadrées au centre par
+       object-fit, on perd leurs bords gauche et droit. */
+    --slide-w: 90vw;
+    /* Portrait 8:9, mais borné par la hauteur d'écran : sur un petit
+       téléphone le chapô s'enroule sur plus de lignes et l'image venait
+       le toucher. Au-delà de ~740px de haut, c'est le 8:9 qui gagne. */
+    --slide-h: min(calc(var(--slide-w) * 9 / 8), 50svh);
+  }
+  /* La diapo est bien plus haute : on descend l'axe du cylindre pour
+     qu'elle ne remonte pas dans le chapô. */
+  .rail {
+    top: 56%;
   }
   .head {
     width: 68vw;
