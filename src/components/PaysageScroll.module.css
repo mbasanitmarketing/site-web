@@ -40,7 +40,7 @@
 .stage {
   --step: 34deg; /* écart angulaire entre deux diapos */
   --radius: 88vw; /* rayon du cylindre */
-  --count: 4; /* nombre d'intervalles = diapos - 1 */
+  --count: 6; /* nombre d'intervalles = diapos - 1 */
   --slide-w: min(46vw, 760px); /* largeur d'une diapo (3:2) */
 
   position: sticky;
@@ -136,17 +136,26 @@
 }
 
 .slide {
-  /* --p auquel la diapo i est PILE EN FACE du viewer : la rotation du rail
-     va de --p 0.14 à 0.94 et présente une diapo tous les 1/4 (0.2 de --p). */
-  --face-p: calc(0.14 + var(--i) * 0.2);
+  /* La rotation du rail va de --p 0.14 à 0.94, soit 0.80 de course, et
+     présente une diapo à chaque intervalle. Tout se déduit de --count :
+     changer le nombre de diapos ne demande rien d'autre. */
+  --face-step: calc(0.8 / var(--count));
+  /* --p auquel la diapo i est PILE EN FACE du viewer */
+  --face-p: calc(0.14 + var(--i) * var(--face-step));
 
-  /* 1 quand la diapo est frontale, 0 sinon (fenêtre ±0.09, fondu 0.04 aux
-     bords). Le titre ET le bouton en dérivent : ils apparaissent ensemble. */
+  /* Fenêtre de visibilité de la légende, calée sur l'écart entre deux
+     diapos : à 0.38 de l'écart de part et d'autre, deux titres ne peuvent
+     jamais se chevaucher, quel que soit le nombre de diapos. */
+  --win: calc(var(--face-step) * 0.38);
+  --fade: calc(var(--face-step) * 0.21);
+
+  /* 1 quand la diapo est frontale, 0 sinon. Le titre ET le bouton en
+     dérivent : ils apparaissent et disparaissent ensemble. */
   --face-in: clamp(
     0,
     min(
-      calc((var(--p, 0) - (var(--face-p) - 0.09)) / 0.04),
-      calc((var(--face-p) + 0.09 - var(--p, 0)) / 0.04)
+      calc((var(--p, 0) - (var(--face-p) - var(--win))) / var(--fade)),
+      calc((var(--face-p) + var(--win) - var(--p, 0)) / var(--fade))
     ),
     1
   );
@@ -166,12 +175,17 @@
   backface-visibility: hidden;
 }
 
-/* Aplats gris en attendant les photos. Nuances légèrement différentes :
-   des gris tous identiques rendraient le défilement illisible. */
-.slide > div {
+/* Photo de la réalisation. Le gris reste en fond : il couvre le temps du
+   chargement et les formats qui ne rempliraient pas le cadre. */
+.slideMedia {
   position: absolute;
   inset: 0;
-  background: var(--tone);
+  overflow: hidden;
+  background: #76767a;
+}
+
+.slideMedia img {
+  object-fit: cover;
 }
 
 /* Titre sous l'image : n'apparaît que quand la diapo est frontale. */
