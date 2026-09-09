@@ -1,0 +1,254 @@
+/* ---------------------------------------------------------------------
+   Page de catégorie de réalisations — d'après « realisations layout -
+   template.mov » (Tilesuite / PCF, page « Service »).
+
+   Relevé sur la vidéo : colonnes 46 % / 54 % dans les gouttières du site,
+   index collant à gauche dont l'entrée active passe du gris au noir, bloc
+   de contact calé en bas du panneau, et à droite une pile de sections
+   titre -> image(s) -> texte, séparées par un filet d'un pixel qui ne
+   court que sur la colonne droite.
+
+   Adaptation MBA : Geist (comme partout), #0b0b0c sur #f5f5f4 — le même
+   fond éditorial que les pages projet — et l'ocre #a8763e en accent.
+   --------------------------------------------------------------------- */
+
+.wrap {
+  background: #f5f5f4;
+  color: #0b0b0c;
+}
+
+/* --- Bandeau d'intro ----------------------------------------------- */
+
+/* Sur la référence, le label de gauche et la phrase de droite sont au
+   même corps : c'est ce qui fait la ligne. */
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
+  gap: clamp(20px, 3vw, 48px);
+  padding: clamp(40px, 9svh, 104px) var(--page-x) clamp(30px, 6svh, 62px);
+}
+
+.introLabel,
+.introHeadline,
+.sectionTitle {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.5vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.14;
+  letter-spacing: -0.015em;
+}
+
+.introRule,
+.rule {
+  height: 1px;
+  background: rgba(11, 11, 12, 0.14);
+}
+
+.introRule {
+  margin-inline: var(--page-x);
+}
+
+/* --- Les deux colonnes ---------------------------------------------- */
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
+  padding: clamp(36px, 7svh, 88px) var(--page-x) clamp(48px, 10svh, 120px);
+}
+
+/* L'index se cale sous l'en-tête (logo + burger, zone haute ~90 px) et
+   pousse le bloc de contact en bas du panneau, comme sur la référence.
+   min-height seul : si la liste devenait plus longue que l'écran, un
+   max-height la couperait sans prévenir. */
+.aside {
+  --index-top: clamp(84px, 10svh, 116px);
+  position: sticky;
+  top: var(--index-top);
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(32px, 8svh, 96px);
+  min-height: min(560px, calc(100svh - var(--index-top) - 24px));
+}
+
+.navList {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(9px, 1vw, 15px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navLink {
+  display: inline-block;
+  font-size: clamp(15px, 1.25vw, 19px);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: rgba(11, 11, 12, 0.4);
+  transition: color 220ms ease;
+}
+
+.navLink:hover,
+.navLink:focus-visible {
+  color: rgba(11, 11, 12, 0.75);
+}
+
+.navLink[aria-current="true"] {
+  font-weight: 500;
+  color: #0b0b0c;
+}
+
+.asideNote {
+  margin: 0 0 clamp(12px, 1.6svh, 18px);
+  font-size: clamp(13px, 0.95vw, 15px);
+  line-height: 1.5;
+  color: rgba(11, 11, 12, 0.6);
+}
+
+.asideCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: clamp(13px, 0.95vw, 15px);
+  text-decoration: none;
+  color: #0b0b0c;
+}
+
+.asideArrow {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #a8763e;
+  color: #fff;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.asideArrow svg {
+  width: 11px;
+  height: 11px;
+}
+.asideCta:hover .asideArrow,
+.asideCta:focus-visible .asideArrow {
+  transform: translate(1px, -1px);
+}
+
+/* --- La pile de réalisations ---------------------------------------- */
+
+/* Même valeur que --index-top : l'ancre dépose la section juste sous
+   l'en-tête, à hauteur du haut de l'index. */
+.section {
+  scroll-margin-top: clamp(84px, 10svh, 116px);
+}
+
+.sectionTitle {
+  margin-bottom: clamp(22px, 3.4svh, 40px);
+}
+
+.single,
+.pair {
+  display: grid;
+  gap: clamp(6px, 0.55vw, 10px);
+}
+
+.pair {
+  grid-template-columns: 1fr 1fr;
+}
+
+.shot {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  /* le gris couvre le temps du chargement, comme ailleurs sur le site */
+  background: #76767a;
+}
+
+.single .shot {
+  aspect-ratio: 12 / 5;
+}
+
+.pair .shot {
+  aspect-ratio: 6 / 5;
+}
+
+.shot img {
+  object-fit: cover;
+}
+
+.paragraph {
+  margin: clamp(24px, 3.6svh, 40px) 0 0;
+  font-size: clamp(15px, 1.1vw, 17px);
+  line-height: 1.7;
+  color: rgba(11, 11, 12, 0.78);
+}
+
+.more {
+  display: inline-block;
+  margin-top: clamp(22px, 3.2svh, 34px);
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(11, 11, 12, 0.3);
+  font-size: clamp(10px, 0.78vw, 11px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #0b0b0c;
+  transition: border-color 220ms ease;
+}
+
+.more:hover,
+.more:focus-visible {
+  border-color: #a8763e;
+}
+
+.rule {
+  margin: clamp(48px, 9svh, 108px) 0 clamp(44px, 8svh, 96px);
+}
+
+/* --- Mobile --------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .intro,
+  .columns {
+    grid-template-columns: 1fr;
+  }
+  .intro {
+    gap: clamp(10px, 2svh, 18px);
+  }
+  /* En colonne, un index collant n'a plus de place : il repasse en tête
+     de page, à plat, et sert de sommaire. */
+  .aside {
+    position: static;
+    min-height: 0;
+    gap: clamp(20px, 3svh, 30px);
+    margin-bottom: clamp(32px, 6svh, 56px);
+  }
+  .navList {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+  }
+  .pair {
+    grid-template-columns: 1fr;
+  }
+  /* une seule image par ligne : on revient au 3:2 natif des photos,
+     plutôt que de recadrer dans un format panoramique */
+  .single .shot,
+  .pair .shot {
+    aspect-ratio: 3 / 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navLink,
+  .asideArrow,
+  .more {
+    transition: none;
+  }
+  .asideCta:hover .asideArrow {
+    transform: none;
+  }
+}

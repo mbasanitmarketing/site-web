@@ -27,6 +27,9 @@ export type PageContent = {
   kicker: string;
   /** Grande ligne, en bas à droite. */
   display: string;
+  /** Phrase de rubrique, en tête de page de catégorie (bandeau d'intro).
+   *  Textes de travail : à valider par MBA. */
+  headline?: string;
 };
 
 const LEDE =
@@ -135,6 +138,7 @@ export const CATEGORIES: PageContent[] = [
     cue: "Voir les réalisations",
     kicker: "Suisse romande",
     display: "Sur mesure",
+    headline: "Salles de bain, salles d’eau et installations sanitaires.",
   },
   {
     href: "/realisations/chauffage-pompes-a-chaleur",
@@ -145,6 +149,7 @@ export const CATEGORIES: PageContent[] = [
     cue: "Voir les réalisations",
     kicker: "Suisse romande",
     display: "Production",
+    headline: "Chaufferies, pompes à chaleur et distribution de chaleur.",
   },
   {
     href: "/realisations/piscines-exterieurs",
@@ -155,6 +160,7 @@ export const CATEGORIES: PageContent[] = [
     cue: "Voir les réalisations",
     kicker: "Suisse romande",
     display: "Extérieur",
+    headline: "Piscines, douches extérieures et aménagements d’eau.",
   },
 ];
 
