@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { HERO_BAND, type PageContent } from "@/lib/pages";
+import { CATEGORIES, HERO_BAND, type PageContent } from "@/lib/pages";
 import styles from "./PageIntro.module.css";
 
 /**
@@ -35,6 +35,28 @@ export function PageIntro({
   if (HERO_BAND.has(page.href)) {
     return (
       <section className={`${styles.intro} ${styles.band} ${only}`}>
+        {/* Onglets de catégorie. De VRAIS liens vers les trois URL, pas un
+            état de composant : chaque catégorie garde sa page indexable,
+            son titre et son H1, et les trois se maillent entre elles.
+            Comme le reste, la liste vient du href — le calque de
+            transition rend ce composant et doit tomber au même endroit. */}
+        <nav className={styles.bandTabs} aria-label="Catégories de réalisations">
+          <ul className={styles.tabList}>
+            {CATEGORIES.map((c) => (
+              <li key={c.href}>
+                <a
+                  className={styles.tab}
+                  href={c.href}
+                  aria-current={c.href === page.href ? "page" : undefined}
+                  data-page-transition
+                >
+                  {c.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
         <div className={styles.bandText}>
           <h1 className={styles.bandTitle}>{page.title}</h1>
           {page.headline && (

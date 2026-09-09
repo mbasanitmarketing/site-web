@@ -27,13 +27,53 @@
   color: #0b0b0c;
 }
 
+/* Les onglets ouvrent le bandeau ; leur marge haute dégage la zone du
+   burger et du logo (~90 px). */
+.bandTabs {
+  padding: clamp(90px, 12svh, 140px) var(--page-x) 0;
+}
+
+.tabList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(14px, 2.2vw, 38px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Le filet est toujours là, transparent quand l'onglet est inactif :
+   passer d'un onglet à l'autre ne décale donc rien. */
+.tab {
+  display: inline-block;
+  padding-bottom: 6px;
+  white-space: nowrap;
+  border-bottom: 1px solid transparent;
+  font-size: clamp(11px, 0.95vw, 13px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(11, 11, 12, 0.42);
+  transition: color 220ms ease;
+}
+
+.tab:hover,
+.tab:focus-visible {
+  color: rgba(11, 11, 12, 0.75);
+}
+
+.tab[aria-current="page"] {
+  border-bottom-color: #0b0b0c;
+  color: #0b0b0c;
+}
+
 /* Le texte se cale bas dans le bandeau, près de la photo, comme sur la
-   référence ; le haut dégage la zone du burger et du logo (~90 px). */
+   référence. */
 .bandText {
   display: grid;
   grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
   gap: clamp(20px, 3vw, 48px);
-  padding: clamp(96px, 13svh, 150px) var(--page-x) clamp(22px, 3.4svh, 34px);
+  padding: clamp(26px, 4svh, 46px) var(--page-x) clamp(22px, 3.4svh, 34px);
 }
 
 /* Nom et phrase de rubrique au MÊME corps : c'est ce qui fait la ligne. */
@@ -163,7 +203,8 @@
 .titleOnly .cue,
 .titleOnly .kicker,
 .titleOnly .display,
-.titleOnly .bandHeadline {
+.titleOnly .bandHeadline,
+.titleOnly .bandTabs {
   visibility: hidden;
 }
 
@@ -183,6 +224,28 @@
   .banner {
     aspect-ratio: 3 / 2;
     max-height: none;
+  }
+  /* Les trois libellés font ~590 px : empilés ils prendraient trois
+     lignes et ne se liraient plus comme des onglets. Rangée défilante,
+     comme la galerie des pages projet. Elle déborde volontairement des
+     gouttières : on voit qu'elle continue. */
+  .bandTabs {
+    padding-inline: 0;
+  }
+  .tabList {
+    flex-wrap: nowrap;
+    gap: 18px;
+    padding-inline: var(--page-x);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .tabList::-webkit-scrollbar {
+    display: none;
+  }
+  .tab {
+    font-size: 11px;
+    letter-spacing: 0.1em;
   }
 }
 
