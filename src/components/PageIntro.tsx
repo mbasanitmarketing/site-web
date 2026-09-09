@@ -66,11 +66,12 @@ export function PageIntro({
           </ul>
         </nav>
 
+        {/* Le nom de la page est déjà porté par l'onglet actif, juste
+            au-dessus : le répéter à gauche ne servait à rien. Le H1 est
+            donc la phrase de rubrique, à droite. Repli sur le titre : il
+            faut un H1 et un seul, même si la phrase manque. */}
         <div className={styles.bandText}>
-          <h1 className={styles.bandTitle}>{page.title}</h1>
-          {page.headline && (
-            <p className={styles.bandHeadline}>{page.headline}</p>
-          )}
+          <h1 className={styles.bandHeadline}>{page.headline ?? page.title}</h1>
         </div>
         <div className={styles.banner}>
           <Image

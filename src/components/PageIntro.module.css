@@ -93,9 +93,10 @@
   padding: clamp(26px, 4svh, 46px) var(--page-x) clamp(22px, 3.4svh, 34px);
 }
 
-/* Nom et phrase de rubrique au MÊME corps : c'est ce qui fait la ligne. */
-.bandTitle,
+/* La phrase reste dans la colonne de droite, à sa place : la cellule de
+   gauche est simplement vide depuis que le nom en a été retiré. */
 .bandHeadline {
+  grid-column: 2;
   margin: 0;
   font-size: clamp(1.3rem, 2.5vw, 2.25rem);
   font-weight: 400;
@@ -220,13 +221,12 @@
 .titleOnly .cue,
 .titleOnly .kicker,
 .titleOnly .display,
-.titleOnly .bandHeadline,
 .titleOnly .bandTabs {
   visibility: hidden;
 }
 
 .titleOnly .title,
-.titleOnly .bandTitle {
+.titleOnly .bandHeadline {
   animation: rise 520ms cubic-bezier(0.16, 1, 0.3, 1) 200ms both;
 }
 
@@ -235,6 +235,9 @@
   .bandText {
     grid-template-columns: 1fr;
     gap: clamp(8px, 1.6svh, 14px);
+  }
+  .bandHeadline {
+    grid-column: auto;
   }
   /* 2,47:1 ne ferait qu'un filet de 158 px de haut sur un téléphone : on
      revient au 3:2 natif des photos. */
