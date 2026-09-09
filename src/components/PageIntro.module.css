@@ -67,6 +67,23 @@
   color: #0b0b0c;
 }
 
+/* Les trois noms complets font 626 px : sous ~860 px de large, la rangée
+   débordait et l'onglet actif pouvait rester hors champ. On bascule sur
+   les libellés courts, qui tiennent en entier — le nom complet est de
+   toute façon juste en dessous, en titre de page. */
+.tabShort {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .tabLong {
+    display: none;
+  }
+  .tabShort {
+    display: inline;
+  }
+}
+
 /* Le texte se cale bas dans le bandeau, près de la photo, comme sur la
    référence. */
 .bandText {
@@ -225,23 +242,8 @@
     aspect-ratio: 3 / 2;
     max-height: none;
   }
-  /* Les trois libellés font ~590 px : empilés ils prendraient trois
-     lignes et ne se liraient plus comme des onglets. Rangée défilante,
-     comme la galerie des pages projet. Elle déborde volontairement des
-     gouttières : on voit qu'elle continue. */
-  .bandTabs {
-    padding-inline: 0;
-  }
   .tabList {
-    flex-wrap: nowrap;
-    gap: 18px;
-    padding-inline: var(--page-x);
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-  }
-  .tabList::-webkit-scrollbar {
-    display: none;
+    gap: 10px 18px;
   }
   .tab {
     font-size: 11px;

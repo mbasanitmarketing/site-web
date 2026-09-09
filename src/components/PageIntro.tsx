@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { CATEGORIES, HERO_BAND, type PageContent } from "@/lib/pages";
 import styles from "./PageIntro.module.css";
 
@@ -39,19 +40,27 @@ export function PageIntro({
             état de composant : chaque catégorie garde sa page indexable,
             son titre et son H1, et les trois se maillent entre elles.
             Comme le reste, la liste vient du href — le calque de
-            transition rend ce composant et doit tomber au même endroit. */}
+            transition rend ce composant et doit tomber au même endroit.
+
+            PAS de `data-page-transition` ici, volontairement : passer d'un
+            onglet à l'autre ne doit pas déclencher le balayage, trop lourd
+            pour ce geste. `Link` donne une navigation client préchargée,
+            donc quasi instantanée — là où un <a> nu rechargerait toute la
+            page, ce qui serait plus lent, pas plus rapide. */}
         <nav className={styles.bandTabs} aria-label="Catégories de réalisations">
           <ul className={styles.tabList}>
             {CATEGORIES.map((c) => (
               <li key={c.href}>
-                <a
+                <Link
                   className={styles.tab}
                   href={c.href}
                   aria-current={c.href === page.href ? "page" : undefined}
-                  data-page-transition
                 >
-                  {c.title}
-                </a>
+                  {/* `display: none` retire aussi du sommaire vocal : un
+                      seul des deux est lu, jamais les deux. */}
+                  <span className={styles.tabLong}>{c.title}</span>
+                  <span className={styles.tabShort}>{c.tab ?? c.title}</span>
+                </Link>
               </li>
             ))}
           </ul>
