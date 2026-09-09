@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { PageContent } from "@/lib/pages";
+import { HERO_COMPACT, type PageContent } from "@/lib/pages";
 import styles from "./PageIntro.module.css";
 
 /**
@@ -24,9 +24,15 @@ export function PageIntro({
    *  au raccord avec la vraie page. */
   titleOnly?: boolean;
 }) {
+  // Dérivée du href, jamais passée en prop : le calque de transition et
+  // la vraie page tombent forcément sur la même hauteur.
+  const compact = HERO_COMPACT.has(page.href);
+
   return (
     <section
-      className={`${styles.intro} ${titleOnly ? styles.titleOnly : ""}`}
+      className={`${styles.intro} ${compact ? styles.compact : ""} ${
+        titleOnly ? styles.titleOnly : ""
+      }`}
     >
       <Image
         className={styles.image}

@@ -15,6 +15,14 @@
   color: #f5f5f4;
 }
 
+/* Hero réduit (pages de catégorie) : la photo n'est plus l'événement de
+   la page, elle annonce. Hauteur ajustée pour que le bloc bas-gauche ne
+   vienne pas toucher le bloc haut-droit sur mobile — voir la règle 720px
+   plus bas, où les deux blocs se retrouvent l'un au-dessus de l'autre. */
+.compact {
+  height: 62svh;
+}
+
 .image {
   object-fit: cover;
 }

@@ -164,6 +164,19 @@ export const CATEGORIES: PageContent[] = [
   },
 ];
 
+/**
+ * Pages dont le hero est réduit : sur une page de catégorie, la photo
+ * compte moins que la pile de réalisations qui suit.
+ *
+ * PageIntro lit cette liste, et le calque de transition rend le MÊME
+ * composant : les deux ne peuvent donc pas diverger. S'ils divergeaient,
+ * le titre sauterait au raccord — c'est tout ce que la transition doit
+ * éviter. Pour l'appliquer à tout le site, remplacer par ALL.
+ */
+export const HERO_COMPACT: ReadonlySet<string> = new Set(
+  CATEGORIES.map((c) => c.href),
+);
+
 /* Contenus provisoires des fiches projet. Le vrai texte, l'année, le lieu
    et les prestations sont à remplir projet par projet. */
 const BODY = [

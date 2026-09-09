@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { getPage, type PageContent } from "@/lib/pages";
+import { getPage, HERO_COMPACT, type PageContent } from "@/lib/pages";
 import { PageIntro } from "./PageIntro";
 import styles from "./PageTransition.module.css";
 
@@ -91,7 +91,9 @@ export function PageTransition() {
 
   return (
     <div
-      className={`${styles.overlay} ${out ? styles.overlayOut : ""}`}
+      className={`${styles.overlay} ${
+        HERO_COMPACT.has(page.href) ? styles.overlayCompact : ""
+      } ${out ? styles.overlayOut : ""}`}
       aria-hidden="true"
     >
       <PageIntro page={page} titleOnly />
