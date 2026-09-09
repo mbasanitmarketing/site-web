@@ -239,6 +239,15 @@
   .bandHeadline {
     grid-column: auto;
   }
+}
+
+/* Le H1 doit tenir sur une ligne. Sous ~340 px il ne restait que 280 px
+   pour 305 px de texte : on descend le corps ici seulement, plutôt que
+   d'abaisser le minimum du clamp, qui rapetisserait tous les téléphones. */
+@media (max-width: 340px) {
+  .bandHeadline {
+    font-size: 18px;
+  }
   /* 2,47:1 ne ferait qu'un filet de 158 px de haut sur un téléphone : on
      revient au 3:2 natif des photos. */
   .banner {

@@ -28,6 +28,14 @@ export type PageContent = {
   /** Grande ligne, en bas à droite. */
   display: string;
   /** Phrase de rubrique, en tête de page de catégorie (bandeau d'intro).
+   *  C'est le H1 de la page.
+   *
+   *  DOIT TENIR SUR UNE LIGNE, jusqu'à 360 px de large : compter ~32
+   *  caractères au maximum. Aucun CSS ne peut garantir la ligne unique
+   *  pour un texte quelconque — il faudrait le mesurer. La garantie vient
+   *  donc d'ici. Au-delà du gabarit, la phrase passe simplement à la
+   *  ligne, elle ne déborde pas.
+   *
    *  Textes de travail : à valider par MBA. */
   headline?: string;
   /** Libellé court, pour les onglets sur petit écran : les trois noms
@@ -142,7 +150,7 @@ export const CATEGORIES: PageContent[] = [
     cue: "Voir les réalisations",
     kicker: "Suisse romande",
     display: "Sur mesure",
-    headline: "Salles de bain, salles d’eau et installations sanitaires.",
+    headline: "Salles de bain et salles d’eau.",
     tab: "Sanitaire",
   },
   {
@@ -154,7 +162,7 @@ export const CATEGORIES: PageContent[] = [
     cue: "Voir les réalisations",
     kicker: "Suisse romande",
     display: "Production",
-    headline: "Chaufferies, pompes à chaleur et distribution de chaleur.",
+    headline: "Chaufferies et pompes à chaleur.",
     tab: "Chauffage",
   },
   {
@@ -166,7 +174,7 @@ export const CATEGORIES: PageContent[] = [
     cue: "Voir les réalisations",
     kicker: "Suisse romande",
     display: "Extérieur",
-    headline: "Piscines, douches extérieures et aménagements d’eau.",
+    headline: "Piscines et douches extérieures.",
     tab: "Piscines",
   },
 ];
