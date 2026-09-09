@@ -1,18 +1,24 @@
 import Image from "next/image";
-import { HERO_COMPACT, type PageContent } from "@/lib/pages";
+import { HERO_BAND, type PageContent } from "@/lib/pages";
 import styles from "./PageIntro.module.css";
 
 /**
- * Gabarit des pages intérieures — d'après la vidéo « Animation nouvelle
- * page site MBA ».
+ * Ouverture des pages intérieures. Deux gabarits :
  *
- * Image plein cadre ; en bas à gauche le nom repris du lien cliqué, puis
- * un paragraphe et un petit lien en capitales ; en bas à droite une petite
- * ligne en capitales et une grande ligne.
+ * — Photo plein cadre (« Animation nouvelle page site MBA ») : en bas à
+ *   gauche le nom repris du lien cliqué, puis un paragraphe et un petit
+ *   lien ; en bas à droite une petite ligne et une grande ligne.
  *
- * Le titre n'a PAS d'animation d'entrée : le calque de transition l'a déjà
- * fait apparaître au même endroit, il doit être en place au raccord. Le
- * reste arrive en décalé.
+ * — Bandeau + bannière (« realisations layout - template.mov »), pour les
+ *   pages listées dans HERO_BAND : la photo ne touche pas le haut de la
+ *   page. Un bandeau clair la précède, nom à gauche et phrase de rubrique
+ *   à droite, au même corps ; la photo suit, pleine largeur.
+ *
+ * Dans les deux cas le titre n'a PAS d'animation d'entrée sur la vraie
+ * page : le calque de transition l'a déjà fait apparaître au même endroit,
+ * il doit être en place au raccord. Le gabarit se déduit du href, jamais
+ * d'une prop — le calque rend ce même composant, les deux ne peuvent donc
+ * pas tomber sur des positions différentes.
  */
 export function PageIntro({
   page,
@@ -24,16 +30,33 @@ export function PageIntro({
    *  au raccord avec la vraie page. */
   titleOnly?: boolean;
 }) {
-  // Dérivée du href, jamais passée en prop : le calque de transition et
-  // la vraie page tombent forcément sur la même hauteur.
-  const compact = HERO_COMPACT.has(page.href);
+  const only = titleOnly ? styles.titleOnly : "";
+
+  if (HERO_BAND.has(page.href)) {
+    return (
+      <section className={`${styles.intro} ${styles.band} ${only}`}>
+        <div className={styles.bandText}>
+          <h1 className={styles.bandTitle}>{page.title}</h1>
+          {page.headline && (
+            <p className={styles.bandHeadline}>{page.headline}</p>
+          )}
+        </div>
+        <div className={styles.banner}>
+          <Image
+            className={styles.image}
+            src={page.image}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+          />
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section
-      className={`${styles.intro} ${compact ? styles.compact : ""} ${
-        titleOnly ? styles.titleOnly : ""
-      }`}
-    >
+    <section className={`${styles.intro} ${only}`}>
       <Image
         className={styles.image}
         src={page.image}

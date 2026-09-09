@@ -81,17 +81,9 @@ export function CategoryIndex({
   }
 
   return (
+    // Le bandeau (nom + phrase de rubrique) est porté par l'ouverture de
+    // page, au-dessus de la bannière : cf. PageIntro, variante HERO_BAND.
     <div className={styles.wrap}>
-      {/* Bandeau d'intro : label à gauche, phrase à droite (cf. référence,
-          où les deux sont au même corps). */}
-      <div className={styles.intro}>
-        <p className={styles.introLabel}>{category.title}</p>
-        {category.headline && (
-          <h2 className={styles.introHeadline}>{category.headline}</h2>
-        )}
-      </div>
-      <div className={styles.introRule} aria-hidden="true" />
-
       <div className={styles.columns}>
         <aside className={styles.aside}>
           <nav aria-label={`Réalisations — ${category.title}`}>

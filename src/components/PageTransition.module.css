@@ -19,11 +19,11 @@
   animation: sweep 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Hero réduit : la photo ne couvre plus que le haut du calque. Sous elle,
-   il faut le fond clair de la page d'arrivée — sinon le bas du calque
-   reste noir et le raccord se voit. Après `.overlay` : même spécificité,
-   c'est l'ordre qui tranche. */
-.overlayCompact {
+/* Ouverture en bandeau : la photo ne couvre plus que le haut du calque.
+   Sous elle, il faut le fond clair de la page d'arrivée — sinon le bas du
+   calque reste noir et le raccord se voit. Après `.overlay` : même
+   spécificité, c'est l'ordre qui tranche. */
+.overlayBand {
   background: #f5f5f4;
 }
 

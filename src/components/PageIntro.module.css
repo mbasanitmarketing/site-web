@@ -15,12 +15,45 @@
   color: #f5f5f4;
 }
 
-/* Hero réduit (pages de catégorie) : la photo n'est plus l'événement de
-   la page, elle annonce. Hauteur ajustée pour que le bloc bas-gauche ne
-   vienne pas toucher le bloc haut-droit sur mobile — voir la règle 720px
-   plus bas, où les deux blocs se retrouvent l'un au-dessus de l'autre. */
-.compact {
-  height: 62svh;
+/* --- Variante « bandeau + bannière » (pages de catégorie) -----------
+   Relevé sur « realisations layout - template.mov », frame où l'image
+   tient entière : bandeau 170 px sous le header, puis la photo pleine
+   largeur en 2,47:1. Ici la hauteur de la photo est bornée à 62svh — la
+   réduction demandée — et c'est cette borne qui l'emporte au-delà de
+   ~1380 px de large. */
+.band {
+  height: auto;
+  background: #f5f5f4;
+  color: #0b0b0c;
+}
+
+/* Le texte se cale bas dans le bandeau, près de la photo, comme sur la
+   référence ; le haut dégage la zone du burger et du logo (~90 px). */
+.bandText {
+  display: grid;
+  grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
+  gap: clamp(20px, 3vw, 48px);
+  padding: clamp(96px, 13svh, 150px) var(--page-x) clamp(22px, 3.4svh, 34px);
+}
+
+/* Nom et phrase de rubrique au MÊME corps : c'est ce qui fait la ligne. */
+.bandTitle,
+.bandHeadline {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.5vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.14;
+  letter-spacing: -0.015em;
+}
+
+.banner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2.47;
+  max-height: 62svh;
+  overflow: hidden;
+  /* couvre le temps du chargement, comme ailleurs sur le site */
+  background: #76767a;
 }
 
 .image {
@@ -129,12 +162,28 @@
 .titleOnly .lede,
 .titleOnly .cue,
 .titleOnly .kicker,
-.titleOnly .display {
+.titleOnly .display,
+.titleOnly .bandHeadline {
   visibility: hidden;
 }
 
-.titleOnly .title {
+.titleOnly .title,
+.titleOnly .bandTitle {
   animation: rise 520ms cubic-bezier(0.16, 1, 0.3, 1) 200ms both;
+}
+
+@media (max-width: 900px) {
+  /* En colonne, le nom passe au-dessus de la phrase. */
+  .bandText {
+    grid-template-columns: 1fr;
+    gap: clamp(8px, 1.6svh, 14px);
+  }
+  /* 2,47:1 ne ferait qu'un filet de 158 px de haut sur un téléphone : on
+     revient au 3:2 natif des photos. */
+  .banner {
+    aspect-ratio: 3 / 2;
+    max-height: none;
+  }
 }
 
 @media (max-width: 720px) {

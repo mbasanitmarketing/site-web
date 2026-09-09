@@ -17,19 +17,10 @@
   color: #0b0b0c;
 }
 
-/* --- Bandeau d'intro ----------------------------------------------- */
+/* Le bandeau d'intro (nom + phrase de rubrique) est porté par l'ouverture
+   de page — cf. PageIntro, variante HERO_BAND — pour que la photo ne
+   touche pas le haut de la page, comme sur la référence. */
 
-/* Sur la référence, le label de gauche et la phrase de droite sont au
-   même corps : c'est ce qui fait la ligne. */
-.intro {
-  display: grid;
-  grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
-  gap: clamp(20px, 3vw, 48px);
-  padding: clamp(40px, 9svh, 104px) var(--page-x) clamp(30px, 6svh, 62px);
-}
-
-.introLabel,
-.introHeadline,
 .sectionTitle {
   margin: 0;
   font-size: clamp(1.3rem, 2.5vw, 2.25rem);
@@ -38,14 +29,9 @@
   letter-spacing: -0.015em;
 }
 
-.introRule,
 .rule {
   height: 1px;
   background: rgba(11, 11, 12, 0.14);
-}
-
-.introRule {
-  margin-inline: var(--page-x);
 }
 
 /* --- Les deux colonnes ---------------------------------------------- */
@@ -53,7 +39,7 @@
 .columns {
   display: grid;
   grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
-  padding: clamp(36px, 7svh, 88px) var(--page-x) clamp(48px, 10svh, 120px);
+  padding: clamp(44px, 15svh, 170px) var(--page-x) clamp(48px, 10svh, 120px);
 }
 
 /* L'index se cale sous l'en-tête (logo + burger, zone haute ~90 px) et
@@ -211,12 +197,8 @@
 /* --- Mobile --------------------------------------------------------- */
 
 @media (max-width: 900px) {
-  .intro,
   .columns {
     grid-template-columns: 1fr;
-  }
-  .intro {
-    gap: clamp(10px, 2svh, 18px);
   }
   /* En colonne, un index collant n'a plus de place : il repasse en tête
      de page, à plat, et sert de sommaire. */

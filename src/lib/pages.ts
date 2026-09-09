@@ -165,15 +165,17 @@ export const CATEGORIES: PageContent[] = [
 ];
 
 /**
- * Pages dont le hero est réduit : sur une page de catégorie, la photo
- * compte moins que la pile de réalisations qui suit.
+ * Pages dont l'ouverture est un bandeau suivi d'une bannière, et non une
+ * photo plein cadre (cf. « realisations layout - template.mov » : la photo
+ * ne touche pas le haut de la page, un bandeau clair la précède avec le
+ * nom à gauche et la phrase de rubrique à droite).
  *
  * PageIntro lit cette liste, et le calque de transition rend le MÊME
  * composant : les deux ne peuvent donc pas diverger. S'ils divergeaient,
  * le titre sauterait au raccord — c'est tout ce que la transition doit
  * éviter. Pour l'appliquer à tout le site, remplacer par ALL.
  */
-export const HERO_COMPACT: ReadonlySet<string> = new Set(
+export const HERO_BAND: ReadonlySet<string> = new Set(
   CATEGORIES.map((c) => c.href),
 );
 
