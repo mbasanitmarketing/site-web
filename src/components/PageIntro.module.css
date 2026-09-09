@@ -97,6 +97,9 @@
    gauche est simplement vide depuis que le nom en a été retiré. */
 .bandHeadline {
   grid-column: 2;
+  /* Calée sur la gouttière droite, pas flottante au milieu : la colonne
+     est bien plus large que la phrase depuis qu'elle tient sur une ligne. */
+  text-align: right;
   margin: 0;
   font-size: clamp(1.3rem, 2.5vw, 2.25rem);
   font-weight: 400;
@@ -236,8 +239,11 @@
     grid-template-columns: 1fr;
     gap: clamp(8px, 1.6svh, 14px);
   }
+  /* En colonne unique, la phrase repasse à gauche : alignée à droite
+     elle ferait un zigzag avec les onglets, qui restent à la gouttière. */
   .bandHeadline {
     grid-column: auto;
+    text-align: left;
   }
 }
 
