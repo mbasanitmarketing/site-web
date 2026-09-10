@@ -180,6 +180,18 @@
   bottom: var(--page-y);
   z-index: 2;
   text-align: right;
+  /* Le bouton d'appel flottant occupe ce coin en permanence : la grande
+     ligne se terminait dessous, recouverte sur ~60 px à toutes les
+     tailles de bureau. On lui réserve sa place.
+
+     La réserve est calculée sur SA géométrie (largeur + son décalage au
+     bord), moins notre gouttière : les deux ne suivent pas la même
+     formule, et un chiffre à la main laissait 7 px à 1024 px. Ainsi
+     l'écart vaut 16 px quelle que soit la largeur. Si ces valeurs
+     changent dans CallButton, changer les deux ensemble. */
+  padding-right: calc(
+    clamp(52px, 5.4vw, 62px) + clamp(18px, 4.5vw, 56px) - var(--page-x) + 16px
+  );
 }
 
 .kicker {
@@ -197,7 +209,9 @@
    Si on veut vraiment le sérif, il faudra ajouter une police au projet. */
 .display {
   margin: clamp(2px, 0.6svh, 8px) 0 0;
-  font-size: clamp(2.2rem, 5.6vw, 5rem);
+  /* Elle reste la plus grande du hero, mais elle écrasait tout : 80 px
+     à 1440, contre 33 px pour le titre. */
+  font-size: clamp(1.7rem, 3.8vw, 3.4rem);
   font-weight: 200;
   line-height: 1;
   letter-spacing: 0.06em;
@@ -276,12 +290,15 @@
   /* En colonne, ce bloc repasse en haut à gauche — donc dans la zone du
      burger (16 -> 60 px) et du logo (0 -> 60 px). On le descend sous
      l'en-tête : à --page-y il empiétait de 14 px sur le burger. */
+  /* En haut de page, plus dans le coin du bouton : la réserve n'a plus
+     lieu d'être. */
   .right {
     left: var(--page-x);
     right: var(--page-x);
     text-align: left;
     bottom: auto;
     top: clamp(80px, 11svh, 104px);
+    padding-right: 0;
   }
   .display {
     font-size: clamp(1.9rem, 11vw, 3rem);
