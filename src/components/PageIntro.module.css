@@ -172,27 +172,35 @@
   animation: rise 620ms cubic-bezier(0.16, 1, 0.3, 1) 380ms both;
 }
 
-/* Verre dépoli, exactement le traitement du bouton d'appel flottant
-   (CallButton.module.css) : disque sombre translucide, flou d'arrière-plan
-   et anneau blanc fin. En pastille plutôt qu'en rond, parce qu'il porte du
-   texte. Si ces valeurs changent là-bas, les changer ici aussi. */
+/* Charte des boutons texte du site : rectangle à 2 px de rayon, filet
+   d'un pixel, fond transparent, capitales tracées, et remplissage inversé
+   au survol. Mêmes valeurs que `.slideCta` (carrousel) et `.submit`
+   (devis) ; ici le filet est clair, le bouton étant posé sur une photo.
+
+   Pas de verre dépoli : ce traitement est réservé aux boutons-icônes
+   ronds (bouton d'appel, pastille « agrandir »). */
 .cueButton {
-  padding: 11px 20px;
-  border: 1.5px solid rgba(255, 255, 255, 0.9);
-  border-radius: 999px;
-  background: rgba(16, 16, 20, 0.26);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(9px, 1.15svh, 13px) clamp(16px, 1.7vw, 26px);
+  border: 1px solid rgba(245, 245, 244, 0.85);
+  border-radius: 2px;
+  background: transparent;
+  font-size: clamp(10px, 0.85vw, 12px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.1em;
   color: #f5f5f4;
   text-decoration: none;
   transition:
-    background-color 220ms ease,
-    color 220ms ease;
+    background-color 200ms ease,
+    color 200ms ease;
 }
 
 .cueButton:hover,
 .cueButton:focus-visible {
-  background: rgba(245, 245, 244, 0.92);
+  background: #f5f5f4;
   color: #0b0b0c;
 }
 
