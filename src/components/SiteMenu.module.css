@@ -159,6 +159,10 @@
 }
 
 
+.panelOpen {
+  transform: translateX(0);
+}
+
 /* Avis Google, collés en bas du panneau */
 .reviews {
   margin-top: auto;
