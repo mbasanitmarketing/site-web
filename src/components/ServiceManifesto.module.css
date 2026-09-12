@@ -1,0 +1,87 @@
+/* ---------------------------------------------------------------------
+   Section « manifeste » d'une page de service.
+
+   Relevé sur la maquette : colonnes ~30 / 70, grande ligne à 2,3 fois le
+   corps du texte, intitulés de bloc au MÊME corps mais en gras, interligne
+   1,9 (très aéré), et 4,4 corps de blanc entre deux blocs. Aucun filet :
+   c'est le blanc qui sépare.
+
+   Adaptation MBA : Geist, #0b0b0c sur #f5f5f4.
+   --------------------------------------------------------------------- */
+
+.wrap {
+  background: #f5f5f4;
+  color: #0b0b0c;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 30fr) minmax(0, 70fr);
+  gap: clamp(20px, 3vw, 48px);
+  align-items: start;
+  padding: clamp(48px, 11svh, 130px) var(--page-x) clamp(20px, 4svh, 48px);
+}
+
+/* Même corps que le texte courant, un peu plus appuyé : un repère, pas
+   un titre. Il se cale en haut, à hauteur de la grande ligne. */
+.label {
+  margin: 0;
+  font-size: clamp(15px, 1.1vw, 17px);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.headline {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.5vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+}
+
+/* Les écarts sont en `em` du corps du texte : c'est ce qui verrouille les
+   rapports relevés sur la maquette (2,6 corps sous la grande ligne, 4,4
+   entre deux blocs) à toutes les tailles d'écran, au lieu de les approcher
+   avec des clamp réglés à la main. */
+.intro,
+.block {
+  font-size: clamp(15px, 1.1vw, 17px);
+}
+
+.intro {
+  max-width: 74ch;
+  margin: 2.6em 0 0;
+  line-height: 1.9;
+  color: rgba(11, 11, 12, 0.82);
+}
+
+.block {
+  margin-top: 4.4em;
+}
+
+/* Sur la maquette, l'intitulé et son paragraphe sont sur la MÊME trame :
+   la première ligne du texte tombe juste sous l'intitulé, sans écart
+   supplémentaire. D'où le même interligne et aucune marge. */
+.blockTitle {
+  margin: 0;
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.9;
+  color: #0b0b0c;
+}
+
+.blockBody {
+  max-width: 74ch;
+  margin: 0;
+  font-size: 1em;
+  line-height: 1.9;
+  color: rgba(11, 11, 12, 0.82);
+}
+
+@media (max-width: 900px) {
+  /* En colonne, le repère passe simplement au-dessus. */
+  .grid {
+    grid-template-columns: 1fr;
+    gap: clamp(12px, 2svh, 20px);
+  }
+}

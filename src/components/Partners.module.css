@@ -1,0 +1,89 @@
+/* ---------------------------------------------------------------------
+   Bandeau « nos partenaires ».
+
+   Relevé sur la maquette : mêmes colonnes que le manifeste (30 / 70) pour
+   le repère et la grande ligne, mais la rangée de logos s'affranchit de la
+   grille et court sur toute la largeur utile, répartie et centrée sur la
+   hauteur. Beaucoup de blanc entre la ligne et les logos.
+   --------------------------------------------------------------------- */
+
+.wrap {
+  background: #f5f5f4;
+  color: #0b0b0c;
+  padding-bottom: clamp(48px, 11svh, 128px);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 30fr) minmax(0, 70fr);
+  gap: clamp(20px, 3vw, 48px);
+  align-items: start;
+  padding: clamp(48px, 11svh, 130px) var(--page-x) 0;
+}
+
+/* Petites capitales, comme les autres repères du site. */
+.label {
+  margin: 0;
+  font-size: clamp(11px, 0.95vw, 13px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.45;
+  color: #0b0b0c;
+}
+
+.headline {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.5vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+}
+
+/* Même principe que le manifeste : l'écart relevé sur la maquette (7,4
+   corps entre la ligne et les logos) est exprimé en `em`. */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(24px, 4vw, 56px);
+  font-size: clamp(15px, 1.1vw, 17px);
+  margin: 7.4em 0 0;
+  padding: 0 var(--page-x);
+  list-style: none;
+}
+
+.item {
+  display: grid;
+  place-items: center;
+  height: clamp(44px, 4.6vw, 64px);
+}
+
+.logo {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Emplacement en attente du fichier : visiblement un trou, pas un logo. */
+.slot {
+  min-width: clamp(116px, 12vw, 180px);
+  border: 1px dashed rgba(11, 11, 12, 0.25);
+  font-size: clamp(10px, 0.78vw, 11px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(11, 11, 12, 0.35);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: clamp(12px, 2svh, 20px);
+  }
+  /* Répartis, ils se retrouveraient collés aux bords sur une ligne de
+     deux : on centre et on laisse l'écart faire le travail. */
+  .row {
+    justify-content: center;
+    gap: clamp(20px, 6vw, 40px);
+  }
+}

@@ -38,6 +38,8 @@ export type PageContent = {
    *
    *  Textes de travail : à valider par MBA. */
   headline?: string;
+  /** Section « manifeste » sous le hero (pages de service). */
+  manifesto?: Manifesto;
   /** Libellé court, pour les onglets sur petit écran : les trois noms
    *  complets font 626 px et ne tiennent pas sur un téléphone. Le nom
    *  complet reste juste en dessous, en titre de page. */
@@ -47,6 +49,22 @@ export type PageContent = {
 const LEDE =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.";
 
+
+/**
+ * Section « manifeste » sous le hero d'une page de service — d'après la
+ * maquette : un petit mot à gauche, à droite une grande ligne, un chapô,
+ * puis des blocs intitulé-en-gras + paragraphe, séparés par du blanc.
+ */
+export type Manifesto = {
+  /** Petit mot dans la colonne de gauche. */
+  label: string;
+  /** Grande ligne. */
+  headline: string;
+  /** Chapô sous la grande ligne. */
+  intro: string;
+  /** Les blocs, dans l'ordre. */
+  blocks: { title: string; body: string }[];
+};
 
 /** Une réalisation appartient à une catégorie (son slug). */
 export type Realisation = PageContent & {
@@ -104,6 +122,26 @@ export const PAGES: PageContent[] = [
 
 /* --- Les trois métiers, sous /services ---------------------------- */
 
+/* Trame des sections « manifeste ». Les intitulés sont structurels — ils
+   ne promettent rien de précis — et les paragraphes sont du lorem : seule
+   la mise en page est arrêtée. Tout ce texte est à écrire par MBA. */
+const manifesto = (headline: string): Manifesto => ({
+  label: "La prestation",
+  headline,
+  intro: LEDE,
+  blocks: [
+    { title: "Ce que comprend la prestation", body: BODY_A },
+    { title: "Comment nous procédons", body: BODY_B },
+    { title: "Après l’intervention", body: BODY_A },
+  ],
+});
+
+const BODY_A =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
+
+const BODY_B =
+  "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
 export const SERVICES: PageContent[] = [
   {
     href: "/services/sanitaire-salles-de-bain",
@@ -114,6 +152,9 @@ export const SERVICES: PageContent[] = [
     cue: "Demander un devis",
     kicker: "Suisse romande",
     display: "Sur mesure",
+    manifesto: manifesto(
+      "De la pose d’un sanitaire à la salle de bain complète.",
+    ),
   },
   {
     href: "/services/chauffage-pompes-a-chaleur",
@@ -124,6 +165,9 @@ export const SERVICES: PageContent[] = [
     cue: "Demander un devis",
     kicker: "Suisse romande",
     display: "Production",
+    manifesto: manifesto(
+      "Du remplacement d’une chaudière à la pompe à chaleur.",
+    ),
   },
   {
     href: "/services/entretien-depannage",
@@ -134,6 +178,9 @@ export const SERVICES: PageContent[] = [
     cue: "Nous appeler",
     kicker: "Suisse romande",
     display: "Réactivité",
+    manifesto: manifesto(
+      "De l’entretien courant au dépannage.",
+    ),
   },
 ];
 
@@ -361,6 +408,25 @@ export const REALISATIONS: Realisation[] = [
     ],
   },
 ];
+
+/* --- Partenaires --------------------------------------------------- */
+
+/**
+ * Logos des partenaires.
+ *
+ * VIDE tant que MBA ne les a pas fournis. On ne met pas de marques
+ * inventées sur le site d'un client : afficher un logo, c'est affirmer un
+ * partenariat commercial. Tant que la liste est vide, la section montre
+ * des emplacements — la mise en page se juge, rien n'est affirmé.
+ *
+ * Pour les brancher : déposer les fichiers dans /public, puis
+ *   { name: "Nom du fabricant", logo: "/partenaire-xxx.svg" }
+ * SVG monochrome de préférence, ou PNG sur fond transparent.
+ */
+export const PARTNERS: { name: string; logo: string }[] = [];
+
+/** Nombre d'emplacements montrés tant que PARTNERS est vide. */
+export const PARTNER_SLOTS = 6;
 
 /* --- Accès ------------------------------------------------------- */
 
