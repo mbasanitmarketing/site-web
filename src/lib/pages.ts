@@ -30,6 +30,9 @@ export type PageContent = {
   kicker: string;
   /** Grande ligne, en bas à droite. */
   display: string;
+  /** Ouverture sans photo : fond uni. Le calque de transition lit le MÊME
+   *  objet, il ne peut donc pas balayer une image que la page n'a pas. */
+  heroPlain?: boolean;
   /** Rend cette ligne en petit (~15 px) plutôt qu'en grande ligne : elle
    *  porte une zone d'intervention, pas une accroche. Le calque de
    *  transition lit le MÊME objet, les deux ne peuvent donc pas tomber sur
@@ -164,7 +167,10 @@ export const PAGES: PageContent[] = [
   {
     href: "/devis",
     title: "Demander un devis",
+    /* Gardée pour les vignettes et le menu ; l'ouverture de la page, elle,
+       est sans photo (heroPlain). */
     image: "/hero-light.jpg",
+    heroPlain: true,
     lede: LEDE,
     cue: "Nous écrire",
     kicker: "Dolore magna aliqua",

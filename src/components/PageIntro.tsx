@@ -89,15 +89,21 @@ export function PageIntro({
 
   return (
     <section className={`${styles.intro} ${only}`}>
-      <Image
-        className={styles.image}
-        src={page.image}
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-      />
-      <div className={styles.scrim} />
+      {/* Sans photo : ni image ni dégradé de lisibilité, qui n'aurait plus
+          rien à faire lire. Le fond uni de .intro suffit. */}
+      {!page.heroPlain && (
+        <>
+          <Image
+            className={styles.image}
+            src={page.image}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+          />
+          <div className={styles.scrim} />
+        </>
+      )}
 
       <div className={styles.left}>
         <h1 className={styles.title}>{page.title}</h1>
