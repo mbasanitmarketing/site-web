@@ -102,12 +102,36 @@ export function PageIntro({
       <div className={styles.left}>
         <h1 className={styles.title}>{page.title}</h1>
         <p className={styles.lede}>{page.lede}</p>
-        <span className={styles.cue}>{page.cue}</span>
+        {/* Avec une cible, c'est un vrai bouton — sinon le texte seul
+            ressemblait à un lien sans en être un. `data-page-transition`
+            uniquement pour les routes internes : un tel: doit composer le
+            numéro, pas déclencher le balayage. */}
+        {page.cueHref ? (
+          <a
+            className={`${styles.cue} ${styles.cueButton}`}
+            href={page.cueHref}
+            data-page-transition={
+              page.cueHref.startsWith("/") ? "" : undefined
+            }
+          >
+            {page.cue}
+          </a>
+        ) : (
+          <span className={styles.cue}>{page.cue}</span>
+        )}
       </div>
 
       <div className={styles.right}>
         <p className={styles.kicker}>{page.kicker}</p>
-        <p className={styles.display}>{page.display}</p>
+        {/* <p> et non un titre : une zone d'intervention n'est pas un
+            niveau de plan de la page. */}
+        <p
+          className={`${styles.display} ${
+            page.displaySmall ? styles.displaySmall : ""
+          }`}
+        >
+          {page.display}
+        </p>
       </div>
     </section>
   );

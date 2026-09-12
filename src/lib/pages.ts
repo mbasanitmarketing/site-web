@@ -23,10 +23,18 @@ export type PageContent = {
   lede: string;
   /** Petit lien en capitales, sous le paragraphe. */
   cue: string;
+  /** Sa cible. Renseignée, le repère devient un vrai bouton cliquable ;
+   *  sans elle il reste un simple texte. */
+  cueHref?: string;
   /** Petite ligne en capitales, en bas à droite. */
   kicker: string;
   /** Grande ligne, en bas à droite. */
   display: string;
+  /** Rend cette ligne en petit (~15 px) plutôt qu'en grande ligne : elle
+   *  porte une zone d'intervention, pas une accroche. Le calque de
+   *  transition lit le MÊME objet, les deux ne peuvent donc pas tomber sur
+   *  des tailles différentes et le raccord tient. */
+  displaySmall?: boolean;
   /** Phrase de rubrique, en tête de page de catégorie (bandeau d'intro).
    *  C'est le H1 de la page.
    *
@@ -95,7 +103,8 @@ export const PAGES: PageContent[] = [
     lede: LEDE,
     cue: "Notre démarche",
     kicker: "Lorem ipsum dolor",
-    display: "Sit amet",
+    display: "Genève, Carouge, Grand-Lancy et tout le canton",
+    displaySmall: true,
   },
   {
     href: "/realisations",
@@ -156,8 +165,10 @@ export const SERVICES: PageContent[] = [
     alt: "Salle de bain réalisée par MBA Sanit",
     lede: LEDE,
     cue: "Demander un devis",
+    cueHref: "/devis",
     kicker: "Suisse romande",
-    display: "Sur mesure",
+    display: "Genève, Carouge, Grand-Lancy et tout le canton",
+    displaySmall: true,
     manifesto: manifesto(
       "De la pose d’un sanitaire à la salle de bain complète.",
     ),
@@ -170,8 +181,10 @@ export const SERVICES: PageContent[] = [
     alt: "Chaufferie installée par MBA Sanit",
     lede: LEDE,
     cue: "Demander un devis",
+    cueHref: "/devis",
     kicker: "Suisse romande",
-    display: "Production",
+    display: "Genève, Carouge, Grand-Lancy et tout le canton",
+    displaySmall: true,
     manifesto: manifesto(
       "Du remplacement d’une chaudière à la pompe à chaleur.",
     ),
@@ -184,8 +197,10 @@ export const SERVICES: PageContent[] = [
     alt: "Salle d’eau réalisée par MBA Sanit",
     lede: LEDE,
     cue: "Nous appeler",
+    cueHref: "tel:+41782172928",
     kicker: "Suisse romande",
-    display: "Réactivité",
+    display: "Genève, Carouge, Grand-Lancy et tout le canton",
+    displaySmall: true,
     manifesto: manifesto(
       "De l’entretien courant au dépannage.",
     ),
