@@ -3,6 +3,16 @@ import { PageIntro } from "@/components/PageIntro";
 import { ServiceManifesto } from "@/components/ServiceManifesto";
 import { Partners } from "@/components/Partners";
 import { RealisationsCarousel } from "@/components/RealisationsCarousel";
+import {
+  ServiceNeeds,
+  ServiceScope,
+  ServiceProof,
+  ServiceSteps,
+  ServicePricing,
+  ServiceArea,
+  ServiceFaq,
+  ServiceContact,
+} from "@/components/ServiceParts";
 import { Footer } from "@/components/Footer";
 import { SERVICES, getService, realisationsOf, slugOf } from "@/lib/pages";
 
@@ -25,8 +35,13 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
 
   return (
     <>
+      {/* Ordre de la structure demandée : introduction, besoins, détail,
+          preuves, déroulement, prix, zone, questions, contact. */}
       <PageIntro page={page} />
       {page.manifesto && <ServiceManifesto manifesto={page.manifesto} />}
+      {page.service && <ServiceNeeds service={page.service} />}
+      {page.service && <ServiceScope service={page.service} />}
+      {page.service && <ServiceProof service={page.service} />}
       <Partners headline="Les marques avec lesquelles nous travaillons." />
       {page.relatedRealisations && (
         <RealisationsCarousel
@@ -34,6 +49,11 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
           items={realisationsOf(page.relatedRealisations.category)}
         />
       )}
+      {page.service && <ServiceSteps service={page.service} />}
+      {page.service && <ServicePricing service={page.service} />}
+      {page.service && <ServiceArea service={page.service} />}
+      {page.service && <ServiceFaq service={page.service} />}
+      <ServiceContact />
       <Footer />
     </>
   );

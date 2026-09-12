@@ -1,0 +1,136 @@
+/* ---------------------------------------------------------------------
+   Coquille des sections d'une page de service.
+
+   Colonnes 30 / 70 relevées sur la maquette, repère collant à gauche.
+   Les écarts sont en `em` du corps du texte : les rapports de la maquette
+   (2,6 sous la grande ligne, 4,4 entre blocs, interligne 1,9) restent
+   exacts à toutes les tailles.
+   --------------------------------------------------------------------- */
+
+.wrap {
+  background: #f5f5f4;
+  color: #0b0b0c;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 30fr) minmax(0, 70fr);
+  gap: clamp(20px, 3vw, 48px);
+  align-items: start;
+  padding: clamp(48px, 11svh, 130px) var(--page-x) clamp(20px, 4svh, 48px);
+}
+
+/* Collant : il accompagne la lecture de sa section. Sa case de grille lui
+   sert de cadre, il se décroche donc de lui-même à la fin. */
+.label {
+  position: sticky;
+  top: clamp(84px, 10svh, 116px);
+  align-self: start;
+  margin: 0;
+  font-size: clamp(15px, 1.1vw, 17px);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.content {
+  font-size: clamp(15px, 1.1vw, 17px);
+}
+
+/* --- Vocabulaire partagé par les sections -------------------------- */
+
+.headline {
+  margin: 0;
+  font-size: 2.3em;
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+}
+
+.intro {
+  max-width: 74ch;
+  margin: 2.6em 0 0;
+  line-height: 1.9;
+  color: rgba(11, 11, 12, 0.82);
+}
+
+/* Bloc intitulé + paragraphe : même trame, la première ligne du texte
+   tombe juste sous l'intitulé. */
+.block {
+  margin-top: 4.4em;
+}
+
+.blockTitle {
+  margin: 0;
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.9;
+  color: #0b0b0c;
+}
+
+.blockBody {
+  max-width: 74ch;
+  margin: 0;
+  font-size: 1em;
+  line-height: 1.9;
+  color: rgba(11, 11, 12, 0.82);
+}
+
+/* Listes à puce discrète, alignées sur la trame du texte. */
+.list {
+  margin: 2.6em 0 0;
+  padding: 0;
+  list-style: none;
+  max-width: 74ch;
+}
+
+.listItem {
+  position: relative;
+  padding-left: 1.6em;
+  line-height: 1.9;
+  color: rgba(11, 11, 12, 0.82);
+}
+
+.listItem::before {
+  content: "";
+  position: absolute;
+  left: 0.15em;
+  top: 0.85em;
+  width: 6px;
+  height: 6px;
+  border: 1px solid #a8763e;
+  border-radius: 50%;
+}
+
+/* Variante « exclusions » : le même filet, barré d'un trait plutôt qu'un
+   rond — on ne joue pas sur la seule couleur pour dire l'opposé. */
+.listItemOut::before {
+  top: 1.25em;
+  width: 8px;
+  height: 0;
+  border-width: 1px 0 0 0;
+  border-color: rgba(11, 11, 12, 0.4);
+  border-radius: 0;
+}
+
+/* Manque assumé : affiché comme tel, jamais comblé par du plausible. */
+.missing {
+  max-width: 74ch;
+  margin: 2.6em 0 0;
+  padding: 1.1em 1.3em;
+  border: 1px dashed rgba(11, 11, 12, 0.25);
+  border-radius: 2px;
+  line-height: 1.7;
+  color: rgba(11, 11, 12, 0.5);
+}
+
+@media (max-width: 900px) {
+  /* En colonne, le repère passe au-dessus — collant, il flotterait
+     par-dessus le texte au lieu de l'accompagner. */
+  .grid {
+    grid-template-columns: 1fr;
+    gap: clamp(12px, 2svh, 20px);
+  }
+  .label {
+    position: static;
+  }
+}

@@ -48,6 +48,8 @@ export type PageContent = {
   headline?: string;
   /** Section « manifeste » sous le hero (pages de service). */
   manifesto?: Manifesto;
+  /** Le reste de la page de service (besoins, détail, déroulement…). */
+  service?: ServiceDetail;
   /** Carrousel de réalisations en bas de page de service. `category` est
    *  le slug de la catégorie montrée, `label` le mot repris dans le titre
    *  (« Nos réalisations <label> »). Les deux sont séparés : l'entretien
@@ -78,6 +80,41 @@ export type Manifesto = {
   intro: string;
   /** Les blocs, dans l'ordre. */
   blocks: { title: string; body: string }[];
+};
+
+
+/**
+ * Contenu d'une page de service, au-delà du hero et du manifeste.
+ *
+ * ATTENTION — tout ce contenu est PROVISOIRE et vient de moi, pas de MBA.
+ * Ce sont des hypothèses de mise en page, pas des engagements : ce qui est
+ * inclus ou exclu d'une prestation, le déroulement, les réponses aux
+ * questions, sont à écrire avec Fred avant toute mise en ligne réelle.
+ *
+ * Deux champs restent VOLONTAIREMENT vides, parce qu'ils ne peuvent pas
+ * être devinés sans mentir : `qualifications` (une certification est une
+ * affirmation vérifiable) et le tarif dans `pricing` (aucun chiffre
+ * inventé). La page les affiche comme manquants.
+ */
+export type ServiceDetail = {
+  /** Besoins traités : les situations qui amènent à appeler. */
+  needs: { title: string; body: string }[];
+  /** Ce que la prestation comprend. */
+  included: string[];
+  /** Ce qu'elle ne comprend pas. */
+  excluded: string[];
+  /** Preuves : qualifications vérifiables. Vide tant que MBA n'a pas
+   *  fourni la liste — on n'invente pas une certification. */
+  qualifications: string[];
+  /** Déroulement, de la demande à la réalisation. */
+  steps: { title: string; body: string }[];
+  /** Prix. `tarif` reste vide tant que MBA n'a pas donné de fourchette :
+   *  la page affiche alors « à définir », jamais un chiffre plausible. */
+  pricing: { tarif: string; note: string; factors: string[] };
+  /** Zone d'intervention : communes couvertes et contraintes utiles. */
+  area: { communes: string[]; note: string };
+  /** Questions fréquentes. */
+  faq: { q: string; a: string }[];
 };
 
 /** Une réalisation appartient à une catégorie (son slug). */
@@ -157,6 +194,72 @@ const BODY_A =
 const BODY_B =
   "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
+/* Contenu provisoire des pages de service. Écrit par moi pour caler la
+   mise en page : à reprendre mot à mot avec MBA. Les titres sont des
+   catégories, pas des promesses ; les paragraphes sont du lorem. */
+const ETAPES = [
+  "Premier contact",
+  "Visite sur place",
+  "Devis détaillé",
+  "Réalisation",
+  "Réception",
+];
+
+const FACTEURS = [
+  "Nature et état de l\u2019installation existante",
+  "Surface et nombre de points concernés",
+  "Choix des appareils et des finitions",
+  "Accès au chantier",
+];
+
+const QUESTIONS = [
+  "Intervenez-vous dans tout le canton de Genève ?",
+  "Sous quel délai puis-je obtenir un devis ?",
+  "Le devis est-il payant ?",
+];
+
+const COMMUNES = [
+  "Genève",
+  "Carouge",
+  "Grand-Lancy",
+  "Petit-Lancy",
+  "Onex",
+  "Vernier",
+  "Meyrin",
+  "Chêne-Bougeries",
+  "Thônex",
+  "Plan-les-Ouates",
+];
+
+const service = (needs: string[]): ServiceDetail => ({
+  needs: needs.map((title, i) => ({ title, body: i % 2 ? BODY_B : BODY_A })),
+  included: [
+    "Déplacement et prise de mesures",
+    "Fourniture du matériel",
+    "Pose et raccordement",
+    "Mise en service",
+    "Évacuation des déchets de chantier",
+  ],
+  excluded: [
+    "Travaux de maçonnerie",
+    "Carrelage et finitions",
+    "Électricité hors raccordement",
+  ],
+  /* Vide : une qualification est une affirmation vérifiable, elle ne
+     s\u2019invente pas. À remplir avec les vraies (CFC, agréments,
+     assurances, partenariats fabricants…). */
+  qualifications: [],
+  steps: ETAPES.map((title, i) => ({ title, body: i % 2 ? BODY_B : BODY_A })),
+  pricing: {
+    /* Aucun chiffre inventé : la page affiche « à définir ». */
+    tarif: "",
+    note: LEDE,
+    factors: FACTEURS,
+  },
+  area: { communes: COMMUNES, note: LEDE },
+  faq: QUESTIONS.map((q, i) => ({ q, a: i % 2 ? BODY_B : BODY_A })),
+});
+
 export const SERVICES: PageContent[] = [
   {
     href: "/services/sanitaire-salles-de-bain",
@@ -173,6 +276,7 @@ export const SERVICES: PageContent[] = [
       "De la pose d’un sanitaire à la salle de bain complète.",
     ),
     relatedRealisations: { category: "sanitaire-salles-de-bain", label: "sanitaire" },
+    service: service(["Rénovation complète d’une salle de bain", "Remplacement d’un appareil sanitaire", "Installation vétuste ou fuite"]),
   },
   {
     href: "/services/chauffage-pompes-a-chaleur",
@@ -189,6 +293,7 @@ export const SERVICES: PageContent[] = [
       "Du remplacement d’une chaudière à la pompe à chaleur.",
     ),
     relatedRealisations: { category: "chauffage-pompes-a-chaleur", label: "chauffage" },
+    service: service(["Remplacement d’une chaudière", "Passage à la pompe à chaleur", "Distribution et radiateurs"]),
   },
   {
     href: "/services/entretien-depannage",
@@ -205,8 +310,10 @@ export const SERVICES: PageContent[] = [
       "De l’entretien courant au dépannage.",
     ),
     relatedRealisations: { category: "piscines-exterieurs", label: "extérieurs" },
+    service: service(["Entretien périodique", "Panne ou fuite", "Petites réparations"]),
   },
 ];
+
 
 /* --- Les trois catégories de réalisations ------------------------- */
 
