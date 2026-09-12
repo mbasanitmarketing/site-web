@@ -64,9 +64,14 @@
   cursor: default;
 }
 
+/* --per : nombre de vignettes visibles. Une seule valeur à changer par
+   palier, la largeur des vignettes s'en déduit. */
 .rail {
+  --per: 4;
+  --gap: clamp(12px, 1.6vw, 22px);
+
   display: flex;
-  gap: clamp(12px, 1.6vw, 22px);
+  gap: var(--gap);
   margin: 0;
   padding: 0 0 6px;
   list-style: none;
@@ -80,7 +85,7 @@
 }
 
 .slide {
-  flex: 0 0 calc((100% - clamp(12px, 1.6vw, 22px)) / 2);
+  flex: 0 0 calc((100% - (var(--per) - 1) * var(--gap)) / var(--per));
   scroll-snap-align: start;
 }
 
@@ -127,6 +132,20 @@
 .card:hover .cue,
 .card:focus-visible .cue {
   color: #a8763e;
+}
+
+/* Quatre vignettes deviennent trop étroites pour se lire au fur et à
+   mesure que l'écran rétrécit : on en retire une à chaque palier. */
+@media (max-width: 1100px) {
+  .rail {
+    --per: 3;
+  }
+}
+
+@media (max-width: 900px) {
+  .rail {
+    --per: 2;
+  }
 }
 
 @media (max-width: 720px) {
