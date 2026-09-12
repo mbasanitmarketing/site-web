@@ -1,0 +1,150 @@
+/* ---------------------------------------------------------------------
+   Sections « Avis » et « Questions fréquentes » de l'accueil. La coquille
+   (repère collant à gauche, contenu à droite) vient de
+   ServiceSection.module.css et n'est pas redite ici.
+   --------------------------------------------------------------------- */
+
+/* --- Avis ----------------------------------------------------------- */
+
+.aggregate {
+  margin: 2.6em 0 0;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: clamp(12px, 1.6vw, 22px);
+  margin: 1.8em 0 0;
+  padding: 0;
+  list-style: none;
+  max-width: 74ch;
+}
+
+.card {
+  padding: clamp(18px, 2vw, 26px);
+  border: 1px solid rgba(11, 11, 12, 0.14);
+  border-radius: 2px;
+}
+
+.stars {
+  display: inline-flex;
+  gap: 2px;
+}
+.stars svg {
+  width: 15px;
+  height: 15px;
+}
+/* L'étoile pleine dit la note ; la vide reste dessinée, pour qu'on lise
+   « 5 sur 5 » et pas seulement « des étoiles ». */
+.stars svg[data-on="true"] {
+  fill: #a8763e;
+}
+.stars svg[data-on="false"] {
+  fill: none;
+  stroke: rgba(11, 11, 12, 0.3);
+  stroke-width: 1.5;
+}
+
+.body {
+  margin: 1.1em 0 0;
+  line-height: 1.9;
+  color: rgba(11, 11, 12, 0.82);
+}
+
+.author {
+  margin: 1.2em 0 0;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.meta {
+  display: block;
+  font-size: 0.85em;
+  font-weight: 400;
+  color: rgba(11, 11, 12, 0.5);
+}
+
+/* Charte des liens discrets du site : capitales tracées, filet dessous. */
+.link {
+  display: inline-block;
+  margin-top: 1.8em;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(11, 11, 12, 0.3);
+  font-size: clamp(10px, 0.78vw, 11px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #0b0b0c;
+  transition: border-color 220ms ease;
+}
+.link:hover,
+.link:focus-visible {
+  border-color: #a8763e;
+}
+
+/* --- Questions fréquentes -------------------------------------------- */
+
+.faq {
+  margin-top: 2.6em;
+  max-width: 74ch;
+}
+
+.item {
+  border-top: 1px solid rgba(11, 11, 12, 0.14);
+}
+.item:last-child {
+  border-bottom: 1px solid rgba(11, 11, 12, 0.14);
+}
+
+.question {
+  position: relative;
+  padding: 1.4em 2.2em 1.4em 0;
+  font-weight: 600;
+  line-height: 1.6;
+  cursor: pointer;
+  list-style: none;
+}
+.question::-webkit-details-marker {
+  display: none;
+}
+
+/* Croix qui bascule en « moins » : le signe dit l'état, pas la couleur. */
+.question::after,
+.question::before {
+  content: "";
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  width: 13px;
+  height: 1px;
+  background: #0b0b0c;
+  transition: transform 220ms ease;
+}
+.question::before {
+  transform: rotate(90deg);
+}
+.item[open] .question::before {
+  transform: rotate(0deg);
+}
+
+.answer {
+  margin: 0;
+  padding: 0 2.2em 1.6em 0;
+  line-height: 1.9;
+  color: rgba(11, 11, 12, 0.82);
+}
+
+/* Dernière section de la page : le footer remonte de --plate-h pour que
+   son encoche laisse voir du clair. Sans cette réserve, il mordrait sur
+   le dernier repli de la FAQ. */
+.last {
+  padding-bottom: clamp(72px, 13svh, 132px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .question::before,
+  .question::after,
+  .link {
+    transition: none;
+  }
+}

@@ -1,22 +1,24 @@
+import { COUNT, RATING, REVIEWS_URL } from "@/lib/reviews";
 import styles from "./GoogleReviews.module.css";
 
 /**
  * Note Google — l'étoile + la note + le nombre d'avis.
  *
- * Valeurs PROVISOIRES : à brancher sur la vraie fiche d'établissement
- * (Google Business Profile) le moment venu.
+ * Les valeurs viennent de src/lib/reviews.ts, relevées sur la vraie fiche.
+ * Avant, 4,9 et 127 étaient écrits en dur ici : deux chiffres faux, et
+ * affichés en ligne.
  */
-const RATING = 4.9;
-const COUNT = 127;
-const REVIEWS_URL = "#avis";
 
 export function GoogleReviews({ className = "" }: { className?: string }) {
-  const note = RATING.toLocaleString("fr-CH");
+  // « 5,0 » et non « 5 » : c'est la forme affichée par Google.
+  const note = RATING.toLocaleString("fr-CH", { minimumFractionDigits: 1 });
 
   return (
     <a
       className={`${styles.reviews} ${className}`}
       href={REVIEWS_URL}
+      target="_blank"
+      rel="noreferrer"
       aria-label={`Note Google : ${note} sur 5 — ${COUNT} avis`}
     >
       <svg className={styles.star} viewBox="0 0 24 24" aria-hidden="true">
