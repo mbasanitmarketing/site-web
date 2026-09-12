@@ -23,8 +23,16 @@
 }
 
 /* Même corps que le texte courant, un peu plus appuyé : un repère, pas
-   un titre. Il se cale en haut, à hauteur de la grande ligne. */
+   un titre. Il se cale en haut, à hauteur de la grande ligne.
+
+   Collant : il accompagne la lecture de toute la section. Le bloc de
+   la grille lui sert de cadre, donc il s'arrête de lui-même au bas de la
+   section — pas besoin d'aller le décrocher. Même hauteur d'accroche que
+   l'index des pages de catégorie, sous la zone du burger et du logo. */
 .label {
+  position: sticky;
+  top: clamp(84px, 10svh, 116px);
+  align-self: start;
   margin: 0;
   font-size: clamp(15px, 1.1vw, 17px);
   font-weight: 500;
@@ -79,9 +87,13 @@
 }
 
 @media (max-width: 900px) {
-  /* En colonne, le repère passe simplement au-dessus. */
+  /* En colonne, le repère passe simplement au-dessus — collant, il
+     flotterait par-dessus le texte au lieu de l'accompagner. */
   .grid {
     grid-template-columns: 1fr;
     gap: clamp(12px, 2svh, 20px);
+  }
+  .label {
+    position: static;
   }
 }
