@@ -101,23 +101,28 @@
   width: min(38ch, 42vw);
 }
 
+/* Les trois volets sont empilés dans la MÊME cellule de grille. --in vaut
+   1 quand le volet est à l'écran, 0 sinon : l'opacité en dérive, et le
+   bouton aussi — une seule source, ils ne peuvent pas se désynchroniser.
+   Les seuils sont ceux d'avant, seulement déplacés dans la variable. */
 .copyItem {
   grid-area: 1 / 1;
   margin: 0;
+  opacity: var(--in, 1);
 }
 
 .copyItem:nth-child(1) {
-  opacity: clamp(0, calc((0.41 - var(--p, 0)) / 0.05), 1);
+  --in: clamp(0, calc((0.41 - var(--p, 0)) / 0.05), 1);
 }
 .copyItem:nth-child(2) {
-  opacity: clamp(
+  --in: clamp(
     0,
     min(calc((var(--p, 0) - 0.39) / 0.05), calc((0.63 - var(--p, 0)) / 0.05)),
     1
   );
 }
 .copyItem:nth-child(3) {
-  opacity: clamp(0, calc((var(--p, 0) - 0.61) / 0.05), 1);
+  --in: clamp(0, calc((var(--p, 0) - 0.61) / 0.05), 1);
 }
 
 .heading {
@@ -134,6 +139,42 @@
   font-size: clamp(0.9rem, 1.05vw, 1.05rem);
   line-height: 1.5;
   color: rgba(245, 245, 244, 0.66);
+}
+
+/* Charte des boutons texte du site, version fond sombre — mêmes valeurs
+   que le bouton d'envoi du formulaire de devis, posé sur ce même navy.
+
+   Le clic : les trois volets se superposent, un volet effacé garderait
+   sinon un bouton cliquable par-dessus celui qu'on voit. Le `clip-path`,
+   replié à néant hors fenêtre, supprime aussi la zone cliquable — il
+   s'ouvre en grand dès le tout début du fondu. */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: clamp(16px, 2.4svh, 26px);
+  padding: clamp(9px, 1.15svh, 13px) clamp(16px, 1.7vw, 26px);
+  border: 1px solid rgba(245, 245, 244, 0.85);
+  border-radius: 2px;
+  background: transparent;
+  font-size: clamp(10px, 0.85vw, 12px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  color: #f5f5f4;
+  clip-path: inset(calc((1 - clamp(0, calc(var(--in, 1) * 20), 1)) * 50%));
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.cta:hover,
+.cta:focus-visible {
+  background: #f5f5f4;
+  color: #070b20;
 }
 
 /* --- 3 · fenêtre d'images : elles montent l'une SUR l'autre --------
@@ -331,6 +372,9 @@
     opacity: 0;
   }
   .accBody {
+    transition: none;
+  }
+  .cta {
     transition: none;
   }
 }

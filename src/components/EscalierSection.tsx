@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { useScrollProgress } from "@/lib/useScrollProgress";
+import { SERVICES } from "@/lib/pages";
 import styles from "./EscalierSection.module.css";
 
 /**
@@ -13,36 +14,22 @@ import styles from "./EscalierSection.module.css";
  *   3 alignement : le panneau finit de monter, décrochement à plat ;
  *     à ce moment-là, la rangée de 3 accordéons apparaît en bas.
  *
- * Contenu : photos client + textes en lorem ipsum, à remplacer.
+ * Contenu : les trois métiers viennent de src/lib/pages.ts ; les
+ * accordéons du bas sont encore en lorem, à remplacer.
  */
 
-type Item = {
-  src: string;
-  alt: string;
-  heading: string;
-  sub: string;
-};
-
-const ITEMS: Item[] = [
-  {
-    src: "/services-1.jpg",
-    alt: "Salle de bain sur mesure, douche à l'italienne et faïence à motifs",
-    heading: "Lorem ipsum dolor sit amet consectetur.",
-    sub: "Lectus fusce vitae vehicula est amet.",
-  },
-  {
-    src: "/services-2.jpg",
-    alt: "Chaufferie : production de chaleur et distribution",
-    heading: "Praesent commodo cursus magna vel scelerisque.",
-    sub: "Vestibulum id ligula porta felis euismod semper.",
-  },
-  {
-    src: "/services-3.jpg",
-    alt: "Salle de bain contemporaine, pierre foncée et WC suspendu",
-    heading: "Nullam quis risus eget urna mollis ornare.",
-    sub: "Donec id elit non mi porta gravida at eget metus.",
-  },
-];
+/**
+ * Les trois métiers, lus dans la source unique — le menu et les pages de
+ * service lisent la même. L'image est celle du service, donc celle du hero
+ * de la page d'arrivée : la transition la balaie sans raccord.
+ */
+const ITEMS = SERVICES.map((s) => ({
+  href: s.href,
+  src: s.image,
+  alt: s.alt ?? "",
+  heading: s.title,
+  sub: s.manifesto?.headline ?? s.lede,
+}));
 
 const ACCORDIONS: { title: string; body: string }[] = [
   {
@@ -83,9 +70,12 @@ export function EscalierSection() {
           {/* texte de gauche */}
           <div className={styles.copy}>
             {ITEMS.map((it) => (
-              <div key={it.src} className={styles.copyItem}>
+              <div key={it.href} className={styles.copyItem}>
                 <p className={styles.heading}>{it.heading}</p>
                 <p className={styles.sub}>{it.sub}</p>
+                <a className={styles.cta} href={it.href} data-page-transition>
+                  Découvrir le service
+                </a>
               </div>
             ))}
           </div>
@@ -93,7 +83,7 @@ export function EscalierSection() {
           {/* fenêtre d'images : les slides montent l'une sur l'autre */}
           <div className={styles.viewport}>
             {ITEMS.map((it) => (
-              <div key={it.src} className={styles.slide}>
+              <div key={it.href} className={styles.slide}>
                 <Image
                   src={it.src}
                   alt={it.alt}
