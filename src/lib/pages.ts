@@ -40,6 +40,12 @@ export type PageContent = {
   headline?: string;
   /** Section « manifeste » sous le hero (pages de service). */
   manifesto?: Manifesto;
+  /** Carrousel de réalisations en bas de page de service. `category` est
+   *  le slug de la catégorie montrée, `label` le mot repris dans le titre
+   *  (« Nos réalisations <label> »). Les deux sont séparés : l'entretien
+   *  renvoie vers les extérieurs, et le libellé n'est pas le nom de la
+   *  catégorie. */
+  relatedRealisations?: { category: string; label: string };
   /** Libellé court, pour les onglets sur petit écran : les trois noms
    *  complets font 626 px et ne tiennent pas sur un téléphone. Le nom
    *  complet reste juste en dessous, en titre de page. */
@@ -155,6 +161,7 @@ export const SERVICES: PageContent[] = [
     manifesto: manifesto(
       "De la pose d’un sanitaire à la salle de bain complète.",
     ),
+    relatedRealisations: { category: "sanitaire-salles-de-bain", label: "sanitaire" },
   },
   {
     href: "/services/chauffage-pompes-a-chaleur",
@@ -168,6 +175,7 @@ export const SERVICES: PageContent[] = [
     manifesto: manifesto(
       "Du remplacement d’une chaudière à la pompe à chaleur.",
     ),
+    relatedRealisations: { category: "chauffage-pompes-a-chaleur", label: "chauffage" },
   },
   {
     href: "/services/entretien-depannage",
@@ -181,6 +189,7 @@ export const SERVICES: PageContent[] = [
     manifesto: manifesto(
       "De l’entretien courant au dépannage.",
     ),
+    relatedRealisations: { category: "piscines-exterieurs", label: "extérieurs" },
   },
 ];
 
