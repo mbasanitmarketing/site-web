@@ -102,10 +102,28 @@
   position: fixed;
   inset: 0;
   z-index: 90;
-  background: rgba(11, 11, 12, 0.18);
+  /* Menu ouvert : c'est LA PAGE qui se brouille, pas le panneau — cf.
+     « Menu burger flou animation.mov » (gessi.com). Le voile est porté par
+     ce calque plutôt que par un `filter` sur #page-root : il ne coûte que
+     la surface visible au lieu de toute la hauteur du document, et un
+     `filter` sur un ancêtre ferait des `position: fixed` qu'il contient
+     des éléments ancrés sur lui plutôt que sur la fenêtre.
+
+     Valeurs relevées sur la vidéo : le voile blanc ressort à 45 % sur les
+     trois canaux (RGB 66,49,37 -> 153,142,135) et l'ajustement du rayon
+     donne un minimum net vers 23 px.
+
+     Il reste sous le logo (99) et le burger (100), qui restent nets et
+     cliquables ; le bouton d'appel (80) passe dessous et se brouille avec
+     le reste, comme sur la référence. */
+  background: rgba(255, 255, 255, 0.45);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 400ms ease;
+  /* ~320 ms sur la vidéo : le voile est en place avant la fin de la
+     glissade du panneau (550 ms). */
+  transition: opacity 320ms ease;
 }
 .scrimOpen {
   opacity: 1;
@@ -129,7 +147,10 @@
     clamp(28px, 5svh, 56px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: rgba(244, 244, 245, 0.82);
+  /* Opaque : c'est la page derrière qui porte le flou désormais. Un
+     panneau translucide flouterait un fond déjà flouté — deux
+     backdrop-filter imbriqués, que les moteurs rendent inégalement. */
+  background: #f5f5f4;
   color: #070b20;
   border-right: 1px solid rgba(7, 11, 32, 0.08);
   box-shadow: 32px 0 64px -32px rgba(11, 11, 12, 0.25);
@@ -137,19 +158,6 @@
   transition: transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Le vrai verre dépoli seulement là où le moteur sait le rendre ;
-   sinon le blanc translucide ci-dessus suffit à garder le texte lisible. */
-@supports ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
-  .panel {
-    background: rgba(244, 244, 245, 0.62);
-    -webkit-backdrop-filter: blur(22px) saturate(140%);
-    backdrop-filter: blur(22px) saturate(140%);
-  }
-}
-
-.panelOpen {
-  transform: translateX(0);
-}
 
 /* Avis Google, collés en bas du panneau */
 .reviews {
