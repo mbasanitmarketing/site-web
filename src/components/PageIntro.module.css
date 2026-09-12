@@ -172,13 +172,16 @@
   animation: rise 620ms cubic-bezier(0.16, 1, 0.3, 1) 380ms both;
 }
 
-/* Charte des boutons texte du site : rectangle à 2 px de rayon, filet
-   d'un pixel, fond transparent, capitales tracées, et remplissage inversé
-   au survol. Mêmes valeurs que `.slideCta` (carrousel) et `.submit`
-   (devis) ; ici le filet est clair, le bouton étant posé sur une photo.
+/* Deux choses se combinent ici.
 
-   Pas de verre dépoli : ce traitement est réservé aux boutons-icônes
-   ronds (bouton d'appel, pastille « agrandir »). */
+   La FORME vient de la charte des boutons texte (`.slideCta` du carrousel,
+   `.submit` du devis) : rectangle à 2 px de rayon, filet d'un pixel,
+   capitales tracées, remplissage inversé au survol. Pas de pastille.
+
+   La MATIÈRE vient du verre dépoli qui court sur tout le site — panneau du
+   menu, bouton d'appel, pastilles des galeries : fond sombre translucide
+   et flou d'arrière-plan. Le filet reste à 1 px, le flou suffit à détacher
+   le bouton de la photo sans cerner le contour. */
 .cueButton {
   display: inline-flex;
   align-items: center;
@@ -186,7 +189,9 @@
   padding: clamp(9px, 1.15svh, 13px) clamp(16px, 1.7vw, 26px);
   border: 1px solid rgba(245, 245, 244, 0.85);
   border-radius: 2px;
-  background: transparent;
+  background: rgba(16, 16, 20, 0.26);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   font-size: clamp(10px, 0.85vw, 12px);
   font-weight: 500;
   line-height: 1;
