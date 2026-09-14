@@ -5,10 +5,10 @@ const PHONE_HREF = "tel:+41782172928";
 const PHONE_LABEL = "+41 78 217 29 28";
 
 /**
- * Bouton d'appel flottant — rond, anneau blanc + combiné, fixe en bas à
- * droite, permanent sur tout le site (cf. maquette « Hero section -
- * allumer le feu »). Léger fond sombre flouté pour rester lisible aussi
- * bien sur les sections claires que sur le navy.
+ * Bouton d'appel flottant — rectangulaire, anneau blanc + combiné, fixe
+ * en bas à droite, permanent sur tout le site (cf. maquette « Hero
+ * section - allumer le feu »). Léger fond sombre flouté pour rester
+ * lisible aussi bien sur les sections claires que sur le navy.
  */
 export function CallButton() {
   return (
