@@ -72,6 +72,16 @@
      <img> étiré à 100%/100% : `object-fit: fill`, qui déforme la photo
      pour remplir exactement la boîte au lieu de la recadrer. */
   object-fit: cover;
+  /* La boîte (2,377) est bien plus large que la photo (1,5) : `cover`
+     doit couper 36,9 % de la hauteur — mesuré. Regardé la photo : les
+     trois hommes occupent DÉJÀ ~88 % du cadre (cheveux ~9 % du haut,
+     chaussures ~97 %) — bien plus que les 63,1 % qu'on peut garder.
+     Impossible de montrer têtes ET pieds en entier, quel que soit le
+     point d'ancrage. On sacrifie le bas plutôt que les visages : ancré
+     à 24 % (pas 50%, centré, qui coupait dans les deux) pour couper
+     ~9 % en haut (juste au ras des cheveux) et ~28 % en bas — un
+     recadrage à mi-cuisse, plus soigné qu'une coupe dans les têtes. */
+  object-position: 50% 24%;
   transform: scale(clamp(0.4, calc(0.4 + var(--p, 0) * 1.43), 1));
   will-change: transform;
 }
