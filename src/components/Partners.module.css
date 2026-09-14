@@ -3,8 +3,11 @@
 
    Relevé sur la maquette : mêmes colonnes que le manifeste (30 / 70) pour
    le repère et la grande ligne, mais la rangée de logos s'affranchit de la
-   grille et court sur toute la largeur utile, répartie et centrée sur la
-   hauteur. Beaucoup de blanc entre la ligne et les logos.
+   grille et court sur toute la largeur utile. Beaucoup de blanc entre la
+   ligne et les logos.
+
+   Les logos DÉFILENT (marquee), avec un flou aux deux bords pour que le
+   défilement ne soit pas abrupt — cf. « Le défilement » plus bas.
    --------------------------------------------------------------------- */
 
 .wrap {
@@ -39,23 +42,69 @@
   letter-spacing: -0.015em;
 }
 
-/* Même principe que le manifeste : l'écart relevé sur la maquette (7,4
-   corps entre la ligne et les logos) est exprimé en `em`. */
+/* --- Le défilement ---------------------------------------------------
+
+   `.viewport` rogne et porte le flou des bords ; `.marquee` défile ;
+   `.row` est la piste, rendue deux fois. La translation de -50 % ramène
+   la seconde copie pile à la place de la première : la boucle ne se voit
+   pas.
+
+   Le flou des bords est fait en DEUX temps, parce qu'un `filter: blur()`
+   ne s'applique pas à une bande seulement : un calque posé par-dessus
+   porte `backdrop-filter: blur()` masqué aux deux extrémités, et un
+   dégradé du fond par-dessus lui, pour que le logo finisse par
+   disparaître au lieu de rester net-mais-flou au ras du bord. */
+
+.viewport {
+  position: relative;
+  /* Même écart relevé sur la maquette (7,4 corps entre la ligne et les
+     logos), exprimé en `em` comme pour le manifeste. */
+  font-size: clamp(15px, 1.1vw, 17px);
+  margin-top: 7.4em;
+  overflow: hidden;
+}
+
+.marquee {
+  display: flex;
+  width: max-content;
+  /* La durée suit le nombre de logos : ajouter un logo allonge la piste,
+     la vitesse APPARENTE doit rester la même. 5 s par logo, deux pistes. */
+  animation: defile calc(var(--n, 6) * 5s) linear infinite;
+}
+
+/* S'arrête quand on le survole : on peut lire un nom. */
+.viewport:hover .marquee {
+  animation-play-state: paused;
+}
+
+@keyframes defile {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Plus de `justify-content: space-between` : sur une piste qui défile, la
+   largeur vient du contenu, l'écart doit être constant d'un logo à
+   l'autre — sinon la boucle se verrait au raccord. */
 .row {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: clamp(24px, 4vw, 56px);
-  font-size: clamp(15px, 1.1vw, 17px);
-  margin: 7.4em 0 0;
-  padding: 0 var(--page-x);
+  flex: none;
+  gap: clamp(28px, 4vw, 64px);
+  /* La moitié de l'écart de chaque côté : additionnés au raccord des deux
+     pistes, ils refont exactement un écart. */
+  padding: 0 clamp(14px, 2vw, 32px);
+  margin: 0;
   list-style: none;
 }
 
 .item {
   display: grid;
   place-items: center;
+  flex: none;
   height: clamp(44px, 4.6vw, 64px);
 }
 
@@ -67,7 +116,10 @@
 
 /* Emplacement en attente du fichier : visiblement un trou, pas un logo. */
 .slot {
-  min-width: clamp(116px, 12vw, 180px);
+  display: grid;
+  place-items: center;
+  width: clamp(116px, 12vw, 180px);
+  height: 100%;
   border: 1px dashed rgba(11, 11, 12, 0.25);
   font-size: clamp(10px, 0.78vw, 11px);
   letter-spacing: 0.14em;
@@ -75,15 +127,55 @@
   color: rgba(11, 11, 12, 0.35);
 }
 
+/* Les deux bords : le flou, puis le fondu vers le fond de la section. */
+.viewport::before,
+.viewport::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: clamp(56px, 12vw, 180px);
+  pointer-events: none;
+  /* Préfixe conservé pour les Safari iOS un peu anciens, comme sur le
+     bouton d'appel. */
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.viewport::before {
+  left: 0;
+  /* Le flou est plein au ras du bord et s'éteint vers l'intérieur. */
+  -webkit-mask-image: linear-gradient(to right, #000, transparent);
+  mask-image: linear-gradient(to right, #000, transparent);
+  background: linear-gradient(
+    to right,
+    #f5f5f4 12%,
+    rgba(245, 245, 244, 0)
+  );
+}
+
+.viewport::after {
+  right: 0;
+  -webkit-mask-image: linear-gradient(to left, #000, transparent);
+  mask-image: linear-gradient(to left, #000, transparent);
+  background: linear-gradient(to left, #f5f5f4 12%, rgba(245, 245, 244, 0));
+}
+
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
     gap: clamp(12px, 2svh, 20px);
   }
-  /* Répartis, ils se retrouveraient collés aux bords sur une ligne de
-     deux : on centre et on laisse l'écart faire le travail. */
-  .row {
-    justify-content: center;
-    gap: clamp(20px, 6vw, 40px);
+}
+
+/* Mouvement réduit : la piste s'arrête. Une seule copie reste lisible —
+   la seconde est `aria-hidden`, la masquer ne retire rien. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
+  }
+  .viewport {
+    overflow-x: auto;
   }
 }

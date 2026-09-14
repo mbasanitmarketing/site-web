@@ -50,6 +50,11 @@
    trajet est un palier posé. */
 .panel {
   --in: clamp(0, calc(var(--p, 0) / 0.82), 1);
+  /* Le bleu du manifeste (« La prestation »). Une seule source : le fond
+     du panneau, celui des cases et celui du bloc central doivent rester
+     identiques, sinon la trame d'un pixel se met à se voir là où on ne
+     l'attend pas. */
+  --band: #e0e5f2;
 
   position: absolute;
   inset: 0;
@@ -57,7 +62,7 @@
   flex-direction: column;
   justify-content: center;
   padding: clamp(24px, 5svh, 64px) var(--page-x);
-  background: #f5f5f4;
+  background: var(--band);
   color: #0b0b0c;
   transform: translateX(calc((1 - var(--in)) * 100%));
   pointer-events: auto;
@@ -84,7 +89,7 @@
   display: grid;
   place-items: center;
   padding: clamp(12px, 1.6vw, 24px);
-  background: #f5f5f4;
+  background: var(--band);
   /* Allumage piloté par la traversée, pas par une transition : --d
      (0 = tout à droite, 1 = tout à gauche) décale le moment où la case
      s'allume, donc elle s'illumine quand elle entre dans le cadre. Le
@@ -123,7 +128,7 @@
   justify-content: center;
   gap: clamp(16px, 2.4svh, 26px);
   padding: clamp(16px, 2.4vw, 32px);
-  background: #f5f5f4;
+  background: var(--band);
   text-align: center;
 }
 

@@ -45,3 +45,31 @@ export const REVIEWS: Review[] = [
     body: "J’ai eu l’occasion de travailler avec Fred, qui fait preuve d’un professionnalisme dingue ! J’ai rarement été aussi satisfaite, tant au niveau du service que de l’amabilité.",
   },
 ];
+
+/**
+ * Citation mise en avant sous les avis.
+ *
+ * VOLONTAIREMENT VIDE. Ce n'est pas un avis Google de plus : c'est une
+ * phrase choisie, mise en grand. Je ne l'écris pas moi-même — une phrase
+ * inventée puis attribuée à un client ou à MBA serait un faux témoignage.
+ *
+ * Tant que c'est `null`, la section réserve la place et le dit. Pour la
+ * remplir, remplacer par :
+ *
+ *   export const PULL_QUOTE: PullQuote | null = {
+ *     text: "…",
+ *     author: "Frédéric …",
+ *     role: "Fondateur, MBA Sanit",
+ *   };
+ *
+ * Une phrase de Fred sur sa façon de travailler marcherait très bien ici,
+ * comme un avis client particulièrement parlant.
+ */
+export type PullQuote = {
+  text: string;
+  author: string;
+  /** Fonction ou contexte, sous le nom. Facultatif. */
+  role?: string;
+};
+
+export const PULL_QUOTE: PullQuote | null = null;

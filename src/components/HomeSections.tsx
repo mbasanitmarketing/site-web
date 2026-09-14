@@ -1,6 +1,6 @@
 import { ServiceSection } from "./ServiceSection";
 import { GoogleReviews } from "./GoogleReviews";
-import { COUNT, RATING, REVIEWS, REVIEWS_URL } from "@/lib/reviews";
+import { COUNT, PULL_QUOTE, RATING, REVIEWS, REVIEWS_URL } from "@/lib/reviews";
 import shell from "./ServiceSection.module.css";
 import styles from "./HomeSections.module.css";
 
@@ -34,6 +34,10 @@ export function HomeReviews() {
         <GoogleReviews />
       </p>
 
+      {/* Les avis courent à l'HORIZONTALE : une piste qui se fait glisser
+          au doigt plutôt qu'une grille qui s'empile. Avec un seul avis
+          elle tient sur une carte, avec dix elle défile — sans que la
+          section ne s'allonge. */}
       <ul className={styles.cards}>
         {REVIEWS.map((r) => (
           <li key={r.author + r.date} className={styles.card}>
@@ -46,6 +50,36 @@ export function HomeReviews() {
           </li>
         ))}
       </ul>
+
+      {/* Sous les avis, la place d'une belle citation. Je ne l'écris pas :
+          une phrase inventée puis signée d'un client serait un faux
+          témoignage. Cf. PULL_QUOTE dans src/lib/reviews.ts. */}
+      {PULL_QUOTE ? (
+        <figure className={styles.quote}>
+          <blockquote className={styles.quoteText}>
+            {PULL_QUOTE.text}
+          </blockquote>
+          <figcaption className={styles.quoteBy}>
+            {PULL_QUOTE.author}
+            {PULL_QUOTE.role && (
+              <span className={styles.quoteRole}>{PULL_QUOTE.role}</span>
+            )}
+          </figcaption>
+        </figure>
+      ) : (
+        <figure className={`${styles.quote} ${styles.quoteEmpty}`}>
+          <blockquote className={styles.quoteText}>
+            La phrase qui restera en tête.
+          </blockquote>
+          <figcaption className={styles.quoteBy}>
+            Emplacement réservé
+            <span className={styles.quoteRole}>
+              Citation à choisir avec MBA — un avis client marquant, ou une
+              phrase de Fred sur sa façon de travailler.
+            </span>
+          </figcaption>
+        </figure>
+      )}
 
       <a
         className={styles.link}

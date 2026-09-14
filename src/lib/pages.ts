@@ -106,7 +106,10 @@ export type ServiceDetail = {
   included: string[];
   /** Ce qu'elle ne comprend pas. */
   excluded: string[];
-  /** Preuves : qualifications vérifiables. Vide tant que MBA n'a pas
+  /** RETIRÉ DE L'AFFICHAGE : la section « Preuves » a été supprimée des
+   *  pages de service. Le champ reste pour mémoire — MBA doit toujours
+   *  fournir ses qualifications si on veut les remontrer un jour.
+   *  Vide tant que MBA n'a pas
    *  fourni la liste — on n'invente pas une certification. */
   qualifications: string[];
   /** Déroulement, de la demande à la réalisation. */

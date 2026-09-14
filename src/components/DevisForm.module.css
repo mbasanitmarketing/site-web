@@ -13,9 +13,14 @@
   padding-top: clamp(104px, 16svh, 168px);
 }
 
+/* Tout centré sur la page (demandé) : une colonne au milieu, et le titre
+   comme le chapô alignés sur son axe. Les champs, eux, gardent leur
+   alignement à gauche à l'intérieur — un libellé centré au-dessus d'un
+   champ se lit mal. */
 .head {
   max-width: 46ch;
-  margin-bottom: clamp(24px, 5svh, 48px);
+  margin: 0 auto clamp(24px, 5svh, 48px);
+  text-align: center;
 }
 
 .title {
@@ -38,6 +43,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(16px, 2.4vw, 28px);
   max-width: 900px;
+  margin: 0 auto;
 }
 
 .field {
@@ -102,10 +108,12 @@
   opacity: 0;
 }
 
+/* Centrée comme le reste du bloc. */
 .actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: clamp(14px, 2vw, 26px);
 }
 

@@ -8,32 +8,7 @@ const PHONE_HREF = "tel:+41782172928";
 
 /* --- 2. Besoins traités : voir ServiceNeeds.tsx, sa propre scène ---- */
 
-/* --- 3. Preuves : qualifications ----------------------------------- */
-
-export function ServiceProof({ service }: { service: ServiceDetail }) {
-  return (
-    <ServiceSection label="Preuves">
-      <h2 className={shell.headline}>Qualifications et références.</h2>
-      {service.qualifications.length > 0 ? (
-        <ul className={shell.list}>
-          {service.qualifications.map((q) => (
-            <li key={q} className={shell.listItem}>
-              {q}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className={shell.missing}>
-          Qualifications à fournir par MBA — CFC, agréments, assurances,
-          partenariats fabricants. Rien n’est affiché ici tant que la liste
-          n’est pas vérifiable.
-        </p>
-      )}
-    </ServiceSection>
-  );
-}
-
-/* --- 4. Déroulement ------------------------------------------------- */
+/* --- 3. Déroulement ------------------------------------------------- */
 
 export function ServiceSteps({ service }: { service: ServiceDetail }) {
   return (
