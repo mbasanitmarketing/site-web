@@ -1,6 +1,6 @@
 import { ServiceSection } from "./ServiceSection";
 import { GoogleReviews } from "./GoogleReviews";
-import { COUNT, PULL_QUOTE, RATING, REVIEWS, REVIEWS_URL } from "@/lib/reviews";
+import { COUNT, PULL_QUOTE, REVIEWS, REVIEWS_URL } from "@/lib/reviews";
 import shell from "./ServiceSection.module.css";
 import styles from "./HomeSections.module.css";
 
@@ -24,8 +24,6 @@ function Stars({ n }: { n: number }) {
  * section n'en montre qu'un.
  */
 export function HomeReviews() {
-  const note = RATING.toLocaleString("fr-CH");
-
   return (
     <ServiceSection label="Avis" arc>
       <h2 className={shell.headline}>Ce que disent nos clients.</h2>
@@ -53,7 +51,11 @@ export function HomeReviews() {
 
       {/* Sous les avis, la place d'une belle citation. Je ne l'écris pas :
           une phrase inventée puis signée d'un client serait un faux
-          témoignage. Cf. PULL_QUOTE dans src/lib/reviews.ts. */}
+          témoignage. Cf. PULL_QUOTE dans src/lib/reviews.ts.
+
+          Tant qu'elle est vide, la place est tenue par une ligne grisée,
+          SANS légende : les notes de chantier n'ont rien à faire sur la
+          page publique (retirées à la demande). */}
       {PULL_QUOTE ? (
         <figure className={styles.quote}>
           <blockquote className={styles.quoteText}>
@@ -71,13 +73,6 @@ export function HomeReviews() {
           <blockquote className={styles.quoteText}>
             La phrase qui restera en tête.
           </blockquote>
-          <figcaption className={styles.quoteBy}>
-            Emplacement réservé
-            <span className={styles.quoteRole}>
-              Citation à choisir avec MBA — un avis client marquant, ou une
-              phrase de Fred sur sa façon de travailler.
-            </span>
-          </figcaption>
         </figure>
       )}
 
@@ -89,15 +84,6 @@ export function HomeReviews() {
       >
         {COUNT > 1 ? `Voir les ${COUNT} avis sur Google` : "Voir sur Google"}
       </a>
-
-      {COUNT < 3 && (
-        <p className={shell.missing}>
-          La fiche Google ne compte pour l’instant que {COUNT} avis, noté{" "}
-          {note} sur 5. La section s’étoffera d’elle-même dès que MBA en
-          recueillera d’autres — mais il faut alors repasser ici : les avis
-          sont figés dans le code, ils ne se mettent pas à jour tout seuls.
-        </p>
-      )}
     </ServiceSection>
   );
 }

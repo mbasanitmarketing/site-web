@@ -137,14 +137,11 @@
   color: rgba(11, 11, 12, 0.5);
 }
 
-/* Emplacement en attente : visiblement une réserve, pas une vraie
-   citation — même principe que les cases « Logo » de la grille. */
+/* Emplacement en attente : grisé, pour qu'on voie que la place est
+   réservée sans qu'on le prenne pour une vraie citation. Pas de légende
+   d'instructions — elles n'ont rien à faire sur la page publique. */
 .quoteEmpty .quoteText {
   color: rgba(11, 11, 12, 0.3);
-}
-
-.quoteEmpty .quoteBy {
-  color: rgba(11, 11, 12, 0.42);
 }
 
 /* Le guillemet dans la marge n'a plus la place quand la colonne touche le

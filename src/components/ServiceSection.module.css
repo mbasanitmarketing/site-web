@@ -115,17 +115,6 @@
   border-radius: 0;
 }
 
-/* Manque assumé : affiché comme tel, jamais comblé par du plausible. */
-.missing {
-  max-width: 74ch;
-  margin: 2.6em 0 0;
-  padding: 1.1em 1.3em;
-  border: 1px dashed rgba(11, 11, 12, 0.25);
-  border-radius: 2px;
-  line-height: 1.7;
-  color: rgba(11, 11, 12, 0.5);
-}
-
 @media (max-width: 900px) {
   /* En colonne, le repère passe au-dessus — collant, il flotterait
      par-dessus le texte au lieu de l'accompagner. */
