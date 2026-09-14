@@ -1,11 +1,13 @@
 /* ---------------------------------------------------------------------
    « À votre écoute » — d'après « image et textes zoom animation.mov »
-   (halston / metrik.studio).
+   (halston / metrik.studio), avec un écart voulu : le titre n'est plus
+   caché derrière l'image, il est posé en clair AU-DESSUS, dans son
+   propre bandeau. L'image (en dessous) garde son animation de zoom.
 
    Piste + scène épinglée, tout dérive de --p (cf. ServiceNeeds.tsx pour
-   la chronologie). Le grand mot est simplement DERRIÈRE l'image : c'est
-   elle qui le recouvre en grandissant (via transform:scale, pas un
-   fondu) — aucune animation propre au mot n'est nécessaire.
+   la chronologie). `.stage` est une colonne flex : `.label` (hauteur
+   fixe) puis `.media` (le reste) — `.panel` reste un calque absolu par-
+   dessus les deux, comme avant.
    --------------------------------------------------------------------- */
 
 .track {
@@ -29,48 +31,39 @@
   overflow: hidden;
   /* Blanc du site — pas le bleu de « La prestation ». */
   background: #f5f5f4;
+  /* Colonne : le bandeau du titre, puis l'image qui prend le reste. */
+  display: flex;
+  flex-direction: column;
 }
 
-/* --- Le grand mot, derrière l'image ---------------------------------- */
+/* --- Le titre, dans son propre bandeau au-dessus de l'image --------- */
 
-.word {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 1;
+.label {
+  flex: none;
   margin: 0;
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
-  /* Réduit — il couvrait presque toute la largeur de l'écran. */
-  font-size: clamp(2.2rem, 8vw, 6rem);
-  font-weight: 200;
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
-  /* Encre foncée, pas blanche : le fond est devenu clair (#e0e5f2). */
-  color: rgba(11, 11, 12, 0.13);
+  padding: clamp(84px, 11svh, 128px) var(--page-x) clamp(20px, 3.4svh, 34px);
+  font-size: clamp(1.7rem, 3.2vw, 2.6rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: #0b0b0c;
 }
 
 /* --- L'image qui grandit ---------------------------------------------- */
 
 .media {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
+  position: relative;
+  flex: 1;
   overflow: hidden;
 }
 
 /* next/image (fill) pose déjà position:absolute + inset:0 sur le <img> ;
    le scale grandit donc bien AUTOUR DU CENTRE de la scène, comme sur la
    référence — un petit rectangle qui s'étend jusqu'au plein cadre. */
-/* Démarre à 0.4 (au lieu de 0.32) — plus proche, moins de distance à
-   parcourir — et termine à --p 0.42 (au lieu de 0.55) : la montée était
-   trop longue.
-
-   0.4 et pas plus : à 0.6, l'image (864px à 1440px d'écran) couvrait
-   ENTIÈREMENT le mot (775px) dès --p 0 — mesuré, pas supposé. Le mot
-   n'était donc plus jamais visible, pas même avant le premier pixel de
-   scroll. À 0.4 elle fait 576px, plus étroite que le mot : il déborde
-   visiblement de chaque côté au départ, comme sur la référence. */
+/* Démarre à 0.4, termine à --p 0.42. Le titre est passé dans son propre
+   bandeau au-dessus (.label) : l'échelle de départ n'a donc plus besoin
+   de rester sous une largeur précise pour le laisser déborder — elle
+   peut remonter si on veut une image qui démarre plus proche. */
 .image {
   transform: scale(clamp(0.4, calc(0.4 + var(--p, 0) * 1.43), 1));
   will-change: transform;
@@ -222,11 +215,15 @@
     position: static;
     height: auto;
   }
-  .word {
-    display: none;
+  .label {
+    /* Le padding du haut, en pinglé, se calait sous le burger/logo fixes
+       (cf. la règle de base) : ici .label est en flux normal, quelque
+       part au milieu de la page, elle n'a plus à s'en soucier. */
+    padding: clamp(28px, 5svh, 48px) var(--page-x) clamp(16px, 2.6svh, 24px);
   }
   .media {
     position: relative;
+    flex: none;
     height: 62svh;
   }
   .image {

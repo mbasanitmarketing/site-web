@@ -8,14 +8,14 @@ import styles from "./ServiceNeeds.module.css";
 
 /**
  * « À votre écoute » — d'après « image et textes zoom animation.mov »
- * (halston / metrik.studio).
+ * (halston / metrik.studio), avec un écart voulu : le titre est posé en
+ * clair dans son propre bandeau au-dessus de l'image, pas caché derrière
+ * elle comme sur la référence.
  *
- * La scène s'épingle et tout dérive de --p (cf. le module CSS pour les
- * bornes exactes de chaque fenêtre) :
+ * La scène s'épingle et le reste dérive de --p (cf. le module CSS pour
+ * les bornes exactes de chaque fenêtre) :
  *
- *   0    -> 0.42  l'image grandit (elle démarre déjà proche, à 0.6) au
- *                 plein cadre, recouvrant peu à peu le grand mot posé
- *                 derrière
+ *   0    -> 0.42  l'image grandit jusqu'au plein cadre de sa zone
  *   0.36 -> 0.48  le titre et le bouton apparaissent sur l'image
  *   0.54 -> 0.80  le panneau des trois cas remonte par le bas, puis reste
  *                 épinglé en place jusqu'à la fin de la piste
@@ -36,11 +36,9 @@ export function ServiceNeeds({ service }: { service: ServiceDetail }) {
   return (
     <section ref={trackRef} className={styles.track}>
       <div ref={stageRef} className={styles.stage}>
-        {/* Posé DERRIÈRE l'image : c'est elle qui le recouvre en
-            grandissant, pas un fondu. */}
-        <p className={styles.word} aria-hidden="true">
-          À votre écoute
-        </p>
+        {/* Dans son propre bandeau, au-dessus de l'image — pas caché
+            derrière elle. */}
+        <p className={styles.label}>À votre écoute</p>
 
         <div className={styles.media}>
           <Image
