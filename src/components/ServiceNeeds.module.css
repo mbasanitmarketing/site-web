@@ -27,8 +27,8 @@
   top: 0;
   height: 100svh;
   overflow: hidden;
-  /* Même bleu que « La prestation », la section juste au-dessus. */
-  background: #e0e5f2;
+  /* Blanc du site — pas le bleu de « La prestation ». */
+  background: #f5f5f4;
 }
 
 /* --- Le grand mot, derrière l'image ---------------------------------- */
@@ -62,11 +62,17 @@
 /* next/image (fill) pose déjà position:absolute + inset:0 sur le <img> ;
    le scale grandit donc bien AUTOUR DU CENTRE de la scène, comme sur la
    référence — un petit rectangle qui s'étend jusqu'au plein cadre. */
-/* Démarre à 0.6 (au lieu de 0.32) — plus proche, moins de distance à
+/* Démarre à 0.4 (au lieu de 0.32) — plus proche, moins de distance à
    parcourir — et termine à --p 0.42 (au lieu de 0.55) : la montée était
-   trop longue. */
+   trop longue.
+
+   0.4 et pas plus : à 0.6, l'image (864px à 1440px d'écran) couvrait
+   ENTIÈREMENT le mot (775px) dès --p 0 — mesuré, pas supposé. Le mot
+   n'était donc plus jamais visible, pas même avant le premier pixel de
+   scroll. À 0.4 elle fait 576px, plus étroite que le mot : il déborde
+   visiblement de chaque côté au départ, comme sur la référence. */
 .image {
-  transform: scale(clamp(0.6, calc(0.6 + var(--p, 0) * 0.95), 1));
+  transform: scale(clamp(0.4, calc(0.4 + var(--p, 0) * 1.43), 1));
   will-change: transform;
 }
 
