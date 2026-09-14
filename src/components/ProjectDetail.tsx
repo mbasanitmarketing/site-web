@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import type { Realisation } from "@/lib/pages";
 import styles from "./ProjectDetail.module.css";
+import { BackdropLines } from "./BackdropLines";
 
 /**
  * Corps d'une page de réalisation, d'après « realisations projets.mov » :
@@ -38,6 +39,7 @@ export function ProjectDetail({ project }: { project: Realisation }) {
     /* Un seul conteneur porte le fond clair. Avant, chaque bloc avait le
        sien et le noir du body transparaissait dans les marges entre eux. */
     <div className={styles.wrap}>
+      <BackdropLines arc />
       <section className={styles.body}>
         {project.body.map((p, i) => (
           <p key={i} className={styles.paragraph}>

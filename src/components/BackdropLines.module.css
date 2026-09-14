@@ -1,0 +1,68 @@
+/* ---------------------------------------------------------------------
+   Trame de fond des sections claires.
+
+   z-index -1 combiné à `isolation: isolate` sur le conteneur : la trame
+   passe AU-DESSUS du fond de la section et EN DESSOUS de son contenu,
+   sans avoir à donner un z-index à chaque enfant.
+
+   `overflow: hidden` ici et pas sur la section : un overflow sur la
+   section ferait d'elle un conteneur de défilement et casserait le
+   `position: sticky` des repères de gauche.
+   --------------------------------------------------------------------- */
+
+.lines {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Filet horizontal en haut de section. Empilé d'une section à l'autre, il
+   marque la trame sans faire séparateur appuyé. */
+.rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(11, 11, 12, 0.08);
+}
+
+/* Verticale pointillée. 60,5 % relevé sur la référence (1210 / 2000). */
+.dash {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 60.5%;
+  width: 1px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(11, 11, 12, 0.16) 0 6px,
+    transparent 6px 13px
+  );
+}
+
+/* Grand arc. Un cercle bien plus large que la section, décalé à droite :
+   seul son bord gauche traverse le cadre, comme sur la référence. */
+.arc {
+  position: absolute;
+  top: -55%;
+  right: -38%;
+  width: 118%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(11, 11, 12, 0.075);
+  border-radius: 50%;
+}
+
+@media (max-width: 720px) {
+  /* La verticale tomberait en plein dans le texte en colonne unique. */
+  .dash {
+    display: none;
+  }
+  .arc {
+    top: -30%;
+    right: -60%;
+    width: 150%;
+  }
+}

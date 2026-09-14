@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { useLenis } from "lenis/react";
 import { slugOf, type PageContent, type Realisation } from "@/lib/pages";
 import styles from "./CategoryIndex.module.css";
+import { BackdropLines } from "./BackdropLines";
 
 /** Ancre d'une réalisation. Préfixée : un id ne doit pas percuter une route. */
 const anchorOf = (r: Realisation) => `r-${slugOf(r.href)}`;
@@ -84,6 +85,7 @@ export function CategoryIndex({
     // Le bandeau (nom + phrase de rubrique) est porté par l'ouverture de
     // page, au-dessus de la bannière : cf. PageIntro, variante HERO_BAND.
     <div className={styles.wrap}>
+      <BackdropLines arc />
       <div className={styles.columns}>
         <aside className={styles.aside}>
           <nav aria-label={`Réalisations — ${category.title}`}>

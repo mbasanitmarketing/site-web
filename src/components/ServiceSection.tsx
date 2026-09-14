@@ -1,4 +1,5 @@
 import styles from "./ServiceSection.module.css";
+import { BackdropLines } from "./BackdropLines";
 
 /**
  * Coquille commune à toutes les sections d'une page de service, d'après la
@@ -17,6 +18,7 @@ export function ServiceSection({
 }) {
   return (
     <section className={`${styles.wrap} ${className}`}>
+      <BackdropLines />
       <div className={styles.grid}>
         <p className={styles.label}>{label}</p>
         <div className={styles.content}>{children}</div>

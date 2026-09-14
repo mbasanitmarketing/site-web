@@ -9,7 +9,10 @@
    sinon le noir du body transparaît dans les marges qui les séparent. */
 .wrap {
   background: #f5f5f4;
-  color: #0b0b0c;
+  color: #0b0b0c;  /* Trame de fond (BackdropLines) : `isolation` pour qu'elle passe
+     derrière le contenu sans toucher au z-index des enfants. */
+  position: relative;
+  isolation: isolate;
 }
 
 .body,

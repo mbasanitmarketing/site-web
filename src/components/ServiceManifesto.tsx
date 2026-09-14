@@ -1,5 +1,6 @@
 import type { Manifesto } from "@/lib/pages";
 import styles from "./ServiceManifesto.module.css";
+import { BackdropLines } from "./BackdropLines";
 
 /**
  * Section « manifeste » sous le hero d'une page de service, d'après la
@@ -12,6 +13,7 @@ import styles from "./ServiceManifesto.module.css";
 export function ServiceManifesto({ manifesto }: { manifesto: Manifesto }) {
   return (
     <section className={styles.wrap}>
+      <BackdropLines arc />
       <div className={styles.grid}>
         <p className={styles.label}>{manifesto.label}</p>
 
