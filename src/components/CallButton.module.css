@@ -11,7 +11,8 @@
   width: clamp(52px, 5.4vw, 62px);
   height: clamp(52px, 5.4vw, 62px);
   border: 1.5px solid rgba(255, 255, 255, 0.9);
-  border-radius: 8px;
+  /* Même rayon que les boutons CTA texte du site (charte : rectangle 2px). */
+  border-radius: 2px;
   color: #fff;
   /* léger disque sombre flouté : garde l'anneau blanc lisible sur les
      sections claires ; quasi invisible sur la hero / le navy. */
