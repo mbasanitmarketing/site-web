@@ -97,7 +97,6 @@
      sans disparaître : on garde le fil de la bande */
   opacity: calc(0.32 + var(--in, 0) * 0.68);
   transform: translateY(calc((1 - var(--in, 0)) * 14px));
-  will-change: opacity, transform;
 }
 
 .title {

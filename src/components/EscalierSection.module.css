@@ -203,7 +203,6 @@
   inset: 0;
   overflow: hidden;
   background: #76767a;
-  will-change: transform;
 }
 
 .slide img {

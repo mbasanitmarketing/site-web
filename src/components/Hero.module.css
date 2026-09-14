@@ -66,7 +66,6 @@
   position: absolute;
   inset: 0;
   opacity: clamp(0, calc(var(--p, 0) / 0.55), 1);
-  will-change: opacity;
 }
 
 /* voile qui se lève : 0.22 -> 0.05 sur p 0..0.6 */
@@ -138,7 +137,6 @@
   right: var(--gutter);
   bottom: var(--headline-bottom);
   transform: translateY(calc(var(--rise) / 2 - var(--p, 0) * var(--rise)));
-  will-change: transform;
 }
 
 /* 0.18 -> 1 sur p 0.15..0.62 */
@@ -169,7 +167,6 @@
   opacity: var(--lin);
   transform: translateY(calc(var(--rise) / 2 - var(--p, 0) * var(--rise)))
     scaleY(var(--lin));
-  will-change: opacity, transform;
 }
 
 /* --- CTA « Demander un devis » ---
@@ -212,7 +209,6 @@
   transition:
     background-color 220ms ease,
     color 220ms ease;
-  will-change: opacity, transform;
 }
 
 .cta:hover {

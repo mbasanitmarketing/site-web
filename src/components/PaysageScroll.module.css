@@ -86,7 +86,6 @@
   color: #0b0b0c;
   opacity: var(--in);
   transform: translateY(calc((1 - var(--in)) * 16px));
-  will-change: opacity, transform;
 }
 
 .title {
@@ -207,7 +206,6 @@
   text-transform: uppercase;
   color: #0b0b0c;
   opacity: var(--face-in);
-  will-change: opacity;
 }
 
 /* Bouton sous le titre (cf. maquette) : filet fin, fond transparent,
@@ -248,7 +246,6 @@
   transition:
     background-color 200ms ease,
     color 200ms ease;
-  will-change: opacity;
 }
 
 .slideCta:hover,
