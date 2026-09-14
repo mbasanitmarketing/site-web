@@ -7,9 +7,14 @@ import { useScrollProgress } from "@/lib/useScrollProgress";
 import styles from "./PartnersGrid.module.css";
 import { BackdropLines } from "./BackdropLines";
 
-/** Cases de la grille : 6 colonnes × 4 rangées, moins le bloc central de
- *  2 × 2 occupé par le titre — soit 20 logos pour remplir la trame. */
-const SLOTS = 20;
+/** Cases de la grille : 6 colonnes × 2 rangées, moins le bloc central de
+ *  2 × 2 occupé par le titre — soit 8 logos pour remplir la trame.
+ *
+ *  La trame faisait 4 rangées (20 logos) : MBA n'en aura pas autant, une
+ *  grille aux trois quarts vide aurait surtout montré des trous. Les
+ *  rangées du haut et du bas sont retirées ; le bloc central occupe donc
+ *  toute la hauteur (cf. `.center` dans le module CSS). */
+const SLOTS = 8;
 
 /**
  * Bandeau de logos en grille, avec un trou au centre qui porte le titre

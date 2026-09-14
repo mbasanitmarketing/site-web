@@ -219,12 +219,96 @@
   color: rgba(11, 11, 12, 0.78);
 }
 
-/* --- Écrans étroits, courts, ou mouvement réduit : pas d'épinglage --- */
+/* --- Téléphone : on garde l'épinglage, on réaccorde les proportions --- */
 
-/* Même repli dans les trois cas : la scène en flux normal, tout en place
+/* La scène tourne aussi sur mobile (demandé explicitement) : même
+   chronologie, mêmes fenêtres de --p, seules les proportions changent.
+
+   Le panneau du bas ne peut pas tenir trois cas EMPILÉS sans manger
+   l'écran entier (mesuré : ~530 px de texte, soit 62 svh sur un 844 px,
+   alors que le titre et l'image ont aussi besoin de place). Ils restent
+   donc côte à côte, comme sur grand écran, dans une bande qui se fait
+   glisser au doigt — accroche de défilement, et une carte qui dépasse au
+   bord pour que ça se voie. */
+@media (max-width: 720px) {
+  .stage {
+    --panel-h: clamp(212px, 30svh, 268px);
+  }
+
+  .label {
+    /* Le grand retrait du haut calait le titre sous le logo et le burger
+       fixes : sur mobile ils sont plus bas, et le texte plus gros. */
+    padding: clamp(92px, 13svh, 128px) var(--page-x) clamp(18px, 3svh, 28px);
+    font-size: clamp(1.9rem, 8.4vw, 2.5rem);
+  }
+
+  .image {
+    /* Partir de 0.4 sur une boîte de téléphone donnait une vignette
+       minuscule : moins de course, on démarre plus près. */
+    transform: scale(clamp(0.58, calc(0.58 + var(--p, 0) * 1), 1));
+    /* Ici la boîte est PLUS HAUTE que large : `cover` cale la hauteur et
+       coupe sur les côtés — la hauteur passe entière, l'ancrage vertical
+       n'a plus rien à rattraper. */
+    object-position: 50% 50%;
+  }
+
+  .onImage {
+    gap: 12px;
+    padding-bottom: calc(var(--panel-h) + clamp(16px, 2.6svh, 26px));
+  }
+
+  .headline {
+    max-width: 17ch;
+    font-size: clamp(1.15rem, 5.4vw, 1.5rem);
+  }
+
+  .panel {
+    align-items: stretch;
+    /* Pas de retrait à droite : c'est `.cases` qui le porte, sinon il
+       disparaît en fin de défilement horizontal. */
+    padding: clamp(18px, 3svh, 26px) 0 clamp(18px, 3svh, 26px) var(--page-x);
+  }
+
+  .cases {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 76%;
+    gap: 16px;
+    padding-right: var(--page-x);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .cases::-webkit-scrollbar {
+    display: none;
+  }
+
+  .case {
+    scroll-snap-align: start;
+    padding-top: 12px;
+  }
+
+  .caseTitle {
+    font-size: 1rem;
+  }
+
+  .caseBody {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+/* --- Écrans courts, ou mouvement réduit : pas d'épinglage ------------- */
+
+/* Même repli dans les deux cas : la scène en flux normal, tout en place
    d'un coup — un plein écran qui grandit et remonte au scroll est
-   justement ce que le mouvement réduit doit éviter. */
-@media (max-width: 720px), (max-height: 620px), (prefers-reduced-motion: reduce) {
+   justement ce que le mouvement réduit doit éviter. Un écran court, lui,
+   n'a pas la place de tenir titre + image + panneau à la fois. */
+@media (max-height: 620px), (prefers-reduced-motion: reduce) {
   .track {
     height: auto;
   }
@@ -263,10 +347,21 @@
     height: auto;
     transform: none;
     padding-block: clamp(32px, 6svh, 56px);
+    padding-inline: var(--page-x);
+    align-items: center;
   }
   .cases {
+    /* Défait la bande glissante du bloc mobile ci-dessus : un téléphone
+       en paysage coche les deux media queries. */
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
     grid-template-columns: 1fr;
     gap: clamp(20px, 4svh, 32px);
+    padding-right: 0;
+    overflow: visible;
+  }
+  .case {
+    padding-top: clamp(16px, 2.4svh, 24px);
   }
 }
 

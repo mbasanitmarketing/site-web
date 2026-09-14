@@ -27,6 +27,12 @@
   background: #f5f5f4;
 }
 
+/* Page sans ouverture (/devis) : le calque prend le navy du bloc qui
+   arrive en haut, pour que le raccord ne montre pas un noir étranger. */
+.overlayPlain {
+  background: #070b20;
+}
+
 /* Léger zoom arrière de l'image pendant le balayage. */
 .overlay img {
   animation: settle 900ms cubic-bezier(0.16, 1, 0.3, 1) both;

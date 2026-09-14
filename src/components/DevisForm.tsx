@@ -11,7 +11,7 @@ type State = "idle" | "sending" | "sent" | "error";
  * route /api/devis (le destinataire est côté serveur, jamais dans le
  * HTML : autrement l'adresse serait moissonnée par les robots).
  */
-export function DevisForm() {
+export function DevisForm({ atTop = false }: { atTop?: boolean } = {}) {
   const [state, setState] = useState<State>("idle");
   const [error, setError] = useState("");
 
@@ -42,9 +42,18 @@ export function DevisForm() {
   }
 
   return (
-    <section className={styles.wrap} id="formulaire">
+    <section
+      className={`${styles.wrap} ${atTop ? styles.atTop : ""}`}
+      id="formulaire"
+    >
       <div className={styles.head}>
-        <h2 className={styles.title}>Demander un devis</h2>
+        {/* En tête de page il n'y a plus d'ouverture au-dessus : c'est ce
+            titre qui porte le H1, sinon /devis n'en aurait aucun. */}
+        {atTop ? (
+          <h1 className={styles.title}>Demander un devis</h1>
+        ) : (
+          <h2 className={styles.title}>Demander un devis</h2>
+        )}
         <p className={styles.lede}>
           Décrivez votre projet, nous revenons vers vous rapidement.
         </p>

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { getPage, HERO_BAND, type PageContent } from "@/lib/pages";
+import { getPage, HERO_BAND, type PageContent, NO_INTRO } from "@/lib/pages";
 import { PageIntro } from "./PageIntro";
 import styles from "./PageTransition.module.css";
 
@@ -89,14 +89,18 @@ export function PageTransition() {
 
   if (!page) return null;
 
+  // Page sans ouverture : rien à faire apparaître, le calque n'est plus
+  // qu'un balayage sur le fond de la page d'arrivée.
+  const plain = NO_INTRO.has(page.href);
+
   return (
     <div
       className={`${styles.overlay} ${
         HERO_BAND.has(page.href) ? styles.overlayBand : ""
-      } ${out ? styles.overlayOut : ""}`}
+      } ${plain ? styles.overlayPlain : ""} ${out ? styles.overlayOut : ""}`}
       aria-hidden="true"
     >
-      <PageIntro page={page} titleOnly />
+      {!plain && <PageIntro page={page} titleOnly />}
     </div>
   );
 }

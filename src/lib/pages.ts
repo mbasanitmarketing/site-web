@@ -161,8 +161,13 @@ export const PAGES: PageContent[] = [
     image: "/equipe.jpg",
     lede: LEDE,
     cue: "Nous rencontrer",
-    kicker: "Tempor incididunt",
-    display: "Ut labore",
+    /* Pas « Suisse romande » ici : la ligne en dessous le dit déjà. */
+    kicker: "Notre équipe",
+    /* En colonne (mobile), ce bloc remonte en tête de page : au corps
+       d'affichage il écrasait tout. Même traitement que les pages de
+       service — une ligne de situation, pas un mot d'affiche. */
+    display: "À vos côtés en Suisse romande",
+    displaySmall: true,
   },
   {
     href: "/devis",
@@ -566,6 +571,12 @@ export const REALISATIONS: Realisation[] = [
 export const PARTNERS: { name: string; logo: string }[] = [];
 
 /** Nombre d'emplacements montrés tant que PARTNERS est vide. */
+/** Pages sans ouverture (PageIntro) : leur contenu commence directement
+ *  en haut. Le calque de transition ne doit donc PAS y faire apparaître
+ *  un titre — il ne trouverait rien en face au raccord. Il se contente du
+ *  balayage, sur le fond de la page d'arrivée. */
+export const NO_INTRO = new Set<string>(["/devis"]);
+
 export const PARTNER_SLOTS = 6;
 
 /* --- Accès ------------------------------------------------------- */

@@ -2,6 +2,7 @@
    Grille de logos avec un trou au centre.
 
    Relevé sur la référence : 6 colonnes × 4 rangées, cases d'environ 2:1,
+   ramenées à 2 rangées ici (MBA n'a pas vingt partenaires à afficher),
    filets d'un pixel entre les cases, et le bloc central occupe 2 × 2 au
    milieu de la trame.
 
@@ -110,10 +111,12 @@
   color: rgba(11, 11, 12, 0.28);
 }
 
-/* Le trou central, posé explicitement sur la trame. */
+/* Le trou central, posé explicitement sur la trame. Sur deux rangées il
+   les prend toutes les deux : il reste au milieu en largeur, et la trame
+   n'a plus de rangée vide au-dessus ni en dessous. */
 .center {
   grid-column: 3 / span 2;
-  grid-row: 2 / span 2;
+  grid-row: 1 / span 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -171,6 +174,7 @@
   }
   .center {
     grid-column: 2 / span 2;
+    grid-row: 1 / span 2;
   }
 }
 
@@ -187,18 +191,35 @@
   }
 }
 
-/* Repli : pas de traversée horizontale. Trois cas mènent au même rendu —
+/* Téléphone : la traversée est CONSERVÉE (demandé explicitement). Elle
+   était repliée parce que la grille, à 2 colonnes et 4 rangées de logos,
+   dépassait 100svh — un panneau épinglé l'aurait coupée. En passant à 2
+   rangées (8 logos), elle retombe à ~480 px de haut, soit 564 px avec le
+   cadre : ça tient dans un 844 px comme dans un 640 px. Le carrousel qui
+   la précède est lui aussi épinglé sur mobile, le chaînage tient donc
+   tel quel — seules les proportions bougent ici. */
+@media (max-width: 720px) {
+  .panel {
+    padding-block: clamp(20px, 4svh, 40px);
+  }
+  .title {
+    font-size: clamp(1.15rem, 5.6vw, 1.5rem);
+  }
+  .center {
+    gap: clamp(12px, 2svh, 18px);
+  }
+}
 
-   — sous 720 px, la grille passe à 2 colonnes et fait dix rangées : elle
-     dépasse largement 100svh, un panneau épinglé la couperait ;
-   — écran court, même raison ;
+/* Repli : pas de traversée horizontale. Deux cas mènent au même rendu —
+
+   — écran court : pas la place de tenir la grille épinglée ;
    — mouvement réduit : un panneau plein écran qui traverse, c'est
      précisément ce qu'on doit éviter.
 
    La section reprend alors son arrivée par le bas. Le -90svh est
    conservé pour absorber le palier du carrousel : sans lui, on aurait
    90vh de scroll mort sur une scène finie et immobile. */
-@media (max-width: 720px), (max-height: 620px), (prefers-reduced-motion: reduce) {
+@media (max-height: 620px), (prefers-reduced-motion: reduce) {
   .track {
     height: auto;
     margin-top: -90svh;
