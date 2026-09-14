@@ -17,12 +17,24 @@
   isolation: isolate;
 }
 
+/* La piste : une « longueur » d'écran par transition d'étape, plus la
+   scène elle-même. C'est elle qui donne sa course à --p. */
+.track {
+  height: calc(100svh + (var(--count, 4) - 1) * 78svh);
+}
+
+/* Toute la section s'épingle ici — titre et chapô compris. */
+.stage {
+  position: sticky;
+  top: clamp(84px, 10svh, 116px);
+}
+
 .grid {
   display: grid;
   grid-template-columns: minmax(0, 30fr) minmax(0, 70fr);
   gap: clamp(20px, 3vw, 48px);
   align-items: start;
-  padding: clamp(48px, 11svh, 130px) var(--page-x) clamp(20px, 4svh, 48px);
+  padding: clamp(32px, 6svh, 72px) var(--page-x) 0;
 }
 
 /* Même corps que le texte courant, un peu plus appuyé : un repère, pas
@@ -32,9 +44,9 @@
    la grille lui sert de cadre, donc il s'arrête de lui-même au bas de la
    section — pas besoin d'aller le décrocher. Même hauteur d'accroche que
    l'index des pages de catégorie, sous la zone du burger et du logo. */
+/* Plus besoin d'être collant : la scène entière l'est, le repère ne peut
+   plus sortir de l'écran. */
 .label {
-  position: sticky;
-  top: clamp(84px, 10svh, 116px);
   align-self: start;
   margin: 0;
   font-size: clamp(15px, 1.1vw, 17px);
@@ -96,7 +108,15 @@
     grid-template-columns: 1fr;
     gap: clamp(12px, 2svh, 20px);
   }
-  .label {
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Plus d'épinglage : la section se déroule et la bande se déplie en
+     liste (cf. PrestationSteps). */
+  .track {
+    height: auto;
+  }
+  .stage {
     position: static;
   }
 }
