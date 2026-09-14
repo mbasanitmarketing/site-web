@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { PARTNERS } from "@/lib/pages";
+import { useScrollProgress } from "@/lib/useScrollProgress";
 import styles from "./PartnersGrid.module.css";
 import { BackdropLines } from "./BackdropLines";
 
@@ -14,31 +15,41 @@ const SLOTS = 20;
  * Bandeau de logos en grille, avec un trou au centre qui porte le titre
  * et le bouton.
  *
- * Un seul geste : au scroll, la grille entre par la droite, et pendant
- * qu'elle glisse chaque logo s'illumine à son tour, en balayage
- * droite -> gauche — le même sens que l'arrivée. Se joue une fois, à
- * l'arrivée dans l'écran (pas lié en continu au scroll, contrairement au
- * carrousel 3D juste au-dessus).
+ * Il n'arrive PAS par le bas : à la fin du carrousel, le panneau glisse
+ * par-dessus la scène depuis la DROITE. Même mécanique que l'escalier et
+ * le rideau blanc, qui montent par le bas par-dessus la section
+ * précédente — seulement sur l'axe horizontal.
  *
- * Le délai de chaque case vient de sa position RÉELLE à l'écran (mesurée
- * après montage), pas d'une formule sur son index : la grille saute une
- * case sur deux à cause du trou central, et le nombre de colonnes change
- * à 1100 et 720 px. Une formule à la main se serait déreglée à chaque
- * palier ; la mesure, elle, reste juste partout.
+ * La chronologie est chaînée à celle du carrousel (cf. le calcul dans le
+ * module CSS) : son --p atteint 1 au scroll 980, puis il reste épinglé
+ * sans bouger jusqu'à 1070 — c'est pendant ce palier que ce panneau
+ * traverse l'écran. Si l'un des deux change de hauteur, les deux calculs
+ * sont à refaire.
+ *
+ * Les logos s'illuminent au fur et à mesure de cette traversée, en
+ * balayage droite -> gauche : chaque case s'allume quand elle entre dans
+ * le cadre. Son retard vient de sa position RÉELLE mesurée, pas d'une
+ * formule sur son index — le trou central fait sauter une case sur deux
+ * et le nombre de colonnes change à 1100 px.
  *
  * Tant que MBA n'a pas fourni les fichiers, la grille montre des
  * emplacements : un logo inventé affirmerait un partenariat qui n'existe
- * peut-être pas. Les emplacements reçoivent le même balayage que de
- * vrais logos, pour que l'effet se juge dès maintenant.
+ * peut-être pas. Ils reçoivent le même balayage que de vrais logos, pour
+ * que l'effet se juge dès maintenant.
  */
 export function PartnersGrid() {
   const items = PARTNERS.slice(0, SLOTS);
   const vides = SLOTS - items.length;
 
+  const trackRef = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
-  const [revealed, setRevealed] = useState(false);
-  const [ready, setReady] = useState(false);
   const [delays, setDelays] = useState<number[]>([]);
+
+  // span 0.75 : le panneau est en place au scroll 1070, puis la scène
+  // reste épinglée jusqu'à 1100 — le temps de lire avant que la page ne
+  // reprenne son cours.
+  useScrollProgress(trackRef, stageRef, 0.75);
 
   useEffect(() => {
     const grid = gridRef.current;
@@ -51,91 +62,65 @@ export function PartnersGrid() {
       const min = Math.min(...lefts);
       const max = Math.max(...lefts);
       const span = max - min || 1;
-      // 0 = tout à droite (s'allume en premier, sans retard), 1 = tout
-      // à gauche (s'allume en dernier) : le sens du balayage suit celui
-      // de l'arrivée de la grille.
+      // 0 = tout à droite (entre en premier dans le cadre, s'allume en
+      // premier), 1 = tout à gauche (en dernier).
       setDelays(lefts.map((l) => 1 - (l - min) / span));
     };
 
-    window.addEventListener("resize", measure);
-
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    // Un seul observateur pour tout décider. Son premier appel arrive
-    // toujours de façon asynchrone — même quand la grille est DÉJÀ dans
-    // l'écran au montage — ce qui permet de mesurer et de fixer l'état
-    // depuis ce rappel plutôt qu'en direct dans le corps de l'effet.
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        measure();
-        setReady(true);
-        if (reduced || entry.isIntersecting) {
-          setRevealed(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -10% 0px" },
-    );
-    io.observe(grid);
-
-    return () => {
-      window.removeEventListener("resize", measure);
-      io.disconnect();
-    };
+    // Le ResizeObserver appelle son rappel une première fois tout seul,
+    // de façon asynchrone : la mesure initiale part de là plutôt que du
+    // corps de l'effet (règle react-hooks/set-state-in-effect), et les
+    // paliers responsive la refont d'eux-mêmes.
+    const ro = new ResizeObserver(measure);
+    ro.observe(grid);
+    return () => ro.disconnect();
   }, []);
 
-  // Avant que l'observateur ne tranche (SSR, tout premier rendu), la
-  // grille est visible telle quelle : rien ne dépend du JavaScript pour
-  // être vu.
-  const pending = ready && !revealed;
-
   return (
-    <section className={styles.wrap}>
-      {/* Les cellules de la grille sont opaques (même #f5f5f4 que le
-          fond) : la trame ne peut donc se voir que dans les gouttières
-          autour du bloc — mêmes filet et pointillé que le reste du
-          site, pas d'arc ici, ce format dense laisserait trop peu de
-          place pour qu'il se lise. */}
-      <BackdropLines />
-      <div
-        ref={gridRef}
-        className={`${styles.grid} ${pending ? styles.pending : ""}`}
-      >
-        {items.map((p, i) => (
-          <div
-            key={p.name}
-            className={styles.cell}
-            style={{ ["--d" as string]: delays[i] ?? 0 }}
-          >
-            <Image
-              className={styles.logo}
-              src={p.logo}
-              alt={p.name}
-              width={190}
-              height={64}
-            />
-          </div>
-        ))}
+    <section ref={trackRef} className={styles.track}>
+      <div ref={stageRef} className={styles.stage}>
+        <div className={styles.panel}>
+          {/* Les cellules de la grille sont opaques (même #f5f5f4 que le
+              fond) : la trame ne peut donc se voir que dans les
+              gouttières autour du bloc. */}
+          <BackdropLines />
 
-        {Array.from({ length: vides }, (_, i) => (
-          <div
-            key={`vide-${i}`}
-            className={`${styles.cell} ${styles.slot}`}
-            style={{ ["--d" as string]: delays[items.length + i] ?? 0 }}
-          >
-            <span className={styles.slotLabel}>Logo</span>
-          </div>
-        ))}
+          <div ref={gridRef} className={styles.grid}>
+            {items.map((p, i) => (
+              <div
+                key={p.name}
+                className={styles.cell}
+                style={{ ["--d" as string]: delays[i] ?? 0 }}
+              >
+                <Image
+                  className={styles.logo}
+                  src={p.logo}
+                  alt={p.name}
+                  width={190}
+                  height={64}
+                />
+              </div>
+            ))}
 
-        {/* Le trou : il se place explicitement au centre de la trame, donc
-            il ne dépend pas de l'ordre des cases autour. */}
-        <div className={styles.center}>
-          <h2 className={styles.title}>Un réseau de partenaires solides</h2>
-          <a className={styles.cta} href="/devis" data-page-transition>
-            Demander un devis
-          </a>
+            {Array.from({ length: vides }, (_, i) => (
+              <div
+                key={`vide-${i}`}
+                className={`${styles.cell} ${styles.slot}`}
+                style={{ ["--d" as string]: delays[items.length + i] ?? 0 }}
+              >
+                <span className={styles.slotLabel}>Logo</span>
+              </div>
+            ))}
+
+            {/* Le trou : il se place explicitement au centre de la trame,
+                donc il ne dépend pas de l'ordre des cases autour. */}
+            <div className={styles.center}>
+              <h2 className={styles.title}>Un réseau de partenaires solides</h2>
+              <a className={styles.cta} href="/devis" data-page-transition>
+                Demander un devis
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>

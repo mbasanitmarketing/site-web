@@ -17,7 +17,7 @@
 .track {
   position: relative;
   z-index: 3;
-  height: 620vh;
+  height: 710vh;
   /* Chevauche la fin de EscalierSection : le blanc monte par-dessus le
      panneau navy pendant qu'il est encore là.
      Chronologie (unités vh, cf. passation § 5) :
@@ -28,9 +28,16 @@
        escalier aligné et immobile depuis 419) ; blanc plein cadre
        (--p 0.10) au scroll ~512, soit avant que l'escalier ne glisse
        (560). Il se retire ensuite, recouvert.
-     Si tu changes une hauteur / un span : refais ce calcul. */
+
+     710vh / span 0.852 : le trajet utile reste 520vh, donc --p atteint 1
+     au scroll 980 comme avant — la dernière réalisation ne bouge pas.
+     Mais la scène reste ÉPINGLÉE jusqu'à 1070, sans bouger : c'est ce
+     palier qui laisse le panneau partenaires glisser par-dessus depuis
+     la droite (cf. PartnersGrid, qui démarre pile à 980).
+     Si tu changes une hauteur / un span : refais ce calcul, ET celui de
+     PartnersGrid qui s'y accroche. */
   margin-top: -200svh;
-  /* La piste (620vh, z-index 3) chevauche l'Escalier de 200svh : sans
+  /* La piste (710vh, z-index 3) chevauche l'Escalier de 200svh : sans
      ça, elle intercepte les clics des accordéons en dessous alors qu'elle
      est encore transparente. Pas de contenu cliquable ici pour l'instant ;
      réactiver (pointer-events: auto) sur un lien/CTA le cas échéant. */

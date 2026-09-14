@@ -24,7 +24,7 @@
   --notch-x: calc(100% - var(--notch-w));
 
   position: relative;
-  z-index: 4;
+  z-index: 5; /* au-dessus du panneau partenaires (4) */
   display: flex;
   flex-direction: column;
   min-height: 40svh;

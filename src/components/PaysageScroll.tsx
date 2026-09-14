@@ -19,7 +19,10 @@ export function PaysageScroll() {
   const trackRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
 
-  useScrollProgress(trackRef, stageRef);
+  // span 0.852 : --p atteint 1 au scroll 980 (dernière réalisation),
+  // puis la scène reste épinglée jusqu'à 1070 sans bouger — le palier
+  // pendant lequel le panneau partenaires glisse par-dessus.
+  useScrollProgress(trackRef, stageRef, 0.852);
 
   return (
     <section ref={trackRef} className={styles.track}>

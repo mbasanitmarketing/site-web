@@ -4,19 +4,66 @@
    Relevé sur la référence : 6 colonnes × 4 rangées, cases d'environ 2:1,
    filets d'un pixel entre les cases, et le bloc central occupe 2 × 2 au
    milieu de la trame.
+
+   ARRIVÉE : le panneau ne monte pas par le bas, il traverse l'écran
+   depuis la DROITE par-dessus le carrousel encore épinglé. Même principe
+   que l'escalier et le rideau blanc, sur l'axe horizontal.
+
+   Chronologie (unités vh, chaînée à PaysageScroll) :
+     carrousel  710vh / span 0.852 -> --p 1 au scroll 980, épinglé
+                jusqu'à 1070 (palier immobile)
+     ici : natural top = 460 + 710 = 1170 ; -190svh -> --p 0 au scroll
+                980, PILE quand la dernière réalisation est en place.
+                travel = (220 - 100) * 0.75 = 90 -> panneau en place au
+                scroll 1070, au moment exact où le carrousel se
+                désépingle. Reste épinglé jusqu'à 1100, puis la page
+                reprend son cours vers les avis.
+   Si tu changes une hauteur / un span : refais CE calcul et celui de
+   PaysageScroll, les deux se tiennent.
    --------------------------------------------------------------------- */
 
-.wrap {
+.track {
+  position: relative;
+  /* Au-dessus du carrousel (3), sous le footer (5). */
+  z-index: 4;
+  height: 220svh;
+  margin-top: -190svh;
+  /* La piste recouvre la fin du carrousel : sans ça, elle intercepterait
+     ses clics alors qu'elle est encore vide. Le panneau, lui, réactive
+     les événements — et tant qu'il est hors cadre, le rognage de la
+     scène le rend de toute façon inatteignable. */
+  pointer-events: none;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  clip-path: inset(0);
+}
+
+/* Le panneau traverse depuis la droite. --in sert deux fois : la
+   translation ET l'allumage des logos en dérivent, ils ne peuvent donc
+   pas se désynchroniser. Il finit sa course à --p 0.82, le reste du
+   trajet est un palier posé. */
+.panel {
+  --in: clamp(0, calc(var(--p, 0) / 0.82), 1);
+
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(24px, 5svh, 64px) var(--page-x);
   background: #f5f5f4;
   color: #0b0b0c;
-  padding: clamp(40px, 9svh, 104px) var(--page-x) clamp(48px, 11svh, 128px);
+  transform: translateX(calc((1 - var(--in)) * 100%));
+  pointer-events: auto;
   /* Trame de fond (BackdropLines) : `isolation` pour qu'elle passe
      derrière le contenu sans toucher au z-index des enfants. */
-  position: relative;
   isolation: isolate;
-  /* La grille est décalée hors cadre avant son entrée (.pending) : sans
-     ça, cet écart créerait une barre de défilement horizontale. */
-  overflow-x: hidden;
+  will-change: transform;
 }
 
 .grid {
@@ -30,33 +77,6 @@
   gap: 1px;
   background: rgba(11, 11, 12, 0.13);
   border: 1px solid rgba(11, 11, 12, 0.13);
-  opacity: 1;
-  transform: none;
-  transition:
-    opacity 780ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 780ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* État de départ, posé par PartnersGrid.tsx une fois qu'on sait que la
-   grille n'est pas encore à l'écran — jamais au tout premier rendu
-   (SSR), pour que le contenu reste visible sans JavaScript. Distance en
-   unité relative : un plein `8vw` serait déjà trop sur grand écran, un
-   `min(72px, …)` garde le geste discret à toutes les tailles. */
-.pending {
-  opacity: 0;
-  transform: translateX(min(72px, 8vw));
-  /* Sans ça, la transition de `.grid` jouerait aussi dans CE sens : la
-     grille se serait vue partir vers la droite avant même d'y revenir.
-     Cet état doit s'installer d'un coup, seul le retour doit s'animer —
-     et il le fait, `.grid` (sans `.pending`) porte sa propre transition,
-     qui reprend la main dès que la classe est retirée. */
-  transition: none;
-}
-
-.pending .cell {
-  opacity: 0;
-  filter: brightness(2.2) blur(2px);
-  transition: none;
 }
 
 .cell {
@@ -64,14 +84,15 @@
   place-items: center;
   padding: clamp(12px, 1.6vw, 24px);
   background: #f5f5f4;
-  opacity: 1;
-  filter: brightness(1) blur(0);
-  /* --d (0 = tout à droite, 1 = tout à gauche — cf. le composant) EST le
-     retard, directement : la case la plus à droite s'allume sans délai,
-     dans le même sens que l'arrivée de la grille. */
-  transition:
-    opacity 520ms ease-out calc(var(--d, 0) * 340ms),
-    filter 520ms ease-out calc(var(--d, 0) * 340ms);
+  /* Allumage piloté par la traversée, pas par une transition : --d
+     (0 = tout à droite, 1 = tout à gauche) décale le moment où la case
+     s'allume, donc elle s'illumine quand elle entre dans le cadre. Le
+     balayage suit mécaniquement le mouvement du panneau. */
+  --lit: clamp(0, calc((var(--in, 1) - var(--d, 0) * 0.55) / 0.3), 1);
+
+  opacity: var(--lit);
+  filter: brightness(calc(1 + (1 - var(--lit)) * 1.4))
+    blur(calc((1 - var(--lit)) * 2px));
 }
 
 .logo {
@@ -163,6 +184,41 @@
     grid-column: 1 / -1;
     grid-row: 1;
     padding-block: clamp(28px, 6svh, 48px);
+  }
+}
+
+/* Repli : pas de traversée horizontale. Trois cas mènent au même rendu —
+
+   — sous 720 px, la grille passe à 2 colonnes et fait dix rangées : elle
+     dépasse largement 100svh, un panneau épinglé la couperait ;
+   — écran court, même raison ;
+   — mouvement réduit : un panneau plein écran qui traverse, c'est
+     précisément ce qu'on doit éviter.
+
+   La section reprend alors son arrivée par le bas. Le -90svh est
+   conservé pour absorber le palier du carrousel : sans lui, on aurait
+   90vh de scroll mort sur une scène finie et immobile. */
+@media (max-width: 720px), (max-height: 620px), (prefers-reduced-motion: reduce) {
+  .track {
+    height: auto;
+    margin-top: -90svh;
+    pointer-events: auto;
+  }
+  .stage {
+    position: static;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+  }
+  .panel {
+    position: static;
+    transform: none;
+    padding-block: clamp(40px, 9svh, 104px);
+    will-change: auto;
+  }
+  .cell {
+    opacity: 1;
+    filter: none;
   }
 }
 
