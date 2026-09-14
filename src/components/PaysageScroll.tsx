@@ -35,6 +35,20 @@ export function PaysageScroll() {
       >
         <div className={styles.curtain} />
 
+        {/* Trame de fond : le filet et le pointillé restent fixes, comme
+            partout ailleurs sur le site ; les deux anneaux, eux, tournent
+            avec le scroll — la section a déjà un mouvement circulaire
+            (le rail), ça leur donne un écho plutôt qu'une redite. Posés
+            ici, entre le rideau et la scène 3D : ils peignent par-dessus
+            le blanc et sous les diapos, sans toucher au z-index de la
+            page (cf. passation § 5). */}
+        <div className={styles.decor} aria-hidden="true">
+          <span className={styles.rule} />
+          <span className={styles.dash} />
+          <span className={styles.ringOuter} />
+          <span className={styles.ringInner} />
+        </div>
+
         <div className={styles.viewport}>
           <div className={styles.rail}>
             {REALISATIONS.map((r, i) => (

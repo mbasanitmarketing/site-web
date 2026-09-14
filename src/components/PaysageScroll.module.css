@@ -69,6 +69,71 @@
   will-change: transform;
 }
 
+/* --- Trame de fond : lignes fixes, anneaux qui tournent ------------ */
+
+/* `.stage` porte déjà `overflow:hidden; clip-path:inset(0)` : les
+   anneaux peuvent dépasser sans risque de débordement, pas besoin de
+   les borner nous-mêmes. */
+.decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(11, 11, 12, 0.08);
+}
+
+/* Même x que la trame du reste du site (BackdropLines : 60,5 %). */
+.dash {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 60.5%;
+  width: 1px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(11, 11, 12, 0.16) 0 6px,
+    transparent 6px 13px
+  );
+}
+
+/* Deux anneaux pointillés, centrés sur le MÊME axe que le rail 3D
+   (`.rail` est aussi ancré à 50 %/50 %) : ils tournent autour du
+   carrousel comme une orbite, pas à côté de lui. Sens opposés et
+   vitesses différentes pour un effet de profondeur plutôt qu'un simple
+   écho ; le décalage entre eux évite qu'ils ne se confondent en un seul
+   trait. Un pointillé plutôt qu'un cercle plein : un cercle plein qui
+   tourne ne montre rien, il faut une marque sur la circonférence pour
+   que la rotation se voie. */
+.ringOuter,
+.ringInner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.ringOuter {
+  width: 92vmin;
+  height: 92vmin;
+  border: 1px dashed rgba(11, 11, 12, 0.11);
+  transform: translate(-50%, -50%) rotate(calc(var(--p, 0) * 150deg));
+}
+
+.ringInner {
+  width: 60vmin;
+  height: 60vmin;
+  border: 1px dashed rgba(11, 11, 12, 0.08);
+  transform: translate(-50%, -50%) rotate(calc(var(--p, 0) * -110deg));
+}
+
 /* --- Titre et texte, en haut à droite --- */
 
 .head {
@@ -280,6 +345,12 @@
 @media (prefers-reduced-motion: reduce) {
   .curtain {
     transform: none;
+  }
+  /* Figés plutôt que masqués : le filet et le pointillé restent déjà
+     fixes, seuls les anneaux arrêtent de suivre le scroll. */
+  .ringOuter,
+  .ringInner {
+    transform: translate(-50%, -50%);
   }
   .head {
     opacity: 1;
