@@ -27,7 +27,7 @@ export function HomeReviews() {
   const note = RATING.toLocaleString("fr-CH");
 
   return (
-    <ServiceSection label="Avis">
+    <ServiceSection label="Avis" arc>
       <h2 className={shell.headline}>Ce que disent nos clients.</h2>
 
       <p className={styles.aggregate}>

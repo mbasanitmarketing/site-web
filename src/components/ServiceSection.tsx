@@ -4,21 +4,28 @@ import { BackdropLines } from "./BackdropLines";
 /**
  * Coquille commune à toutes les sections d'une page de service, d'après la
  * maquette : un repère collant dans une colonne étroite à gauche, le
- * contenu à droite. Sept sections la partagent — d'où l'extraction.
+ * contenu à droite. Neuf sections la partagent (les sept de ServiceParts,
+ * plus les avis et la FAQ de l'accueil) — d'où l'extraction.
  */
 export function ServiceSection({
   label,
   children,
   className = "",
+  arc = false,
 }: {
   label: string;
   children: React.ReactNode;
   /** Marge basse supplémentaire quand le footer vient mordre dessus. */
   className?: string;
+  /** Le grand cercle pâle de BackdropLines : un seul par page, sinon il se
+   *  répète et perd son effet (cf. BackdropLines). Aucun des neuf appels
+   *  ne l'active par défaut — chaque page-service porte déjà son arc sur
+   *  ServiceManifesto ; l'accueil n'en avait aucun, HomeReviews le porte. */
+  arc?: boolean;
 }) {
   return (
     <section className={`${styles.wrap} ${className}`}>
-      <BackdropLines />
+      <BackdropLines arc={arc} />
       <div className={styles.grid}>
         <p className={styles.label}>{label}</p>
         <div className={styles.content}>{children}</div>
