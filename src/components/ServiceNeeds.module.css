@@ -10,7 +10,10 @@
 
 .track {
   position: relative;
-  height: 380vh;
+  /* Raccourcie de 380 à 300vh, et l'image démarre plus grande (0.6 au
+     lieu de 0.32) : la montée avait moins de distance à parcourir et
+     traînait sur trop de scroll. */
+  height: 300vh;
 }
 
 .stage {
@@ -24,7 +27,8 @@
   top: 0;
   height: 100svh;
   overflow: hidden;
-  background: #0b0b0c;
+  /* Même bleu que « La prestation », la section juste au-dessus. */
+  background: #e0e5f2;
 }
 
 /* --- Le grand mot, derrière l'image ---------------------------------- */
@@ -37,11 +41,13 @@
   margin: 0;
   transform: translate(-50%, -50%);
   white-space: nowrap;
-  font-size: clamp(3.5rem, 15vw, 11rem);
+  /* Réduit — il couvrait presque toute la largeur de l'écran. */
+  font-size: clamp(2.2rem, 8vw, 6rem);
   font-weight: 200;
   letter-spacing: 0.01em;
   text-transform: uppercase;
-  color: rgba(245, 245, 244, 0.14);
+  /* Encre foncée, pas blanche : le fond est devenu clair (#e0e5f2). */
+  color: rgba(11, 11, 12, 0.13);
 }
 
 /* --- L'image qui grandit ---------------------------------------------- */
@@ -56,8 +62,11 @@
 /* next/image (fill) pose déjà position:absolute + inset:0 sur le <img> ;
    le scale grandit donc bien AUTOUR DU CENTRE de la scène, comme sur la
    référence — un petit rectangle qui s'étend jusqu'au plein cadre. */
+/* Démarre à 0.6 (au lieu de 0.32) — plus proche, moins de distance à
+   parcourir — et termine à --p 0.42 (au lieu de 0.55) : la montée était
+   trop longue. */
 .image {
-  transform: scale(clamp(0.32, calc(0.32 + var(--p, 0) * 1.24), 1));
+  transform: scale(clamp(0.6, calc(0.6 + var(--p, 0) * 0.95), 1));
   will-change: transform;
 }
 
@@ -74,7 +83,7 @@
     rgba(0, 0, 0, 0.55),
     rgba(0, 0, 0, 0) 45%
   );
-  opacity: clamp(0, calc((var(--p, 0) - 0.36) / 0.14), 1);
+  opacity: clamp(0, calc((var(--p, 0) - 0.26) / 0.1), 1);
 }
 
 /* --- Titre + CTA, posés sur l'image une fois qu'elle a grandi -------- */
@@ -91,10 +100,10 @@
   /* Marge du bas = hauteur du panneau + un blanc, pour que le titre ne
      se fasse jamais recouvrir quand le panneau monte (cf. --panel-h). */
   padding: 0 var(--page-x) calc(var(--panel-h) + clamp(28px, 4.5svh, 48px));
-  /* Fenêtre 0.48 -> 0.62 : après que l'image a fini de grandir (0.55),
-     avant que le panneau ne commence à monter (0.66) — jamais les deux
+  /* Fenêtre 0.36 -> 0.48 : après que l'image a fini de grandir (0.42),
+     avant que le panneau ne commence à monter (0.54) — jamais les deux
      mouvements en même temps. */
-  --in: clamp(0, calc((var(--p, 0) - 0.48) / 0.14), 1);
+  --in: clamp(0, calc((var(--p, 0) - 0.36) / 0.12), 1);
   opacity: var(--in);
   transform: translateY(calc((1 - var(--in)) * 18px));
   will-change: opacity, transform;
@@ -158,9 +167,9 @@
   padding: clamp(28px, 5svh, 56px) var(--page-x);
   background: #f5f5f4;
   color: #0b0b0c;
-  /* 0.66 -> 0.92 : monte une fois le titre en place (0.62), avec une
+  /* 0.54 -> 0.80 : monte une fois le titre en place (0.48), avec une
      marge — puis reste épinglé, en place, jusqu'à la fin de la piste. */
-  transform: translateY(calc((1 - clamp(0, calc((var(--p, 0) - 0.66) / 0.26), 1)) * 100%));
+  transform: translateY(calc((1 - clamp(0, calc((var(--p, 0) - 0.54) / 0.26), 1)) * 100%));
   will-change: transform;
 }
 
@@ -228,6 +237,10 @@
   }
   .panel {
     position: relative;
+    /* Sinon la hauteur fixe (--panel-h, pensée pour 3 colonnes) reste
+       active : les 3 cas empilés en une colonne (juste en dessous)
+       n'y tiendraient pas. */
+    height: auto;
     transform: none;
     padding-block: clamp(32px, 6svh, 56px);
   }

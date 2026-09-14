@@ -13,10 +13,11 @@ import styles from "./ServiceNeeds.module.css";
  * La scène s'épingle et tout dérive de --p (cf. le module CSS pour les
  * bornes exactes de chaque fenêtre) :
  *
- *   0    -> 0.55  l'image grandit d'un petit rectangle centré au plein
- *                 cadre, recouvrant peu à peu le grand mot posé derrière
- *   0.48 -> 0.62  le titre et le bouton apparaissent sur l'image
- *   0.66 -> 0.92  le panneau des trois cas remonte par le bas, puis reste
+ *   0    -> 0.42  l'image grandit (elle démarre déjà proche, à 0.6) au
+ *                 plein cadre, recouvrant peu à peu le grand mot posé
+ *                 derrière
+ *   0.36 -> 0.48  le titre et le bouton apparaissent sur l'image
+ *   0.54 -> 0.80  le panneau des trois cas remonte par le bas, puis reste
  *                 épinglé en place jusqu'à la fin de la piste
  *
  * Sur la référence c'est le footer qui remonte ; ici ce sont les trois
