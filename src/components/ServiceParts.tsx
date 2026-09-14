@@ -24,7 +24,7 @@ function Blocks({ items }: { items: { title: string; body: string }[] }) {
 
 export function ServiceNeeds({ service }: { service: ServiceDetail }) {
   return (
-    <ServiceSection label="Besoins traités">
+    <ServiceSection label="À votre écoute pour :">
       <h2 className={shell.headline}>Les situations qui amènent à appeler.</h2>
       <Blocks items={service.needs} />
     </ServiceSection>
