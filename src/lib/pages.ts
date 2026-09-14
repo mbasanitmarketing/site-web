@@ -187,10 +187,13 @@ const manifesto = (headline: string): Manifesto => ({
   label: "La prestation",
   headline,
   intro: LEDE,
+  /* Quatre étapes : la bande défile de 1 à 4. Intitulés structurels et
+     paragraphes en lorem — tout ce texte est à écrire par MBA. */
   blocks: [
-    { title: "Ce que comprend la prestation", body: BODY_A },
-    { title: "Comment nous procédons", body: BODY_B },
-    { title: "Après l’intervention", body: BODY_A },
+    { title: "Le rendez-vous et le relevé", body: BODY_A },
+    { title: "Le devis détaillé", body: BODY_B },
+    { title: "Le chantier", body: BODY_A },
+    { title: "La réception et le suivi", body: BODY_B },
   ],
 });
 
