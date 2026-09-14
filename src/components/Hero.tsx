@@ -65,11 +65,12 @@ export function Hero() {
           Demander un devis
         </a>
 
-        {/* Indice de scroll */}
+        {/* Indice de scroll — le trait seul, sans le mot (retiré). Purement
+            décoratif : aria-hidden, il n'y a plus rien à lire. */}
         <div
-          className={`${styles.hint} absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-white/70`}
+          aria-hidden="true"
+          className={`${styles.hint} absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center`}
         >
-          <span>Scroll</span>
           <span className="block h-8 w-px bg-linear-to-b from-white/70 to-transparent" />
         </div>
       </div>

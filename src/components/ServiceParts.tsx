@@ -31,39 +31,7 @@ export function ServiceSteps({ service }: { service: ServiceDetail }) {
   );
 }
 
-/* --- 5. Prix -------------------------------------------------------- */
-
-export function ServicePricing({ service }: { service: ServiceDetail }) {
-  return (
-    <ServiceSection label="Prix">
-      <h2 className={shell.headline}>
-        {service.pricing.tarif || "Tarif à définir avec MBA."}
-      </h2>
-
-      {!service.pricing.tarif && (
-        <p className={shell.missing}>
-          Aucune fourchette n’est affichée tant que MBA n’en a pas donné une :
-          un prix plausible mais inventé serait pris pour un engagement.
-        </p>
-      )}
-
-      <p className={shell.intro}>{service.pricing.note}</p>
-
-      <div className={shell.block}>
-        <h3 className={shell.blockTitle}>Ce qui fait varier le devis</h3>
-        <ul className={shell.list}>
-          {service.pricing.factors.map((x) => (
-            <li key={x} className={shell.listItem}>
-              {x}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </ServiceSection>
-  );
-}
-
-/* --- 6. Zone d'intervention ----------------------------------------- */
+/* --- 4. Zone d'intervention ----------------------------------------- */
 
 export function ServiceArea({ service }: { service: ServiceDetail }) {
   return (
@@ -81,7 +49,7 @@ export function ServiceArea({ service }: { service: ServiceDetail }) {
   );
 }
 
-/* --- 7. Questions fréquentes ---------------------------------------- */
+/* --- 5. Questions fréquentes ---------------------------------------- */
 
 export function ServiceFaq({ service }: { service: ServiceDetail }) {
   return (
@@ -101,7 +69,7 @@ export function ServiceFaq({ service }: { service: ServiceDetail }) {
   );
 }
 
-/* --- 8. Contact ------------------------------------------------------ */
+/* --- 6. Contact ------------------------------------------------------ */
 
 export function ServiceContact() {
   return (

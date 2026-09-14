@@ -6,7 +6,6 @@ import { Partners } from "@/components/Partners";
 import { RealisationsCarousel } from "@/components/RealisationsCarousel";
 import {
   ServiceSteps,
-  ServicePricing,
   ServiceArea,
   ServiceFaq,
   ServiceContact,
@@ -34,10 +33,11 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
   return (
     <>
       {/* Ordre de la structure demandée : introduction, besoins,
-          partenaires, réalisations, déroulement, prix, zone, questions,
-          contact. La section « Preuves » a été retirée (demandé) : elle
-          n'avait de toute façon rien à montrer tant que MBA n'a pas
-          fourni ses qualifications. */}
+          partenaires, réalisations, déroulement, zone, questions,
+          contact. Deux sections ont été retirées (demandé) : « Preuves »
+          et « Prix ». Ni l'une ni l'autre n'avait de toute façon rien à
+          montrer — MBA n'a fourni ni ses qualifications ni une fourchette
+          de tarifs. */}
       <PageIntro page={page} />
       {page.manifesto && <ServiceManifesto manifesto={page.manifesto} />}
       {page.service && <ServiceNeeds service={page.service} />}
@@ -49,7 +49,6 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
         />
       )}
       {page.service && <ServiceSteps service={page.service} />}
-      {page.service && <ServicePricing service={page.service} />}
       {page.service && <ServiceArea service={page.service} />}
       {page.service && <ServiceFaq service={page.service} />}
       <ServiceContact />

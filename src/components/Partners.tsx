@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import { PARTNERS, PARTNER_SLOTS } from "@/lib/pages";
 import styles from "./Partners.module.css";
 
@@ -9,12 +12,19 @@ import styles from "./Partners.module.css";
  * Les logos DÉFILENT (marquee), avec un dégradé de flou aux deux bords
  * pour qu'ils n'apparaissent et ne disparaissent pas d'un coup.
  *
- * La piste est rendue DEUX FOIS, l'une derrière l'autre : l'animation
- * translate de -50 %, donc au moment où elle revient à 0 la seconde
- * copie occupe exactement la place qu'occupait la première. La boucle
- * est invisible — c'est ce qui évite le saut d'un marquee naïf. La copie
- * est `aria-hidden` : un lecteur d'écran ne doit pas lire la liste deux
- * fois.
+ * COMBIEN DE COPIES ? C'est tout le sujet. La piste est rendue plusieurs
+ * fois et la translation vaut exactement UNE piste : au moment où elle
+ * revient à zéro, la copie suivante occupe la place de la précédente, la
+ * boucle est donc invisible. Mais pour qu'il n'y ait jamais de trou, il
+ * faut que les copies RESTANTES couvrent encore l'écran quand la
+ * translation est à son maximum — autrement dit (copies - 1) pistes
+ * doivent être au moins aussi larges que le cadre.
+ *
+ * Deux copies ne suffisent pas : avec six emplacements la piste fait
+ * ~1380 px, moins qu'un écran de 1440 — il restait une bande vide au bord
+ * droit à chaque tour (c'est ce qui se voyait). Le compte ne peut pas
+ * être écrit en dur : il dépend de la largeur des logos, du nombre de
+ * logos et de la taille de l'écran. Il est donc MESURÉ.
  *
  * Tant que MBA n'a pas fourni les fichiers, on montre des emplacements :
  * un logo inventé affirmerait un partenariat qui n'existe peut-être pas.
@@ -28,12 +38,46 @@ export function Partners({ headline }: { headline: string }) {
           node: <span className={styles.slot}>Logo</span>,
         }));
 
-  const piste = (hidden: boolean) => (
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const rowRef = useRef<HTMLUListElement>(null);
+  // 2 au premier rendu (serveur comme client : pas d'écart d'hydratation),
+  // puis recalculé dès la première mesure.
+  const [copies, setCopies] = useState(2);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    const row = rowRef.current;
+    if (!viewport || !row) return;
+
+    const measure = () => {
+      const piste = row.getBoundingClientRect().width;
+      const cadre = viewport.getBoundingClientRect().width;
+      if (piste <= 0) return;
+      // (copies - 1) pistes doivent couvrir le cadre, et jamais moins de
+      // deux copies (il en faut une qui prenne la place de l'autre).
+      setCopies(Math.max(2, Math.ceil(cadre / piste) + 1));
+    };
+
+    // Le ResizeObserver appelle son rappel une première fois tout seul :
+    // la mesure initiale part de là plutôt que du corps de l'effet (règle
+    // react-hooks/set-state-in-effect), et les changements de largeur la
+    // refont d'eux-mêmes.
+    const ro = new ResizeObserver(measure);
+    ro.observe(viewport);
+    ro.observe(row);
+    return () => ro.disconnect();
+  }, []);
+
+  const piste = (i: number) => (
+    // Seule la première est lue : les copies ne sont là que pour boucher
+    // le cadre, un lecteur d'écran ne doit pas lire la liste n fois.
     <ul
+      key={i}
+      ref={i === 0 ? rowRef : undefined}
       className={styles.row}
-      aria-hidden={hidden || undefined}
+      aria-hidden={i > 0 || undefined}
       aria-label={
-        hidden ? undefined : PARTNERS.length > 0 ? undefined : "Logos à fournir"
+        i === 0 && PARTNERS.length === 0 ? "Logos à fournir" : undefined
       }
     >
       {items.map((it) => (
@@ -56,15 +100,20 @@ export function Partners({ headline }: { headline: string }) {
       {/* Le masque porte le flou des bords ; la piste, le défilement. Deux
           éléments plutôt qu'un : un `mask-image` sur l'élément animé se
           déplacerait avec lui. */}
-      <div className={styles.viewport}>
-        {/* --n : la durée suit le nombre de logos, pour que la VITESSE
-            apparente ne change pas quand la piste s'allonge. */}
+      <div ref={viewportRef} className={styles.viewport}>
+        {/* --copies : la translation vaut 100 % / copies, soit exactement
+            une piste. --n : la durée suit le nombre de logos, pour que la
+            VITESSE apparente ne change pas quand la piste s'allonge. */}
         <div
           className={styles.marquee}
-          style={{ "--n": items.length } as React.CSSProperties}
+          style={
+            {
+              "--copies": copies,
+              "--n": items.length,
+            } as React.CSSProperties
+          }
         >
-          {piste(false)}
-          {piste(true)}
+          {Array.from({ length: copies }, (_, i) => piste(i))}
         </div>
       </div>
     </section>

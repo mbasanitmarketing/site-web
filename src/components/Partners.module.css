@@ -67,8 +67,16 @@
 .marquee {
   display: flex;
   width: max-content;
+  /* La translation vaut UNE piste, quel que soit le nombre de copies :
+     100 % / copies. C'est ce qui rend la boucle invisible — la copie
+     suivante arrive pile à la place de la précédente. Le nombre de copies
+     est mesuré côté client (cf. Partners.tsx) : il en faut assez pour que
+     le cadre reste couvert quand la translation est à son maximum. */
+  --shift: calc(-100% / var(--copies, 2));
   /* La durée suit le nombre de logos : ajouter un logo allonge la piste,
-     la vitesse APPARENTE doit rester la même. 5 s par logo, deux pistes. */
+     la vitesse APPARENTE doit rester la même. 5 s par logo. Elle ne
+     dépend PAS du nombre de copies : le trajet, lui, vaut toujours une
+     piste. */
   animation: defile calc(var(--n, 6) * 5s) linear infinite;
 }
 
@@ -82,7 +90,7 @@
     transform: translateX(0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translateX(var(--shift));
   }
 }
 
@@ -169,8 +177,8 @@
   }
 }
 
-/* Mouvement réduit : la piste s'arrête. Une seule copie reste lisible —
-   la seconde est `aria-hidden`, la masquer ne retire rien. */
+/* Mouvement réduit : la piste s'arrête. Les copies sont `aria-hidden`,
+   les masquer ne retire rien à la lecture. */
 @media (prefers-reduced-motion: reduce) {
   .marquee {
     animation: none;

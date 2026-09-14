@@ -114,8 +114,11 @@ export type ServiceDetail = {
   qualifications: string[];
   /** Déroulement, de la demande à la réalisation. */
   steps: { title: string; body: string }[];
-  /** Prix. `tarif` reste vide tant que MBA n'a pas donné de fourchette :
-   *  la page affiche alors « à définir », jamais un chiffre plausible. */
+  /** RETIRÉ DE L'AFFICHAGE : la section « Prix » a été supprimée des
+   *  pages de service. Le champ reste pour mémoire, comme
+   *  `qualifications`. `tarif` n'a jamais été rempli — on n'affiche pas
+   *  un chiffre plausible mais inventé, il serait pris pour un
+   *  engagement. */
   pricing: { tarif: string; note: string; factors: string[] };
   /** Zone d'intervention : communes couvertes et contraintes utiles. */
   area: { communes: string[]; note: string };
