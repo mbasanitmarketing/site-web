@@ -186,13 +186,14 @@
   perspective: 132vw;
   /* surtout pas d'overflow ici : ça aplatirait la scène 3D */
   /* Apparaît EN PREMIER, avec la montée du blanc (--p 0.03 -> 0.15) — les
-     images d'abord, le texte après (cf. .head). Se retire de nouveau sur
-     la toute fin (--p 0.95 -> 1) pour que le raccord avec le footer se
-     fasse sur du blanc net, jamais sur une diapo. */
-  opacity: calc(
-    clamp(0, calc((var(--p, 0) - 0.03) / 0.12), 1) *
-      clamp(0, calc((1 - var(--p, 0)) / 0.05), 1)
-  );
+     images d'abord, le texte après (cf. .head).
+
+     PAS de fondu de sortie : il existait pour que le raccord avec le
+     footer se fasse sur du blanc net, jamais sur une diapo. C'est le
+     panneau partenaires qui fait ce raccord maintenant, en traversant
+     par la droite — le fondu ne faisait plus que vider l'écran pendant
+     toute la traversée. */
+  opacity: clamp(0, calc((var(--p, 0) - 0.03) / 0.12), 1);
 }
 
 .rail {
@@ -248,6 +249,19 @@
   margin-top: calc(var(--slide-h) / -2);
   transform: rotateY(calc(var(--i) * var(--step))) translateZ(var(--radius));
   backface-visibility: hidden;
+}
+
+/* Le rail cesse de tourner à --p 0.94 et reste sur la dernière diapo
+   jusqu'à 1 : sa légende ne doit donc pas s'éteindre comme les autres,
+   sinon on verrait une photo sans titre pendant tout le palier où le
+   panneau partenaires traverse. On garde la montée, on retire la
+   descente. */
+.slide:last-child {
+  --face-in: clamp(
+    0,
+    calc((var(--p, 0) - (var(--face-p) - var(--win))) / var(--fade)),
+    1
+  );
 }
 
 /* Photo de la réalisation. Le gris reste en fond : il couvre le temps du
