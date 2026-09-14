@@ -5,7 +5,6 @@ import { Partners } from "@/components/Partners";
 import { RealisationsCarousel } from "@/components/RealisationsCarousel";
 import {
   ServiceNeeds,
-  ServiceScope,
   ServiceProof,
   ServiceSteps,
   ServicePricing,
@@ -40,7 +39,6 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
       <PageIntro page={page} />
       {page.manifesto && <ServiceManifesto manifesto={page.manifesto} />}
       {page.service && <ServiceNeeds service={page.service} />}
-      {page.service && <ServiceScope service={page.service} />}
       {page.service && <ServiceProof service={page.service} />}
       <Partners headline="Les marques avec lesquelles nous travaillons." />
       {page.relatedRealisations && (

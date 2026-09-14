@@ -31,39 +31,7 @@ export function ServiceNeeds({ service }: { service: ServiceDetail }) {
   );
 }
 
-/* --- 3. Détail de la prestation ------------------------------------ */
-
-export function ServiceScope({ service }: { service: ServiceDetail }) {
-  return (
-    <ServiceSection label="Détail de la prestation">
-      <h2 className={shell.headline}>Ce qui est compris, et ce qui ne l’est pas.</h2>
-
-      <div className={shell.block}>
-        <h3 className={shell.blockTitle}>Compris dans la prestation</h3>
-        <ul className={shell.list}>
-          {service.included.map((x) => (
-            <li key={x} className={shell.listItem}>
-              {x}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className={shell.block}>
-        <h3 className={shell.blockTitle}>Non compris</h3>
-        <ul className={shell.list}>
-          {service.excluded.map((x) => (
-            <li key={x} className={`${shell.listItem} ${shell.listItemOut}`}>
-              {x}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </ServiceSection>
-  );
-}
-
-/* --- 4. Preuves : qualifications ----------------------------------- */
+/* --- 3. Preuves : qualifications ----------------------------------- */
 
 export function ServiceProof({ service }: { service: ServiceDetail }) {
   return (
@@ -88,7 +56,7 @@ export function ServiceProof({ service }: { service: ServiceDetail }) {
   );
 }
 
-/* --- 5. Déroulement ------------------------------------------------- */
+/* --- 4. Déroulement ------------------------------------------------- */
 
 export function ServiceSteps({ service }: { service: ServiceDetail }) {
   return (
@@ -111,7 +79,7 @@ export function ServiceSteps({ service }: { service: ServiceDetail }) {
   );
 }
 
-/* --- 6. Prix -------------------------------------------------------- */
+/* --- 5. Prix -------------------------------------------------------- */
 
 export function ServicePricing({ service }: { service: ServiceDetail }) {
   return (
@@ -143,7 +111,7 @@ export function ServicePricing({ service }: { service: ServiceDetail }) {
   );
 }
 
-/* --- 7. Zone d'intervention ----------------------------------------- */
+/* --- 6. Zone d'intervention ----------------------------------------- */
 
 export function ServiceArea({ service }: { service: ServiceDetail }) {
   return (
@@ -161,7 +129,7 @@ export function ServiceArea({ service }: { service: ServiceDetail }) {
   );
 }
 
-/* --- 8. Questions fréquentes ---------------------------------------- */
+/* --- 7. Questions fréquentes ---------------------------------------- */
 
 export function ServiceFaq({ service }: { service: ServiceDetail }) {
   return (
@@ -181,7 +149,7 @@ export function ServiceFaq({ service }: { service: ServiceDetail }) {
   );
 }
 
-/* --- 9. Contact ------------------------------------------------------ */
+/* --- 8. Contact ------------------------------------------------------ */
 
 export function ServiceContact() {
   return (
