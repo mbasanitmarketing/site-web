@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { PARTNERS } from "@/lib/pages";
 import styles from "./PartnersGrid.module.css";
+import { BackdropLines } from "./BackdropLines";
 
 /** Cases de la grille : 6 colonnes × 4 rangées, moins le bloc central de
  *  2 × 2 occupé par le titre — soit 20 logos pour remplir la trame. */
@@ -20,6 +21,12 @@ export function PartnersGrid() {
 
   return (
     <section className={styles.wrap}>
+      {/* Les cellules de la grille sont opaques (même #f5f5f4 que le
+          fond) : la trame ne peut donc se voir que dans les gouttières
+          autour du bloc — mêmes filet et pointillé que le reste du
+          site, pas d'arc ici, ce format dense laisserait trop peu de
+          place pour qu'il se lise. */}
+      <BackdropLines />
       <div className={styles.grid}>
         {items.map((p) => (
           <div key={p.name} className={styles.cell}>
