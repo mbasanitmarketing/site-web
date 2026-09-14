@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import { PageIntro } from "@/components/PageIntro";
 import { ServiceManifesto } from "@/components/ServiceManifesto";
+import { ServiceNeeds } from "@/components/ServiceNeeds";
 import { Partners } from "@/components/Partners";
 import { RealisationsCarousel } from "@/components/RealisationsCarousel";
 import {
-  ServiceNeeds,
   ServiceProof,
   ServiceSteps,
   ServicePricing,

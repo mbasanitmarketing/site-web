@@ -1,0 +1,244 @@
+/* ---------------------------------------------------------------------
+   « À votre écoute » — d'après « image et textes zoom animation.mov »
+   (halston / metrik.studio).
+
+   Piste + scène épinglée, tout dérive de --p (cf. ServiceNeeds.tsx pour
+   la chronologie). Le grand mot est simplement DERRIÈRE l'image : c'est
+   elle qui le recouvre en grandissant (via transform:scale, pas un
+   fondu) — aucune animation propre au mot n'est nécessaire.
+   --------------------------------------------------------------------- */
+
+.track {
+  position: relative;
+  height: 380vh;
+}
+
+.stage {
+  /* Hauteur du panneau du bas, comme une seule source : le titre s'en
+     sert pour se garder une marge au-dessus, le panneau pour sa propre
+     taille. Les deux ne peuvent donc pas se chevaucher, à aucune taille
+     d'écran. */
+  --panel-h: clamp(240px, 38svh, 380px);
+
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: #0b0b0c;
+}
+
+/* --- Le grand mot, derrière l'image ---------------------------------- */
+
+.word {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-size: clamp(3.5rem, 15vw, 11rem);
+  font-weight: 200;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 244, 0.14);
+}
+
+/* --- L'image qui grandit ---------------------------------------------- */
+
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* next/image (fill) pose déjà position:absolute + inset:0 sur le <img> ;
+   le scale grandit donc bien AUTOUR DU CENTRE de la scène, comme sur la
+   référence — un petit rectangle qui s'étend jusqu'au plein cadre. */
+.image {
+  transform: scale(clamp(0.32, calc(0.32 + var(--p, 0) * 1.24), 1));
+  will-change: transform;
+}
+
+/* Assombrit le bas de l'image, pour que le titre reste lisible dessus
+   sans attendre que le panneau la recouvre. */
+.media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.55),
+    rgba(0, 0, 0, 0) 45%
+  );
+  opacity: clamp(0, calc((var(--p, 0) - 0.36) / 0.14), 1);
+}
+
+/* --- Titre + CTA, posés sur l'image une fois qu'elle a grandi -------- */
+
+.onImage {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: clamp(16px, 2.4svh, 24px);
+  /* Marge du bas = hauteur du panneau + un blanc, pour que le titre ne
+     se fasse jamais recouvrir quand le panneau monte (cf. --panel-h). */
+  padding: 0 var(--page-x) calc(var(--panel-h) + clamp(28px, 4.5svh, 48px));
+  /* Fenêtre 0.48 -> 0.62 : après que l'image a fini de grandir (0.55),
+     avant que le panneau ne commence à monter (0.66) — jamais les deux
+     mouvements en même temps. */
+  --in: clamp(0, calc((var(--p, 0) - 0.48) / 0.14), 1);
+  opacity: var(--in);
+  transform: translateY(calc((1 - var(--in)) * 18px));
+  will-change: opacity, transform;
+}
+
+.headline {
+  max-width: 26ch;
+  margin: 0;
+  font-size: clamp(1.5rem, 3.2vw, 2.6rem);
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  color: #f5f5f4;
+}
+
+/* Charte des boutons texte du site : rectangle à 2 px, filet d'un pixel,
+   fond transparent, capitales tracées, remplissage inversé au survol —
+   filet clair, posé sur une photo. */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(9px, 1.15svh, 13px) clamp(16px, 1.7vw, 26px);
+  border: 1px solid rgba(245, 245, 244, 0.85);
+  border-radius: 2px;
+  background: transparent;
+  font-size: clamp(10px, 0.85vw, 12px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #f5f5f4;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.cta:hover,
+.cta:focus-visible {
+  background: #f5f5f4;
+  color: #0b0b0c;
+}
+
+/* --- Le panneau des trois cas, monté par le bas ----------------------- */
+
+/* Hauteur FIXE, pas `inset:0` : sur la référence, le panneau ne recouvre
+   que sa propre bande en bas — l'image et le titre restent visibles
+   au-dessus. Un `inset:0` translaté à 0 aurait couvert tout l'écran une
+   fois monté, cachant le titre et rendant le CTA impossible à cliquer
+   (repéré en testant le clic, pas juste en lisant le code). */
+.panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  height: var(--panel-h);
+  display: flex;
+  align-items: center;
+  padding: clamp(28px, 5svh, 56px) var(--page-x);
+  background: #f5f5f4;
+  color: #0b0b0c;
+  /* 0.66 -> 0.92 : monte une fois le titre en place (0.62), avec une
+     marge — puis reste épinglé, en place, jusqu'à la fin de la piste. */
+  transform: translateY(calc((1 - clamp(0, calc((var(--p, 0) - 0.66) / 0.26), 1)) * 100%));
+  will-change: transform;
+}
+
+.cases {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(24px, 4vw, 56px);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.case {
+  border-top: 1px solid rgba(11, 11, 12, 0.16);
+  padding-top: clamp(16px, 2.4svh, 24px);
+}
+
+.caseTitle {
+  margin: 0;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.caseBody {
+  margin: clamp(10px, 1.6svh, 14px) 0 0;
+  font-size: clamp(14px, 1vw, 16px);
+  line-height: 1.7;
+  color: rgba(11, 11, 12, 0.78);
+}
+
+/* --- Écrans étroits, courts, ou mouvement réduit : pas d'épinglage --- */
+
+/* Même repli dans les trois cas : la scène en flux normal, tout en place
+   d'un coup — un plein écran qui grandit et remonte au scroll est
+   justement ce que le mouvement réduit doit éviter. */
+@media (max-width: 720px), (max-height: 620px), (prefers-reduced-motion: reduce) {
+  .track {
+    height: auto;
+  }
+  .stage {
+    position: static;
+    height: auto;
+  }
+  .word {
+    display: none;
+  }
+  .media {
+    position: relative;
+    height: 62svh;
+  }
+  .image {
+    transform: none;
+  }
+  .media::after {
+    opacity: 1;
+  }
+  .onImage {
+    position: absolute;
+    opacity: 1;
+    transform: none;
+    padding-bottom: clamp(28px, 5svh, 44px);
+  }
+  .panel {
+    position: relative;
+    transform: none;
+    padding-block: clamp(32px, 6svh, 56px);
+  }
+  .cases {
+    grid-template-columns: 1fr;
+    gap: clamp(20px, 4svh, 32px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta {
+    transition: none;
+  }
+}

@@ -6,30 +6,7 @@ import styles from "./ServiceParts.module.css";
 const PHONE = "+41 78 217 29 28";
 const PHONE_HREF = "tel:+41782172928";
 
-/** Suite de blocs intitulé + paragraphe, la trame du manifeste. */
-function Blocks({ items }: { items: { title: string; body: string }[] }) {
-  return (
-    <>
-      {items.map((b) => (
-        <div key={b.title} className={shell.block}>
-          <h3 className={shell.blockTitle}>{b.title}</h3>
-          <p className={shell.blockBody}>{b.body}</p>
-        </div>
-      ))}
-    </>
-  );
-}
-
-/* --- 2. Besoins traités -------------------------------------------- */
-
-export function ServiceNeeds({ service }: { service: ServiceDetail }) {
-  return (
-    <ServiceSection label="À votre écoute pour :">
-      <h2 className={shell.headline}>Les situations qui amènent à appeler.</h2>
-      <Blocks items={service.needs} />
-    </ServiceSection>
-  );
-}
+/* --- 2. Besoins traités : voir ServiceNeeds.tsx, sa propre scène ---- */
 
 /* --- 3. Preuves : qualifications ----------------------------------- */
 
