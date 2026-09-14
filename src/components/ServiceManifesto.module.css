@@ -110,7 +110,7 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (max-width: 900px) and (max-height: 760px), (prefers-reduced-motion: reduce) {
   /* Plus d'épinglage : la section se déroule et la bande se déplie en
      liste (cf. PrestationSteps). */
   .track {
