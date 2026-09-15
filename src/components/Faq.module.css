@@ -216,3 +216,26 @@
     transition: none;
   }
 }
+
+/* Monte par-dessus la section précédente, restée épinglée (pages de
+   service : le carrousel de réalisations).
+
+   -100svh : elle part du bas de l'écran et son haut atteint le haut du
+   cadre après exactement 100svh de scroll — la durée d'épinglage du
+   carrousel (piste 200svh, scène 100svh). Les deux valeurs vont
+   ensemble ; si l'une change, l'autre aussi.
+
+   z-index 6 : au-dessus de la piste du carrousel (1) et de tout ce que
+   l'accueil empile (jusqu'à 5). */
+.overSticky {
+  margin-top: -100svh;
+  z-index: 6;
+}
+
+/* Là où le carrousel renonce à son épinglage, il n'y a plus rien à
+   recouvrir. */
+@media (max-height: 620px), (prefers-reduced-motion: reduce) {
+  .overSticky {
+    margin-top: 0;
+  }
+}

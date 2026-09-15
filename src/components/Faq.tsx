@@ -16,25 +16,40 @@ export type FaqItem = { q: string; a: string };
  *
  * Même composant pour l'accueil et les pages de service : c'est la même
  * section, seules les questions changent.
+ *
+ * `overSticky` : sur les pages de service, elle MONTE par-dessus le
+ * carrousel de réalisations resté épinglé, et le recouvre. Sur l'accueil
+ * non — la section qui la précède a déjà son propre palier.
  */
 export function Faq({
   items,
   lede,
+  overSticky = false,
   className = "",
 }: {
   items: FaqItem[];
   /** Phrase sous le titre. Elle dépend de la page. */
   lede: string;
+  /** Monte par-dessus la section précédente, restée épinglée — pages de
+   *  service, où elle recouvre le carrousel de réalisations. */
+  overSticky?: boolean;
   className?: string;
 }) {
   return (
-    <section className={`${styles.wrap} ${className}`}>
+    <section
+      className={`${styles.wrap} ${overSticky ? styles.overSticky : ""} ${className}`}
+    >
       <BackdropLines />
 
       <div className={styles.grid}>
         <div className={styles.left}>
-          <h2 className={styles.title}>Questions fréquentes</h2>
-          <p className={styles.lede}>{lede}</p>
+          {/* Titre et phrase dans un même bloc : sinon le `space-between`
+              de la colonne les écartait l'un de l'autre et la phrase se
+              retrouvait à flotter au milieu du vide. */}
+          <div>
+            <h2 className={styles.title}>Questions fréquentes</h2>
+            <p className={styles.lede}>{lede}</p>
+          </div>
 
           <div className={styles.card}>
             <div>

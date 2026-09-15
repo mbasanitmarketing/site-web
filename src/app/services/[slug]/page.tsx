@@ -50,7 +50,8 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
       {page.service && (
         <Faq
           items={page.service.faq}
-          lede="Zones d’intervention, délais, devis : les réponses aux questions qui reviennent."
+          overSticky
+          lede="Zones d’intervention, chantiers, entretien : les réponses aux questions qui reviennent."
         />
       )}
       <ServiceContact />

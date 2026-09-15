@@ -260,9 +260,63 @@ const FACTEURS = [
   "Accès au chantier",
 ];
 
+/* Les six questions qui accompagnent celle des zones (ZONE), soit sept en
+   tout.
+ 
+   Chaque réponse ne dit QUE ce que MBA nous a dit de son activité :
+   vingt ans de métier, villas / régies / immeubles d'entreprises, haut de
+   gamme et finitions, de la pose au dépannage et aux contrats
+   d'entretien, Genève et la Suisse romande, grands chantiers vaudois.
+ 
+   J'ai volontairement écarté les questions dont la réponse serait un
+   chiffre que personne ne m'a donné — délai de devis, prix, garanties.
+   Une fourchette plausible mais inventée serait lue comme un engagement.
+   Si MBA veut ces questions-là, il faut ses chiffres d'abord. */
 const QUESTIONS = [
-  "Sous quel délai puis-je obtenir un devis ?",
-  "Le devis est-il payant ?",
+  {
+    q: "Quels types de chantiers réalisez-vous ?",
+    a:
+      "De la pose d’un appareil isolé à la salle de bain complète, du remplacement " +
+      "d’une chaudière au passage à la pompe à chaleur. Notre spécialité, c’est le " +
+      "haut de gamme et les finitions soignées : villas, régies immobilières et " +
+      "immeubles d’entreprises.",
+  },
+  {
+    q: "Travaillez-vous avec les régies immobilières ?",
+    a:
+      "Oui, c’est une part importante de notre activité. Nous sommes habitués aux " +
+      "suivis de régie : coordination des accès, intervention en logement occupé, " +
+      "et un interlocuteur unique du premier relevé à la réception du chantier.",
+  },
+  {
+    q: "Intervenez-vous après l’installation, en cas de panne ?",
+    a:
+      "Oui. Nous ne nous arrêtons pas à la pose : fuite, engorgement, panne de " +
+      "production d’eau chaude, nous revenons sur les installations que nous avons " +
+      "posées comme sur celles que nous reprenons.",
+  },
+  {
+    q: "Proposez-vous des contrats d’entretien ?",
+    a:
+      "Oui, pour les régies immobilières comme pour les propriétaires. L’entretien " +
+      "régulier d’une installation sanitaire ou de chauffage coûte bien moins cher " +
+      "que la panne qu’il évite, et nous connaissons alors déjà les lieux quand il " +
+      "faut intervenir vite.",
+  },
+  {
+    q: "Depuis combien de temps exercez-vous ?",
+    a:
+      "Notre équipe a plus de vingt ans de métier. C’est ce qui nous permet de " +
+      "prendre des chantiers ambitieux et d’intervenir sur des installations très " +
+      "différentes les unes des autres.",
+  },
+  {
+    q: "Comment se passe une première prise de contact ?",
+    a:
+      "Par téléphone ou par le formulaire, comme vous préférez. Nous convenons " +
+      "ensuite d’une visite sur place : c’est le seul moyen de prendre les mesures, " +
+      "de voir l’existant et de vous proposer quelque chose de juste.",
+  },
 ];
 
 /* La zone d'intervention avait sa propre section ; elle a été retirée et
@@ -283,6 +337,11 @@ export const ZONE = {
     "Enfin, pour les grands chantiers, nous intervenons également dans le canton de " +
     "Vaud.",
 };
+
+/** Les sept questions, dans l'ordre d'affichage. Une seule liste pour
+ *  l'accueil et les pages de service : deux FAQ qui divergeraient sur les
+ *  mêmes questions seraient pires qu'une seule. */
+export const FAQ_ITEMS = [ZONE, ...QUESTIONS];
 
 const COMMUNES = [
   "Genève",
@@ -323,7 +382,7 @@ const service = (needs: string[]): ServiceDetail => ({
     factors: FACTEURS,
   },
   area: { communes: COMMUNES, note: LEDE },
-  faq: [ZONE, ...QUESTIONS.map((q, i) => ({ q, a: i % 2 ? BODY_B : BODY_A }))],
+  faq: FAQ_ITEMS,
 });
 
 export const SERVICES: PageContent[] = [

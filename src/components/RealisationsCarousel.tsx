@@ -60,7 +60,11 @@ export function RealisationsCarousel({
   if (items.length === 0) return null;
 
   return (
-    <section className={styles.wrap}>
+    /* Piste + scène collante : la scène reste ÉPINGLÉE pendant que la FAQ
+       monte par-dessus et la recouvre (cf. le module CSS pour le calcul,
+       et Faq.tsx pour la remontée). */
+    <section className={styles.track}>
+      <div className={styles.stage}>
       <div className={styles.head}>
         <h2 className={styles.title}>{title}</h2>
 
@@ -122,6 +126,7 @@ export function RealisationsCarousel({
           </li>
         ))}
       </ul>
+      </div>
     </section>
   );
 }

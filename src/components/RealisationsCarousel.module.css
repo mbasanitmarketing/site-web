@@ -6,10 +6,32 @@
    pointeur, une pleine largeur et l'amorce de la suivante au doigt.
    --------------------------------------------------------------------- */
 
-.wrap {
+/* La scène reste épinglée pendant que la FAQ monte par-dessus.
+
+   200svh de piste pour une scène de 100svh : l'épinglage dure donc
+   100svh, soit exactement la course dont la FAQ a besoin pour passer du
+   bas de l'écran au haut. Elle remonte de -100svh (cf. Faq.module.css) :
+   les deux valeurs vont ensemble, si l'une change, l'autre aussi. */
+.track {
+  position: relative;
+  z-index: 1;
+  height: 200svh;
+}
+
+/* Colonne centrée, un écran de haut : le carrousel tient largement
+   dedans, et la scène ne peut pas dépasser du cadre pendant qu'elle est
+   épinglée. */
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background: #f5f5f4;
   color: #0b0b0c;
-  padding: clamp(40px, 9svh, 104px) var(--page-x) clamp(56px, 12svh, 140px);
+  padding: clamp(32px, 6svh, 72px) var(--page-x);
 }
 
 .head {
@@ -167,5 +189,20 @@
   }
   .card:hover .media img {
     transform: none;
+  }
+}
+
+/* Écran court ou mouvement réduit : pas d'épinglage. Une scène d'un écran
+   qu'on recouvre, c'est précisément ce que le mouvement réduit doit
+   éviter, et sur un écran très bas le carrousel n'y tiendrait pas. */
+@media (max-height: 620px), (prefers-reduced-motion: reduce) {
+  .track {
+    height: auto;
+  }
+  .stage {
+    position: static;
+    height: auto;
+    overflow: visible;
+    padding-block: clamp(40px, 9svh, 104px);
   }
 }
