@@ -15,7 +15,7 @@ export default function Page() {
   return (
     <>
       <DevisForm atTop />
-      <Footer />
+      <Footer above="navy" />
     </>
   );
 }

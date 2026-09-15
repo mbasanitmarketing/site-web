@@ -8,6 +8,20 @@
    Tout le petit texte est en 9px, capitales, légèrement tracké.
    --------------------------------------------------------------------- */
 
+/* Enveloppe : c'est ELLE qu'on voit dans les découpes du bord haut du
+   footer, puisque le footer y est rogné. Sans elle, on voyait le fond de
+   page (#0b0b0c) — une bande noire au-dessus du footer sur toutes les
+   pages intérieures. */
+.shell {
+  background: #f5f5f4;
+}
+
+/* Quand le bloc juste au-dessus est navy (formulaire de devis, section
+   contact) : la découpe disparaît au lieu de trancher en clair. */
+.shellNavy {
+  background: #070b20;
+}
+
 .footer {
   --pad-x: clamp(16px, 2.6vw, 40px);
   --small: clamp(9px, 0.72vw, 10px);

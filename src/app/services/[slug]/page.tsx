@@ -55,7 +55,7 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
         />
       )}
       <ServiceContact />
-      <Footer />
+      <Footer above="navy" />
     </>
   );
 }

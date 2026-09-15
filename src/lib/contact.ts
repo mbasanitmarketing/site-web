@@ -21,3 +21,21 @@ export const WHATSAPP_HREF = `https://wa.me/${PHONE_E164.replace("+", "")}`;
 
 /** Adresse de contact affichée sur le site. */
 export const EMAIL = "contact@mbasanit.ch";
+
+/**
+ * Horaires d'ouverture.
+ *
+ * RELEVÉES À LA MAIN sur la fiche Google Business Profile le 15/09/2026,
+ * comme la note et les avis (cf. src/lib/reviews.ts) :
+ *   lundi à vendredi  07:00 - 17:00
+ *   samedi, dimanche  fermé
+ *
+ * Le site affichait « 07 h 30 – 17 h 00 » : l'heure d'ouverture était
+ * fausse. Ces valeurs sont FIGÉES dans le code — si MBA change ses
+ * horaires sur Google, il faut repasser ici.
+ */
+export const HORAIRES = {
+  jours: "Du lundi au vendredi",
+  heures: "07 h 00 – 17 h 00",
+  fermeture: "Samedi et dimanche fermé",
+};

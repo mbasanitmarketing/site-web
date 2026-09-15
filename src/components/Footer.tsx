@@ -1,42 +1,49 @@
 import Image from "next/image";
 import { GoogleReviews } from "./GoogleReviews";
-import { PHONE_LABEL, WHATSAPP_HREF } from "@/lib/contact";
+import { HORAIRES } from "@/lib/contact";
 import styles from "./Footer.module.css";
 
 /**
  * Footer — calqué sur celui de likova.space (mesuré dans le DOM).
  *
- * Bloc navy compact (pas pleine hauteur). En haut : bouton « Contact »
- * (fond blanc, coin bas-droite mordu) qui ouvre WhatsApp, puis le
- * mot-marque. Au centre-droit :
+ * Bloc navy compact (pas pleine hauteur). En haut : le mot-marque seul —
+ * le bouton « Contact » a été retiré (demandé). C'était le SEUL point
+ * WhatsApp du site, il n'en reste aucun. Au centre-droit :
  * les horaires. En bas : ligne de mentions (© / confidentialité / agence)
  * puis un fin disclaimer pleine largeur.
  *
  * Contenus provisoires (horaires, disclaimer) — à remplacer.
  *
+ * Le bord haut est DÉCOUPÉ (un retrait sur toute la largeur, une encoche
+ * plus profonde dans le coin droit). Ce qui apparaît dans ces découpes,
+ * c'est ce qu'il y a DERRIÈRE le footer — et c'était le fond de page,
+ * presque noir, d'où la bande noire au-dessus du footer sur toutes les
+ * pages intérieures. D'où l'enveloppe `.shell`, qui porte la couleur du
+ * bloc précédent : claire par défaut, navy quand le bloc d'au-dessus l'est
+ * (formulaire de devis, section contact des pages de service).
+ *
  * `overlap` : remonte le footer de la profondeur de son encoche, pour que
- * le blanc de la section 3 apparaisse dans les zones découpées. Réservé à
+ * la section précédente apparaisse dans les zones découpées. Réservé à
  * l'accueil ; ailleurs il mordrait sur les textes du bas de PageIntro.
  */
-export function Footer({ overlap = false }: { overlap?: boolean }) {
+export function Footer({
+  overlap = false,
+  above = "light",
+}: {
+  overlap?: boolean;
+  /** Couleur du bloc qui précède le footer. Elle remplit les découpes de
+   *  son bord haut — sans elle, c'est le fond de page (presque noir) qui
+   *  y apparaissait. */
+  above?: "light" | "navy";
+}) {
   return (
-    <footer
-      className={`${styles.footer} ${overlap ? styles.overlap : ""}`}
+    <div
+      className={`${styles.shell} ${above === "navy" ? styles.shellNavy : ""} ${
+        overlap ? styles.overlap : ""
+      }`}
     >
+      <footer className={styles.footer}>
       <div className={styles.top}>
-        {/* Le seul point WhatsApp du site. Il pointait sur « #contact »,
-            une ancre qui n'existe nulle part : le bouton ne menait donc
-            à rien. Le numéro vient de src/lib/contact.ts, comme partout
-            ailleurs. */}
-        <a
-          className={styles.contact}
-          href={WHATSAPP_HREF}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`Écrire sur WhatsApp au ${PHONE_LABEL}`}
-        >
-          Contact
-        </a>
         <Image
           className={styles.logo}
           src="/logo-mba.png"
@@ -49,10 +56,12 @@ export function Footer({ overlap = false }: { overlap?: boolean }) {
 
       <GoogleReviews className={styles.reviews} />
 
+      {/* Horaires relevées sur la fiche Google (cf. HORAIRES) : l'heure
+          d'ouverture affichée jusqu'ici, 07 h 30, était fausse. */}
       <p className={styles.hours}>
-        Ouvert du lundi au vendredi,
+        {HORAIRES.jours}, {HORAIRES.heures}
         <br />
-        07&nbsp;h&nbsp;30 – 17&nbsp;h&nbsp;00
+        {HORAIRES.fermeture}
       </p>
 
       <div className={styles.meta}>
@@ -68,6 +77,7 @@ export function Footer({ overlap = false }: { overlap?: boolean }) {
         veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
         commodo consequat.
       </p>
-    </footer>
+      </footer>
+    </div>
   );
 }

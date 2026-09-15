@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useLenis } from "lenis/react";
 import { useEffect, useState } from "react";
 import styles from "./SiteLogo.module.css";
 
@@ -20,9 +21,13 @@ import styles from "./SiteLogo.module.css";
  * Correction : sur l'accueil, ce logo prend le relais dès que la piste de
  * la hero est sortie du cadre. Les deux ne sont jamais visibles en même
  * temps, et le logo de la hero garde son animation.
+ *
+ * Au clic, il ramène en haut de l'accueil — y compris quand on y est
+ * déjà, où une navigation seule ne ferait rien.
  */
 export function SiteLogo() {
   const pathname = usePathname();
+  const lenis = useLenis();
   const accueil = pathname === "/";
   // Ailleurs qu'à l'accueil : visible tout de suite.
   const [passeHero, setPasseHero] = useState(false);
@@ -46,7 +51,20 @@ export function SiteLogo() {
   if (accueil && !passeHero) return null;
 
   return (
-    <Link className={styles.logo} href="/" aria-label="MBA Sanit — accueil">
+    <Link
+      className={styles.logo}
+      href="/"
+      aria-label="MBA Sanit — accueil"
+      /* Le clic doit ramener EN HAUT de l'accueil, sur la hero. Sans ça,
+         depuis le bas d'une page on arrivait à la même hauteur de scroll
+         au milieu de l'accueil. On remet le scroll à zéro sur-le-champ :
+         Lenis d'abord (c'est lui qui tient la position), la fenêtre
+         ensuite, pour le cas où il ne serait pas encore monté. */
+      onClick={() => {
+        lenis?.scrollTo(0, { immediate: true });
+        window.scrollTo(0, 0);
+      }}
+    >
       <Image
         src="/logo-mba.png"
         alt="MBA Sanit"
