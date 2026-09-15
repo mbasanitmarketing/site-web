@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Realisation } from "@/lib/pages";
+import titre from "./Heading.module.css";
 import styles from "./RealisationsCarousel.module.css";
 
 /**
@@ -66,7 +67,7 @@ export function RealisationsCarousel({
     <section className={styles.track}>
       <div className={styles.stage}>
       <div className={styles.head}>
-        <h2 className={styles.title}>{title}</h2>
+        <h2 className={`${styles.title} ${titre.h2}`}>{title}</h2>
 
         {overflow && (
           <div className={styles.arrows}>

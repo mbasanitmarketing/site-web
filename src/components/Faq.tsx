@@ -1,4 +1,5 @@
 import { BackdropLines } from "./BackdropLines";
+import titre from "./Heading.module.css";
 import styles from "./Faq.module.css";
 
 export type FaqItem = { q: string; a: string };
@@ -47,7 +48,7 @@ export function Faq({
               de la colonne les écartait l'un de l'autre et la phrase se
               retrouvait à flotter au milieu du vide. */}
           <div>
-            <h2 className={styles.title}>Questions fréquentes</h2>
+            <h2 className={`${styles.title} ${titre.h2}`}>Questions fréquentes</h2>
             <p className={styles.lede}>{lede}</p>
           </div>
 

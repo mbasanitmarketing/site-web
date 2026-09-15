@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import type { Realisation } from "@/lib/pages";
+import titre from "./Heading.module.css";
 import styles from "./ProjectDetail.module.css";
 import { BackdropLines } from "./BackdropLines";
 
@@ -66,7 +67,7 @@ export function ProjectDetail({ project }: { project: Realisation }) {
 
       <section className={styles.gallery}>
         <div className={styles.galleryHead}>
-          <h2 className={styles.galleryTitle}>Un aperçu du projet</h2>
+          <h2 className={`${styles.galleryTitle} ${titre.h2}`}>Un aperçu du projet</h2>
           {project.gallery.length > 1 && (
             <button
               type="button"

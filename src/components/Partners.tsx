@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { PARTNERS, PARTNER_SLOTS } from "@/lib/pages";
 import chip from "./Chip.module.css";
+import titre from "./Heading.module.css";
 import styles from "./Partners.module.css";
 
 /**
@@ -93,7 +94,7 @@ export function Partners({ headline }: { headline: string }) {
     <section className={styles.wrap}>
       <div className={styles.grid}>
         <p className={`${styles.label} ${chip.chip}`}>Nos partenaires</p>
-        <h2 className={styles.headline}>{headline}</h2>
+        <h2 className={`${styles.headline} ${titre.h2}`}>{headline}</h2>
       </div>
 
       {/* Le masque porte le flou des bords ; la piste, le défilement. Deux

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { PARTNERS } from "@/lib/pages";
 import { useScrollProgress } from "@/lib/useScrollProgress";
+import titre from "./Heading.module.css";
 import styles from "./PartnersGrid.module.css";
 import { BackdropLines } from "./BackdropLines";
 
@@ -162,7 +163,7 @@ export function PartnersGrid() {
                   sizes="(max-width: 720px) 100vw, 34vw"
                 />
               </div>
-              <h2 className={styles.title}>Un réseau de partenaires solides</h2>
+              <h2 className={`${styles.title} ${titre.h2}`}>Un réseau de partenaires solides</h2>
               <a className={styles.cta} href="/devis" data-page-transition>
                 Demander un devis
               </a>

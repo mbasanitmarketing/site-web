@@ -1,0 +1,36 @@
+/* ---------------------------------------------------------------------
+   Le format des titres de section (h2) du site.
+
+   Relevé sur « NOS RÉALISATIONS » de l'accueil, que MBA a retenu comme
+   référence : capitales, graisse 600, interlettrage resserré, interligne
+   court.
+
+   Une seule définition, importée par chaque section. La recopier dans
+   quinze modules aurait garanti qu'ils finissent par diverger.
+   --------------------------------------------------------------------- */
+
+/* `.h2.h2` et non `.h2` : la classe est posée À CÔTÉ de celle du module
+   (`.title`, `.headline`…), et à égalité de spécificité c'est l'ordre des
+   feuilles qui tranche — un ordre qu'on ne maîtrise pas entre modules. En
+   doublant la classe, ce format gagne à tous les coups.
+
+   La MARGE n'est volontairement pas reprise ici : chaque section a la
+   sienne, et l'imposer casserait leurs espacements. */
+.h2.h2 {
+  font-size: clamp(1.1rem, 2.1vw, 1.9rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #565252;
+  /* Les capitales n'ont pas de jambages : un titre de deux lignes se
+     lisait tassé sans un peu d'air entre elles. */
+  text-wrap: balance;
+}
+
+/* Les titres posés sur un fond sombre — photo, navy — gardent la couleur
+   claire : le gris #565252 y serait illisible. Même spécificité que
+   `.h2.h2`, mais déclaré APRÈS dans cette même feuille, donc il gagne. */
+.h2.onDark {
+  color: #f5f5f4;
+}

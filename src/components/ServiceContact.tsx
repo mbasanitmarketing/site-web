@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { PHONE_HREF } from "@/lib/contact";
+import titre from "./Heading.module.css";
 import styles from "./ServiceContact.module.css";
 
 /**
@@ -18,7 +19,7 @@ export function ServiceContact() {
 
       <div className={styles.grid}>
         <div className={styles.panel}>
-          <h2 className={styles.title}>Parlons de votre projet&nbsp;!</h2>
+          <h2 className={`${styles.title} ${titre.h2}`}>Parlons de votre projet&nbsp;!</h2>
           <p className={styles.body}>
             Nous nous tenons à disposition du lundi au vendredi pour vous
             répondre en moins de 2&nbsp;h par e-mail.

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRef } from "react";
 import type { ServiceDetail } from "@/lib/pages";
 import { useScrollProgress } from "@/lib/useScrollProgress";
+import titre from "./Heading.module.css";
 import styles from "./ServiceNeeds.module.css";
 
 /**
@@ -38,6 +39,10 @@ export function ServiceNeeds({ service }: { service: ServiceDetail }) {
       <div ref={stageRef} className={styles.stage}>
         {/* Dans son propre bandeau, au-dessus de l'image — pas caché
             derrière elle. */}
+        {/* Les lignes dorées qui tombent pendant que l'image grandit.
+            Décoratives : rien à lire, rien à cliquer. */}
+        <div className={styles.rain} aria-hidden="true" />
+
         <p className={styles.label}>À votre écoute</p>
 
         <div className={styles.media}>
@@ -49,7 +54,7 @@ export function ServiceNeeds({ service }: { service: ServiceDetail }) {
             className={styles.image}
           />
           <div className={styles.onImage}>
-            <h2 className={styles.headline}>
+            <h2 className={`${styles.headline} ${titre.h2} ${titre.onDark}`}>
               Les situations qui amènent à appeler.
             </h2>
             <a className={styles.cta} href="/devis" data-page-transition>

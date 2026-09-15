@@ -10,6 +10,7 @@ import {
   REVIEWS_URL,
 } from "@/lib/reviews";
 import type { Review } from "@/lib/reviews";
+import titre from "./Heading.module.css";
 import styles from "./HomeReviews.module.css";
 
 /* --- Étoiles --------------------------------------------------------- */
@@ -242,7 +243,7 @@ export function HomeReviews() {
         <BackdropLines arc />
 
         <div className={styles.head}>
-          <h2 className={styles.title}>Au plus près de vous&nbsp;!</h2>
+          <h2 className={`${styles.title} ${titre.h2}`}>Au plus près de vous&nbsp;!</h2>
           <span className={styles.rule} aria-hidden="true" />
           <p className={styles.lede}>
             Villas, régies immobilières et immeubles d’entreprises : nous

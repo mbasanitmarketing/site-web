@@ -61,12 +61,15 @@ export function AboutMba() {
         <div ref={stageRef} className={styles.stage}>
         <BackdropLines />
 
-        <p className={chip.chip}>Nos principes</p>
-        <h2 className={styles.title}>
+        {/* Le surtitre porte le h2 : c'est lui le titre de la section. La
+            phrase en dessous est une DESCRIPTION, pas un titre — elle est
+            donc un paragraphe, au corps des paragraphes du site. */}
+        <h2 className={chip.chip}>Nos principes</h2>
+        <p className={styles.lead}>
           Vingt ans à poser, réparer et entretenir des installations en Suisse
           romande. <span className={styles.soft}>Le haut de gamme, les
           finitions, et le suivi dans la durée.</span>
-        </h2>
+        </p>
 
         <ul className={styles.cards}>
           {VALEURS.map((v, i) => (
@@ -91,12 +94,12 @@ export function AboutMba() {
       </section>
 
       <section className={`${styles.wrap} ${styles.team}`}>
-        <p className={chip.chip}>Notre équipe</p>
-        <h2 className={styles.title}>
+        <h2 className={chip.chip}>Notre équipe</h2>
+        <p className={styles.lead}>
           Les mêmes visages du premier relevé à la réception du chantier.{" "}
           <span className={styles.soft}>C’est ce qui fait qu’on connaît vos
           installations.</span>
-        </h2>
+        </p>
 
         <ul className={styles.people}>
           {EQUIPE.map((p) => (

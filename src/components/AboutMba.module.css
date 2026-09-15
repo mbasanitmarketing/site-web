@@ -72,17 +72,18 @@
 
 /* Le surtitre en pastille : cf. Chip.module.css, partagé avec les pages
    de service. */
-.title {
-  max-width: 26ch;
-  margin: clamp(20px, 3svh, 32px) 0 0;
-  /* Échelle des phrases longues du site — celle du manifeste des pages de
-     service. Elle était à 3.2vw : aucun autre texte de ce genre n'est
-     aussi gros sur le site, il sautait aux yeux. */
-  font-size: clamp(1.3rem, 2.5vw, 2.25rem);
+/* La phrase sous le surtitre : une DESCRIPTION, donc au corps des
+   paragraphes du site (15 px), pas à celui d'un titre. Elle était à la
+   taille d'un titre, elle écrasait la section. */
+.lead {
+  max-width: 62ch;
+  margin: clamp(14px, 2.2svh, 26px) 0 0;
+  font-size: clamp(14px, 1.05vw, 15px);
   font-weight: 400;
-  line-height: 1.16;
-  letter-spacing: -0.025em;
-  text-wrap: balance;
+  line-height: 1.65;
+  letter-spacing: 0;
+  color: #0b0b0c;
+  text-wrap: pretty;
 }
 
 /* Le second ton du titre, comme sur la référence : la phrase se poursuit
@@ -241,7 +242,7 @@
   .badge {
     margin-bottom: clamp(20px, 3svh, 32px);
   }
-  .title {
+  .lead {
     max-width: none;
   }
 }

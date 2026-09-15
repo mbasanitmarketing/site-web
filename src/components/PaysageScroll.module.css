@@ -154,38 +154,50 @@
   left: clamp(20px, 4vw, 60px);
   right: clamp(20px, 4vw, 60px);
   z-index: 2;
-  /* Les deux blocs aux deux bouts. `flex-end` aligne leurs BAS : comme
-     les deux paragraphes font le même nombre de lignes, leurs hauts se
-     retrouvent au même niveau, le titre débordant au-dessus à droite —
-     c'est la maquette. */
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: clamp(24px, 6vw, 96px);
+  /* Une grille de deux colonnes sur deux rangées : le titre en haut à
+     droite, les deux descriptions en dessous, alignées par le BAS. Une
+     grille et pas un flex, parce que le titre doit venir EN PREMIER dans
+     le DOM (pour l'empilement mobile) tout en étant placé à droite et sur
+     la rangée du dessus. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  column-gap: clamp(24px, 6vw, 96px);
+  row-gap: clamp(8px, 1.4svh, 16px);
   color: #0b0b0c;
   opacity: var(--in);
   transform: translateY(calc((1 - var(--in)) * 16px));
 }
 
-.headRight {
+.title {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
   text-align: right;
 }
 
 .ledeLeft {
+  grid-column: 1;
+  grid-row: 2;
   text-align: left;
 }
 
-.head > * {
-  width: min(42ch, 34vw);
+.ledeRight {
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: end;
+  text-align: right;
 }
 
+.head > * {
+  max-width: min(42ch, 34vw);
+}
+
+/* Le format est celui de Heading.module.css — c'est CE titre qui lui a
+   servi de référence. Il ne reste ici que sa place dans la grille et sa
+   marge. */
 .title {
   margin: 0 0 0.7em;
-  font-size: clamp(1.1rem, 2.1vw, 1.9rem);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
 }
 
 /* Plus de capitales : en bas de casse, comme sur la maquette. Tout en
@@ -231,41 +243,139 @@
   will-change: transform;
 }
 
-/* --- Le trait doré autour de l'image face au viewer -------------------
+/* --- Le serpent doré autour de l'image face au viewer ----------------
 
-   Il se DÉROULE à mesure que la diapo arrive en face : le trait part du
-   haut au milieu, fait le tour et revient à son point de départ, pile
-   quand l'image est de face.
+   UN SEUL arc doré qui fait le tour de l'image, en boucle, avec quelques
+   particules dans son sillage. Visible seulement quand la diapo est de
+   face : c'est --face-in qui pilote l'opacité, la même fenêtre que la
+   légende.
 
-   `--draw` va de 0 à 1 sur la fenêtre qui PRÉCÈDE --face-p ; le trait est
-   donc bouclé à l'instant exact où la diapo est présentée. Ensuite il
-   s'efface avec `--face-in`, la même fenêtre que la légende — les deux ne
-   peuvent pas se désynchroniser.
+   POURQUOI PAS UN SVG. La première version traçait un `path` et faisait
+   courir un tiret dessus. Deux échecs successifs, instructifs :
+     — avec `stroke-dashoffset`, le trait apparaissait par la FIN du
+       tracé, donc il naissait en bas et remontait à l'envers ;
+     — avec `vector-effect: non-scaling-stroke` (nécessaire pour que
+       l'épaisseur ne soit pas écrasée par un viewBox étiré), les tirets
+       se comptent en PIXELS D'ÉCRAN et `pathLength="1"` est ignoré :
+       0,3 px de trait pour 0,7 px de vide, répétés sur tout le périmètre.
+       Mesuré dans le navigateur — d'où les dizaines de petits traits au
+       lieu d'un seul.
 
-   Doré relevé sur le logo (#cc9024, la teinte la plus présente). */
+   Ici, un dégradé conique tourne derrière un masque qui ne garde que le
+   cadre de 3 px. Un seul arc, épaisseur constante, insensible au format
+   de l'image. */
+
 .slideOutline {
   position: absolute;
   inset: 0;
   z-index: 2;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
   pointer-events: none;
   opacity: var(--face-in, 0);
 }
 
-.slideOutline path {
-  stroke: #cc9024;
-  stroke-width: 1.5;
-  /* Le tracé vaut 1 (pathLength). On fait CROÎTRE le tiret depuis le
-     début du tracé — un tiret de longueur --draw suivi d'un trou qui
-     couvre tout le reste.
+/* L'angle du dégradé. Une propriété DÉCLARÉE : sans `@property`, une
+   variable d'angle ne s'interpole pas — elle sauterait de 0 à 360. */
+@property --tour {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
 
-     Pas `stroke-dashoffset` : décaler un tiret d'une unité fait apparaître
-     le trait par la FIN du tracé, donc il naissait en bas à gauche et
-     remontait à l'envers. Là il part bien du haut au milieu. */
-  stroke-dasharray: var(--draw, 0) 1;
-  stroke-dashoffset: 0;
+.slideOutline::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* L'épaisseur du cadre : c'est le retrait que le masque découpe. */
+  padding: 3px;
+  background: conic-gradient(
+    from var(--tour),
+    transparent 0 58%,
+    rgba(204, 144, 36, 0.35) 68%,
+    #cc9024 80%,
+    #f0cc60 90%,
+    transparent 96%
+  );
+  /* Ne garde que la bordure : le dégradé plein moins son intérieur. */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  animation: tour 3.2s linear infinite;
+}
+
+@keyframes tour {
+  to {
+    --tour: 360deg;
+  }
+}
+
+/* Les particules : elles suivent le périmètre en pourcentages, donc la
+   trajectoire reste juste quelle que soit la taille de l'image. Chacune
+   est décalée dans le temps (--k) pour former une traîne derrière l'arc,
+   et scintille en s'écartant légèrement du bord. */
+.spark {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px;
+  border-radius: 50%;
+  background: #f0cc60;
+  box-shadow: 0 0 6px rgba(240, 204, 96, 0.9);
+  animation:
+    perimetre 3.2s linear infinite,
+    scintille 3.2s linear infinite;
+  animation-delay: calc(var(--k, 0) * -0.14s);
+}
+
+@keyframes perimetre {
+  0% {
+    left: 50%;
+    top: 0%;
+  }
+  12.5% {
+    left: 100%;
+    top: 0%;
+  }
+  37.5% {
+    left: 100%;
+    top: 100%;
+  }
+  62.5% {
+    left: 0%;
+    top: 100%;
+  }
+  87.5% {
+    left: 0%;
+    top: 0%;
+  }
+  100% {
+    left: 50%;
+    top: 0%;
+  }
+}
+
+/* Le jaillissement : la particule s'écarte du bord en s'éteignant. */
+@keyframes scintille {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  8% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  40% {
+    opacity: 0.55;
+    transform: scale(0.8) translate(2px, -2px);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(0.5) translate(4px, -4px);
+  }
 }
 
 .slide {
@@ -290,14 +400,6 @@
       calc((var(--p, 0) - (var(--face-p) - var(--win))) / var(--fade)),
       calc((var(--face-p) + var(--win) - var(--p, 0)) / var(--fade))
     ),
-    1
-  );
-
-  /* Déroulé du trait doré : 0 à l'entrée dans la fenêtre, 1 pile à
-     --face-p. Il boucle donc au moment où la diapo est de face. */
-  --draw: clamp(
-    0,
-    calc((var(--p, 0) - (var(--face-p) - var(--win))) / var(--win)),
     1
   );
 
@@ -426,15 +528,22 @@
   /* Deux colonnes de 34vw ne tiennent pas sur un téléphone : les blocs
      s'empilent, tous deux alignés à gauche — un paragraphe court ferré à
      droite sur un écran étroit se lit mal. */
+  /* Une seule colonne : tout s'empile dans l'ordre du DOM — titre,
+     puis les deux descriptions — et tout est ferré à gauche. Un
+     paragraphe court ferré à droite sur écran étroit se lit mal. */
   .head {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: clamp(10px, 2svh, 16px);
+    grid-template-columns: 1fr;
+    row-gap: clamp(10px, 2svh, 16px);
   }
   .head > * {
-    width: min(100%, 46ch);
+    max-width: min(100%, 46ch);
   }
-  .headRight {
+  .title,
+  .ledeLeft,
+  .ledeRight {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
     text-align: left;
   }
 }
@@ -473,9 +582,13 @@
   }
 }
 
-/* Mouvement réduit : le trait est là, entier, sans se dérouler. */
+/* Mouvement réduit : un cadre doré fixe, sans rien qui tourne. */
 @media (prefers-reduced-motion: reduce) {
-  .slideOutline path {
-    stroke-dasharray: none;
+  .slideOutline::before {
+    background: #cc9024;
+    animation: none;
+  }
+  .spark {
+    display: none;
   }
 }

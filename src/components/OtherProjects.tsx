@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { REALISATIONS, type Realisation } from "@/lib/pages";
+import titre from "./Heading.module.css";
 import styles from "./OtherProjects.module.css";
 
 /**
@@ -20,7 +21,7 @@ export function OtherProjects({ current }: { current: Realisation }) {
 
   return (
     <section className={styles.wrap}>
-      <h2 className={styles.title}>Autres réalisations</h2>
+      <h2 className={`${styles.title} ${titre.h2}`}>Autres réalisations</h2>
       <div className={styles.rule} aria-hidden="true" />
 
       <div className={styles.grid}>

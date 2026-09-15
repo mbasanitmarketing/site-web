@@ -36,6 +36,40 @@
   flex-direction: column;
 }
 
+/* --- Les lignes dorées qui tombent -----------------------------------
+
+   Un filet doré tous les 30 px, sur toute la scène, qui DESCEND pendant
+   que l'image grandit — et qui a fini sa course quand l'image atteint son
+   plein cadre (--p 0.42), le même point que la fin du zoom. Les deux
+   bornes sont liées : si l'une bouge, l'autre aussi.
+
+   Une seule trame répétée plutôt que des dizaines d'éléments : c'est un
+   seul calque à peindre, et l'écart de 30 px est exact quelle que soit la
+   hauteur de l'écran.
+
+   La trame est plus haute que la scène (-40 % en haut) : en descendant,
+   elle ne doit pas laisser apparaître de vide au-dessus. */
+.rain {
+  --fall: clamp(0, calc(var(--p, 0) / 0.42), 1);
+
+  position: absolute;
+  inset: -40% 0 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(204, 144, 36, 0.55) 0 1px,
+    transparent 1px 30px
+  );
+  /* Les filets s'éteignent vers le bas : ils tombent, ils ne défilent pas
+     comme un rideau. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent);
+  mask-image: linear-gradient(to bottom, #000 40%, transparent);
+  transform: translateY(calc(var(--fall) * 58svh));
+  opacity: calc((1 - var(--fall)) * 0.9);
+  will-change: transform, opacity;
+}
+
 /* --- Le titre, dans son propre bandeau au-dessus de l'image --------- */
 
 .label {
@@ -338,6 +372,11 @@
   .media::after {
     opacity: 1;
   }
+  /* Sans épinglage, --p ne bouge plus : la trame resterait figée en haut
+     de la section. */
+  .rain {
+    display: none;
+  }
   .onImage {
     position: absolute;
     opacity: 1;
@@ -373,5 +412,11 @@
 @media (prefers-reduced-motion: reduce) {
   .cta {
     transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rain {
+    display: none;
   }
 }

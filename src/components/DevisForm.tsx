@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { SERVICES } from "@/lib/pages";
+import titre from "./Heading.module.css";
 import styles from "./DevisForm.module.css";
 
 type State = "idle" | "sending" | "sent" | "error";
@@ -52,7 +53,7 @@ export function DevisForm({ atTop = false }: { atTop?: boolean } = {}) {
         {atTop ? (
           <h1 className={styles.title}>Demander un devis</h1>
         ) : (
-          <h2 className={styles.title}>Demander un devis</h2>
+          <h2 className={`${styles.title} ${titre.h2} ${titre.onDark}`}>Demander un devis</h2>
         )}
         <p className={styles.lede}>
           Décrivez votre projet, nous revenons vers vous rapidement.

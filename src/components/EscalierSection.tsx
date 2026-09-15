@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useScrollProgress } from "@/lib/useScrollProgress";
 import { DESCRIPTIONS, SERVICES, VALEURS } from "@/lib/pages";
+import titre from "./Heading.module.css";
 import styles from "./EscalierSection.module.css";
 
 /**
@@ -126,7 +127,7 @@ export function EscalierSection() {
           {/* Un vrai titre de section, pas un <p> stylé : c'est le seul
               niveau de plan entre le H1 de la hero et les noms de service
               en dessous. Rien ne change à l'écran. */}
-          <h2 className={styles.eyebrow}>Services</h2>
+          <h2 className={`${styles.eyebrow} ${titre.h2} ${titre.onDark}`}>Services</h2>
 
           {/* texte de gauche */}
           <div className={styles.copy}>
