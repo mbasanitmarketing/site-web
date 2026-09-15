@@ -53,10 +53,12 @@ export function EscalierSection() {
   const trackRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
 
-  // span 0.63 : --p atteint 1 (panneau aligné) avant la fin de
-  // l'épinglage ; le reste est un palier figé. Calé avec .track (voir
-  // .module.css) et avec la hero.
-  useScrollProgress(trackRef, stageRef, 0.63);
+  // span 0.443 : --p atteint 1 (panneau aligné) avant la fin de
+  // l'épinglage ; le reste est un palier figé, pendant lequel les
+  // accordéons s'ouvrent. Calé avec .track (voir .module.css) et avec la
+  // hero. 0.443 x 540vh donne la même montée que 0.63 x 380vh : la piste
+  // s'est allongée, la montée non.
+  useScrollProgress(trackRef, stageRef, 0.443);
 
   // Accordéons : un seul ouvert à la fois ; le premier ouvert au chargement.
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -74,9 +76,15 @@ export function EscalierSection() {
    * `useScrollProgress` bloque son --p à 1 dès 63 %, il ne dirait plus
    * rien de ce qui se passe pendant le palier.
    *
-   *   0 -> 0.63   le panneau monte et s'aligne (rien à faire ici)
-   *   0.66 -> 0.95  les trois accordéons, un tiers de la plage chacun
-   *   0.95 -> 1     un temps mort, le troisième ouvert, avant la suite
+   *   0 -> 0.443   le panneau monte et s'aligne (rien à faire ici)
+   *   0.46 -> 0.72   les trois accordéons, un tiers de la plage chacun
+   *   0.72 -> 1      un temps mort, le troisième ouvert, avant la suite
+   *
+   * La borne haute compte autant que la basse : le rideau blanc du
+   * carrousel commence à recouvrir cette scène bien avant la fin de la
+   * piste. Passé ce point, un accordéon qui s'ouvre s'ouvre DERRIÈRE le
+   * rideau — c'est ce qui se passait, et ça donnait l'impression que
+   * rien ne marchait. La phase doit finir avant.
    *
    * Le clic continue de marcher : il pose l'index tout de suite, et le
    * scroll suivant reprend la main. Mouvement réduit : rien de tout ça,
@@ -88,8 +96,8 @@ export function EscalierSection() {
     if (!track || !stage) return;
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const DEBUT = 0.66;
-    const FIN = 0.95;
+    const DEBUT = 0.46;
+    const FIN = 0.72;
 
     let raf = 0;
     // Mesurée au redimensionnement seulement : une lecture de hauteur par

@@ -23,13 +23,22 @@
 .track {
   position: relative;
   z-index: 2;
-  height: 480vh;
-  /* Grand recouvrement : le panneau monte par-dessus la hero FIGÉE
+  /* 640vh et non 480 : la MONTÉE du panneau n'a pas changé d'un pixel
+     (le span baisse d'autant, cf. EscalierSection.tsx), c'est le PALIER
+     qui s'allonge. Il en fallait : les accordéons s'ouvrent pendant ce
+     palier, et avec 480vh le rideau blanc du carrousel les recouvrait
+     dès le deuxième — ils s'ouvraient hors de vue.
+
+     Grand recouvrement : le panneau monte par-dessus la hero FIGÉE
      (animation finie, toujours épinglée derrière), s'arrête à 80%,
      défile, puis s'aligne à 100% — tout ça pendant que la hero reste
      immobile. La hero ne se retire qu'après, recouverte.
-     Calage : hero .track 540vh + span 0.36 ; ici -360svh + span 0.63.
-     Si tu changes l'un, refais les quatre. */
+
+     Calage : hero .track 540vh + span 0.36 ; ici -360svh + span 0.443.
+     La montée vaut span x (hauteur - 100svh) : 0.443 x 540vh = 239vh,
+     exactement comme 0.63 x 380vh avant. Si tu changes l'une des deux,
+     refais ce produit — sinon la montée change de vitesse. */
+  height: 640vh;
   margin-top: -360svh;
 }
 
