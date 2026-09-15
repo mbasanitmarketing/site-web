@@ -59,7 +59,15 @@
 /* Dernière section de la page : le footer remonte de --plate-h pour que
    son encoche laisse voir du clair. Sans cette réserve, il mordrait sur
    le dernier repli de la FAQ. */
+/* z-index 5 : la piste du panneau de logos (z-index 4) court jusque
+   derrière cette section — elle est longue, pour rester épinglée pendant
+   que les avis glissent dessus. Sans ça, le panneau bleu, toujours
+   collant, peignait PAR-DESSUS le haut de la FAQ et en cachait le titre.
+   Les avis (5) et le pied de page (5) se placent déjà au-dessus pour la
+   même raison ; c'est cette section qui manquait à l'appel. */
 .last {
+  position: relative;
+  z-index: 5;
   padding-bottom: clamp(72px, 13svh, 132px);
 }
 

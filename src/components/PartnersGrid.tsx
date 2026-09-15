@@ -64,10 +64,11 @@ export function PartnersGrid() {
   const gridRef = useRef<HTMLDivElement>(null);
   const [delays, setDelays] = useState<number[]>([]);
 
-  // span 0.75 : le panneau est en place au scroll 1070, puis la scène
-  // reste épinglée jusqu'à 1100 — le temps de lire avant que la page ne
-  // reprenne son cours.
-  useScrollProgress(trackRef, stageRef, 0.75);
+  // span 0.409 : la traversée dure toujours 90svh — (320 - 100) x 0.409 —
+  // donc le panneau est en place au scroll 1070, comme avant. Ce qui
+  // change, c'est l'après : la scène reste épinglée et figée 130svh de
+  // plus, le temps que la section des avis glisse par-dessus.
+  useScrollProgress(trackRef, stageRef, 0.409);
 
   useEffect(() => {
     const grid = gridRef.current;

@@ -8,12 +8,36 @@
    En bas, un bandeau navy pleine largeur porte la citation, à l'anglaise.
    --------------------------------------------------------------------- */
 
+/* La section MONTE PAR-DESSUS la précédente (le panneau de logos), qui
+   reste épinglée dessous — demandé.
+
+   Aucun script : le panneau de logos est déjà `position: sticky` dans sa
+   piste ; il suffit de remonter cette section dans le flux et de la faire
+   peindre au-dessus. Le calcul, chaîné à PartnersGrid.module.css : sa
+   piste fait 320svh pour une scène de 100svh, donc 220svh d'épinglage,
+   dont 90 servent à la traversée horizontale. Restent 130svh où le
+   panneau est en place et IMMOBILE : on remonte donc de 130svh, pour
+   commencer à glisser dessus pile quand il se pose, et avoir plus d'un
+   écran de course pour le recouvrir entièrement pendant qu'il est figé.
+
+   z-index 5 : au-dessus de la piste des logos (4). Si l'une des deux
+   hauteurs change, refaire ce calcul. */
 .wrap {
   position: relative;
+  z-index: 5;
+  margin-top: -130svh;
   isolation: isolate;
   padding-top: clamp(64px, 12svh, 140px);
   background: #f5f5f4;
   color: #0b0b0c;
+}
+
+/* Là où le panneau de logos renonce à son épinglage (cf. son module), il
+   n'y a plus rien à recouvrir : la section reprend sa place dans le flux. */
+@media (max-height: 620px), (prefers-reduced-motion: reduce) {
+  .wrap {
+    margin-top: 0;
+  }
 }
 
 /* --- Titre, filet, chapô, note --------------------------------------- */
@@ -116,33 +140,33 @@
    et rien ne bouge : la piste est simplement centrée. Répéter le même
    avis en boucle laisserait croire qu'il y en a dix. */
 .viewport {
+  /* Hauteur de la rangée = celle de la carte ouverte. Une seule source :
+     `.rail` s'en sert pour ne jamais changer de taille. */
+  --rail-h: clamp(250px, 34svh, 310px);
+
   position: relative;
   margin-top: clamp(36px, 6svh, 72px);
   padding-bottom: clamp(48px, 9svh, 110px);
   overflow: hidden;
 }
 
+/* La piste ne doit JAMAIS être contrainte en largeur ni passer à la
+   ligne. Elle l'était dans l'état « pas assez d'avis » — et c'était un
+   verrou : la rangée repliée devenait étroite, donc la mesure concluait
+   qu'elle tenait dans le cadre, donc le défilement ne s'allumait jamais.
+   Cet état n'existe plus. */
 .marquee {
   display: flex;
   width: max-content;
-  /* Piste unique : centrée, immobile. */
-  margin-inline: auto;
-  max-width: 100%;
-}
-
-.viewportDefile .marquee {
   --shift: calc(-100% / var(--copies, 2));
-  margin-inline: 0;
-  max-width: none;
   /* 6 s par avis : la vitesse apparente ne change pas quand la piste
      s'allonge. */
   animation: defile calc(var(--n, 4) * 6s) linear infinite;
 }
 
-/* On s'arrête pour laisser lire. */
-.viewport:hover .marquee {
-  animation-play-state: paused;
-}
+/* PAS d'arrêt au survol, volontairement : la rangée s'arrêtait dès que la
+   souris passait dessus, donc à chaque mouvement et à chaque scroll. Le
+   défilement ne doit rien devoir aux gestes de l'utilisateur. */
 
 @keyframes defile {
   from {
@@ -153,12 +177,58 @@
   }
 }
 
+/* Les deux bords : 80 px de flou qui s'éteint vers l'intérieur, puis un
+   fondu vers le fond de la section. En deux temps, comme le bandeau de
+   logos : un `filter: blur()` ne sait pas ne flouter qu'une bande, donc
+   c'est un calque posé par-dessus qui porte le `backdrop-filter`, masqué
+   en dégradé. Le fondu par-dessus évite qu'une carte reste « nette mais
+   floue » au ras du bord au lieu de disparaître. */
+.viewport::before,
+.viewport::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 80px;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+}
+
+.viewport::before {
+  left: 0;
+  -webkit-mask-image: linear-gradient(to right, #000, transparent);
+  mask-image: linear-gradient(to right, #000, transparent);
+  background: linear-gradient(to right, #f5f5f4 10%, rgba(245, 245, 244, 0));
+}
+
+.viewport::after {
+  right: 0;
+  -webkit-mask-image: linear-gradient(to left, #000, transparent);
+  mask-image: linear-gradient(to left, #000, transparent);
+  background: linear-gradient(to left, #f5f5f4 10%, rgba(245, 245, 244, 0));
+}
+
+/* Sur un téléphone, 80 px de chaque côté mangeraient un quart de l'écran :
+   la bande se resserre. */
+@media (max-width: 720px) {
+  .viewport::before,
+  .viewport::after {
+    width: 44px;
+  }
+}
+
 .rail {
   display: flex;
-  /* Toutes à la hauteur de la plus grande : sur une rangée qui défile, des
-     bas de cartes en dents de scie se voient tout de suite. Le texte reste
-     calé en haut (colonne flex), c'est le blanc qui comble. */
-  align-items: stretch;
+  flex-wrap: nowrap;
+  /* Les cartes pendent d'une même ligne haute et gardent leur hauteur
+     propre : c'est la repliée qui est courte et l'ouverte qui est longue,
+     comme sur la maquette. */
+  align-items: flex-start;
+  /* Hauteur FIXE, calée sur la carte ouverte : sans elle, la rangée
+     changeait de hauteur à chaque ouverture et toute la page sautait. */
+  height: var(--rail-h);
   flex: none;
   gap: clamp(16px, 1.8vw, 28px);
   /* La moitié de l'écart de chaque côté : au raccord des deux pistes,
@@ -168,25 +238,59 @@
   list-style: none;
 }
 
-/* Une seule piste : elle respire du même retrait que le reste. */
-.viewport:not(.viewportDefile) .rail {
-  padding-inline: var(--page-x);
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
 /* --- La carte --------------------------------------------------------- */
 
+/* Deux états, d'après la maquette : repliée, c'est un bandeau bleu clair
+   avec le nom et les étoiles ; ouverte, c'est une carte blanche, plus
+   haute, qui montre la mention vérifiée et le texte.
+
+   L'ouverture vient de `data-open`, posé par le script sur la carte la
+   plus proche du milieu du cadre (cf. HomeReviews.tsx). */
 .card {
   display: flex;
   flex-direction: column;
   flex: none;
   width: clamp(280px, 25vw, 360px);
-  padding: clamp(18px, 1.6vw, 26px);
-  border: 1px solid rgba(11, 11, 12, 0.16);
+  padding: clamp(16px, 1.5vw, 24px);
+  border: 1px solid rgba(11, 11, 12, 0.14);
   /* Charte : rectangle à 2 px, comme les CTA. */
   border-radius: 2px;
+  background: #e0e5f2;
+  transition:
+    background-color 420ms ease,
+    border-color 420ms ease;
+}
+
+.card[data-open="true"] {
   background: #fff;
+  border-color: rgba(11, 11, 12, 0.2);
+}
+
+/* Le texte se replie par les rangées de grille : `0fr -> 1fr` s'anime,
+   `height: auto` non — et ça évite d'avoir à connaître la hauteur du
+   texte à l'avance, qui change d'un avis à l'autre. */
+.fold {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 480ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card[data-open="true"] .fold {
+  grid-template-rows: 1fr;
+}
+
+.foldInner {
+  overflow: hidden;
+  /* Sans ça, le contenu impose sa hauteur minimale et le repli ne ferme
+     jamais complètement. */
+  min-height: 0;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.card[data-open="true"] .foldInner {
+  opacity: 1;
+  transition-delay: 120ms;
 }
 
 .cardHead {
@@ -231,8 +335,7 @@
 /* Passe sous le nom quand la carte est étroite : en pleine largeur au
    pied de l'en-tête, pas serré contre lui. */
 .verified {
-  grid-column: 2;
-  margin: 6px 0 0;
+  margin: clamp(12px, 1.4svh, 16px) 0 0;
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -244,10 +347,16 @@
 }
 
 .body {
-  margin: clamp(14px, 1.8svh, 20px) 0 0;
-  font-size: clamp(14px, 1vw, 15px);
-  line-height: 1.75;
+  margin: clamp(8px, 1svh, 12px) 0 0;
+  font-size: clamp(13px, 0.95vw, 15px);
+  line-height: 1.7;
   color: rgba(11, 11, 12, 0.8);
+  /* La rangée a une hauteur fixe : un avis très long doit être coupé
+     plutôt que de dépasser de sa carte. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
 }
 
 /* --- Le bandeau navy et sa citation ----------------------------------- */
@@ -317,13 +426,24 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .viewportDefile .marquee {
+  .marquee {
     animation: none;
-    /* Sans animation, la piste doit rester atteignable : on la fait
-       défiler au doigt plutôt que de la figer sur ses premières cartes. */
-    margin-inline: 0;
   }
+  /* Sans animation, la piste doit rester atteignable : on la fait défiler
+     au doigt plutôt que de la figer sur ses premières cartes. */
   .viewport {
     overflow-x: auto;
+  }
+  /* Rien ne bouge : c'est la première carte qui reste ouverte, sinon on
+     ne verrait aucun texte. */
+  .rail li:first-child {
+    background: #fff;
+    border-color: rgba(11, 11, 12, 0.2);
+  }
+  .rail li:first-child .fold {
+    grid-template-rows: 1fr;
+  }
+  .rail li:first-child .foldInner {
+    opacity: 1;
   }
 }

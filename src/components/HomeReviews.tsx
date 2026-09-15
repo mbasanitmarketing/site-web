@@ -44,6 +44,21 @@ function Initiales({ nom }: { nom: string }) {
   );
 }
 
+/**
+ * Une carte. Deux états, comme sur la maquette :
+ *
+ *   repliée   — bleu clair, initiales + nom + étoiles, rien d'autre ;
+ *   ouverte   — blanche, avec la mention vérifiée et le texte de l'avis.
+ *
+ * S'ouvre celle qui est la plus proche du MILIEU du cadre — elle se
+ * referme en s'éloignant (cf. « avis animation.mov »). Le survol prend le
+ * pas dessus tant que la souris est sur une carte ; dès qu'elle en sort,
+ * la règle du milieu reprend la main. Le pilotage est dans HomeReviews.
+ *
+ * Le texte se replie par `grid-template-rows: 0fr -> 1fr` : ça s'anime,
+ * contrairement à `height: auto`, et ça n'oblige pas à connaître la
+ * hauteur du texte à l'avance.
+ */
 function Carte({ r }: { r: Review }) {
   return (
     <li className={styles.card}>
@@ -53,12 +68,16 @@ function Carte({ r }: { r: Review }) {
           <p className={styles.author}>{r.author}</p>
           {r.meta && <p className={styles.meta}>{r.meta}</p>}
         </div>
-        {/* Texte seul, pas le « G » multicolore : reproduire une marque
-            déposée de mémoire, c'est la déformer. */}
-        <p className={styles.verified}>Avis Google vérifié</p>
       </div>
       <Stars n={r.rating} className={styles.cardStars} />
-      <p className={styles.body}>{r.body}</p>
+      <div className={styles.fold}>
+        <div className={styles.foldInner}>
+          {/* Texte seul, pas le « G » multicolore : reproduire une marque
+              déposée de mémoire, c'est la déformer. */}
+          <p className={styles.verified}>Avis Google vérifié</p>
+          <p className={styles.body}>{r.body}</p>
+        </div>
+      </div>
     </li>
   );
 }
@@ -79,15 +98,16 @@ function Carte({ r }: { r: Review }) {
  * défiler (demandé). Elles s'éteignent d'une ligne — cf. AVIS_DEMO dans
  * src/lib/reviews.ts, à retirer avant la mise en ligne.
  *
- * La rangée ne défile que si la piste remplit déjà le cadre : en dessous,
- * les cartes sont simplement centrées, immobiles.
+ * Le DÉFILEMENT, lui, est continu et ne dépend d'aucun geste : pas
+ * d'arrêt au survol, il se déclenchait au moindre mouvement de souris.
+ * Seule l'OUVERTURE des cartes réagit au curseur.
  */
 export function HomeReviews() {
   const note = RATING.toLocaleString("fr-CH");
 
   const viewportRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLUListElement>(null);
-  const [copies, setCopies] = useState(1);
+  const [copies, setCopies] = useState(2);
 
   useEffect(() => {
     const viewport = viewportRef.current;
@@ -98,9 +118,11 @@ export function HomeReviews() {
       const piste = rail.getBoundingClientRect().width;
       const cadre = viewport.getBoundingClientRect().width;
       if (piste <= 0) return;
-      // Assez d'avis pour couvrir le cadre ? Sinon : une seule piste,
-      // centrée, sans animation.
-      setCopies(piste >= cadre ? Math.ceil(cadre / piste) + 1 : 1);
+      // (copies - 1) pistes doivent couvrir le cadre quand la translation
+      // est à son maximum, sinon il reste une bande vide à chaque tour.
+      // Jamais moins de deux : il en faut une qui prenne la place de
+      // l'autre.
+      setCopies(Math.max(2, Math.ceil(cadre / piste) + 1));
     };
 
     // Le ResizeObserver appelle son rappel une première fois tout seul :
@@ -111,7 +133,86 @@ export function HomeReviews() {
     return () => ro.disconnect();
   }, []);
 
-  const defile = copies > 1;
+  // La carte la plus proche du milieu du cadre s'ouvre ; les autres se
+  // replient. C'est ce que fait la vidéo de référence.
+  //
+  // Une boucle rAF, et PAS un IntersectionObserver pour savoir si la
+  // section est à l'écran : la sortie anticipée se lit très bien sur le
+  // rectangle du cadre, qu'il faut lire de toute façon. Un observateur de
+  // plus, c'est une pièce mobile de plus pour la même information.
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let raf = 0;
+    let ouverte: HTMLElement | null = null;
+    // Carte sous le curseur. Elle prend le pas sur celle du milieu tant
+    // que la souris est dessus ; dès qu'elle en sort, la boucle rend la
+    // main à la règle normale, sans rien avoir à défaire.
+    let survolee: HTMLElement | null = null;
+
+    const entre = (e: PointerEvent) => {
+      survolee = (e.target as HTMLElement).closest("li");
+    };
+    const sort = (e: PointerEvent) => {
+      const vers = e.relatedTarget as Node | null;
+      if (!vers || !viewport.contains(vers)) survolee = null;
+      else survolee = (vers as HTMLElement).closest?.("li") ?? null;
+    };
+    viewport.addEventListener("pointerover", entre);
+    viewport.addEventListener("pointerout", sort);
+
+    const frame = () => {
+      raf = requestAnimationFrame(frame);
+      const cadre = viewport.getBoundingClientRect();
+
+      // Section hors de l'écran : on s'arrête là. Une lecture de
+      // rectangle par image, c'est le prix déjà payé par le reste du site
+      // (cf. useScrollProgress).
+      if (cadre.bottom < 0 || cadre.top > innerHeight) {
+        if (ouverte) {
+          ouverte.removeAttribute("data-open");
+          ouverte = null;
+        }
+        return;
+      }
+
+      const milieu = cadre.left + cadre.width / 2;
+
+      let meilleure: HTMLElement | null = null;
+      let ecart = Infinity;
+      for (const c of viewport.querySelectorAll<HTMLElement>("li")) {
+        const b = c.getBoundingClientRect();
+        // Hors cadre : jamais candidate, sinon une carte d'une copie
+        // voisine, invisible, volerait l'ouverture à celle du milieu.
+        if (b.right < cadre.left || b.left > cadre.right) continue;
+        const d = Math.abs(b.left + b.width / 2 - milieu);
+        if (d < ecart) {
+          ecart = d;
+          meilleure = c;
+        }
+      }
+
+      // Le survol l'emporte : c'est un geste explicite, il passe devant
+      // la règle du milieu.
+      if (survolee) meilleure = survolee;
+
+      if (meilleure !== ouverte) {
+        ouverte?.removeAttribute("data-open");
+        meilleure?.setAttribute("data-open", "true");
+        ouverte = meilleure;
+      }
+    };
+
+    raf = requestAnimationFrame(frame);
+    return () => {
+      cancelAnimationFrame(raf);
+      viewport.removeEventListener("pointerover", entre);
+      viewport.removeEventListener("pointerout", sort);
+      ouverte?.removeAttribute("data-open");
+    };
+  }, [copies]);
 
   const piste = (i: number) => (
     <ul
@@ -152,10 +253,7 @@ export function HomeReviews() {
         </a>
       </div>
 
-      <div
-        ref={viewportRef}
-        className={`${styles.viewport} ${defile ? styles.viewportDefile : ""}`}
-      >
+      <div ref={viewportRef} className={styles.viewport}>
         <div
           className={styles.marquee}
           style={

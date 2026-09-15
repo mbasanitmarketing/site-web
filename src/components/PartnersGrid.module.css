@@ -15,10 +15,11 @@
                 jusqu'à 1070 (palier immobile)
      ici : natural top = 460 + 710 = 1170 ; -190svh -> --p 0 au scroll
                 980, PILE quand la dernière réalisation est en place.
-                travel = (220 - 100) * 0.75 = 90 -> panneau en place au
+                travel = (320 - 100) * 0.409 = 90 -> panneau en place au
                 scroll 1070, au moment exact où le carrousel se
-                désépingle. Reste épinglé jusqu'à 1100, puis la page
-                reprend son cours vers les avis.
+                désépingle. Reste ensuite épinglé et FIGÉ pendant 130svh,
+                le temps que la section des avis glisse par-dessus (cf.
+                HomeReviews.module.css, margin-top: -130svh).
    Si tu changes une hauteur / un span : refais CE calcul et celui de
    PaysageScroll, les deux se tiennent.
    --------------------------------------------------------------------- */
@@ -27,7 +28,14 @@
   position: relative;
   /* Au-dessus du carrousel (3), sous le footer (5). */
   z-index: 4;
-  height: 220svh;
+  /* 320svh et non 220 : la scène doit rester ÉPINGLÉE assez longtemps
+     pour que la section des avis glisse par-dessus elle en entier.
+     Épinglage = 320 - 100 = 220svh, dont 90 pour la traversée
+     horizontale ; restent 130svh de scène figée, soit plus d'un écran —
+     de quoi laisser les avis la recouvrir complètement.
+     Avant, avec 220svh, il ne restait que 30svh : le panneau se
+     désépinglait et repartait avec la page avant même d'être recouvert. */
+  height: 320svh;
   margin-top: -190svh;
   /* La piste recouvre la fin du carrousel : sans ça, elle intercepterait
      ses clics alors qu'elle est encore vide. Le panneau, lui, réactive
