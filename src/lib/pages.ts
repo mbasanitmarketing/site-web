@@ -191,6 +191,27 @@ export const PAGES: PageContent[] = [
   },
 ];
 
+/* Descriptions des services sur l'accueil.
+ *
+ * Plus longues que les titres de manifeste qui servaient jusqu'ici : ce
+ * sont les seuls paragraphes de l'accueil qui décrivent vraiment le
+ * métier, et ils comptent donc pour le référencement — local compris.
+ *
+ * Écrites à partir de ce que MBA a dit de son activité : villas, régies
+ * immobilières, immeubles d'entreprises, haut de gamme et finitions,
+ * vingt ans de métier, de la pose à l'entretien, Genève et la Suisse
+ * romande. Rien d'inventé sur les qualifications, les marques ou les
+ * délais — à relire avec MBA avant la mise en ligne.
+ */
+export const DESCRIPTIONS: Record<string, string> = {
+  "/services/sanitaire-salles-de-bain":
+    "Installation et rénovation sanitaire à Genève, Carouge, Grand-Lancy et dans tout le canton. Nous dessinons et posons des salles de bain complètes — alimentation, évacuation, appareils, robinetterie, carrelage — comme nous remplaçons un seul appareil. Un soin particulier sur les finitions, pour les villas, les régies immobilières et les immeubles d’entreprises.",
+  "/services/chauffage-pompes-a-chaleur":
+    "Chauffage et pompes à chaleur en Suisse romande : remplacement de chaudière, passage à la pompe à chaleur, distribution et radiateurs. Nous étudions l’installation existante avant de proposer une solution, et nous coordonnons le chantier avec la régie ou le propriétaire pour limiter les coupures.",
+  "/services/entretien-depannage":
+    "Entretien courant et dépannage sanitaire et chauffage sur Genève et alentour. Fuite, engorgement, panne de production d’eau chaude : nous intervenons, puis nous suivons l’installation dans la durée. Contrats d’entretien pour les régies immobilières et les propriétaires de villas.",
+};
+
 /* --- Les trois métiers, sous /services ---------------------------- */
 
 /* Trame des sections « manifeste ». Les intitulés sont structurels — ils

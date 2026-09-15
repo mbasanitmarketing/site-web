@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { useScrollProgress } from "@/lib/useScrollProgress";
-import { SERVICES } from "@/lib/pages";
+import { DESCRIPTIONS, SERVICES } from "@/lib/pages";
 import styles from "./EscalierSection.module.css";
 
 /**
@@ -28,7 +28,7 @@ const ITEMS = SERVICES.map((s) => ({
   src: s.image,
   alt: s.alt ?? "",
   heading: s.title,
-  sub: s.manifesto?.headline ?? s.lede,
+  sub: DESCRIPTIONS[s.href] ?? s.manifesto?.headline ?? s.lede,
 }));
 
 /* Réassurance — texte fourni par MBA. Corrigé à la marge : accents et
@@ -68,13 +68,19 @@ export function EscalierSection() {
       <div ref={stageRef} className={styles.stage}>
         {/* le panneau bleu : monte du bas, s'arrête à 90%, puis s'aligne */}
         <div className={styles.panel}>
-          <p className={styles.eyebrow}>Services</p>
+          {/* Un vrai titre de section, pas un <p> stylé : c'est le seul
+              niveau de plan entre le H1 de la hero et les noms de service
+              en dessous. Rien ne change à l'écran. */}
+          <h2 className={styles.eyebrow}>Services</h2>
 
           {/* texte de gauche */}
           <div className={styles.copy}>
             {ITEMS.map((it) => (
               <div key={it.href} className={styles.copyItem}>
-                <p className={styles.heading}>{it.heading}</p>
+                {/* h3 : chaque service est une subdivision de la section
+                    ci-dessus, et c'est le libellé qui décrit la page vers
+                    laquelle le bouton mène. */}
+                <h3 className={styles.heading}>{it.heading}</h3>
                 <p className={styles.sub}>{it.sub}</p>
                 <a className={styles.cta} href={it.href} data-page-transition>
                   Découvrir le service

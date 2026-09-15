@@ -21,12 +21,26 @@ import Snap from "lenis/snap";
  * jouent normalement. Le calage n'intervient qu'à l'arrêt, et seulement
  * si on s'est arrêté assez près d'un point de repos.
  *
- * QUELS POINTS DE REPOS ? Le haut de chaque section de premier niveau,
- * SAUF celles qui remontent sur la précédente (marge haute négative :
- * panneau de logos, avis). Celles-là ne sont pas des débuts de page, ce
- * sont des calques posés sur la section d'avant ; s'y caler donnerait un
- * arrêt au milieu d'un recouvrement. La règle se lit sur la marge
- * calculée, donc elle n'a rien à maintenir quand une section est ajoutée.
+ * QUELS POINTS DE REPOS ?
+ *
+ * Par défaut : le haut de chaque section de premier niveau, SAUF celles
+ * qui remontent sur la précédente (marge haute négative). Celles-là ne
+ * sont pas des débuts de page, ce sont des calques posés sur la section
+ * d'avant ; s'y caler donnerait un arrêt au milieu d'un recouvrement. La
+ * règle se lit sur la marge calculée, elle n'a donc rien à maintenir
+ * quand une section est ajoutée.
+ *
+ * Mais cette règle est trop grossière pour les sections chaînées, qui ont
+ * de vrais points d'arrêt : la fin de leur glissement, et leur fin tout
+ * court. Une section peut donc les DÉCLARER avec `data-snap`, qui prend
+ * le pas sur la règle de la marge :
+ *
+ *   data-snap="start"      arrêt quand son haut touche le haut du cadre
+ *   data-snap="end"        arrêt quand son bas touche le bas du cadre
+ *   data-snap="start end"  les deux
+ *
+ * C'est ce qui manquait aux avis : sans repère à leur fin, un scroll un
+ * peu appuyé passait par-dessus et atterrissait droit sur la FAQ.
  *
  * Mouvement réduit : aucun calage. Un déplacement de page qu'on n'a pas
  * demandé, c'est précisément ce qu'il faut éviter.
@@ -41,23 +55,37 @@ export function SectionSnap() {
 
     const snap = new Snap(lenis, {
       type: "proximity",
-      // Ne se déclenche que si on s'immobilise à moins d'un tiers d'écran
-      // du repère. Au-delà, on voulait clairement s'arrêter là où on est.
-      distanceThreshold: "33%",
+      // Ne se déclenche que si on s'immobilise à moins de 40 % d'écran du
+      // repère. Au-delà, on voulait clairement s'arrêter là où on est.
+      distanceThreshold: "40%",
       // Le freinage : long et sans à-coup, comme la décélération du reste
-      // du site (cf. SmoothScroll).
-      duration: 0.9,
+      // du site (cf. SmoothScroll). Une seconde et une sortie en cubique :
+      // ça ralentit franchement avant de se poser, au lieu de claquer.
+      duration: 1,
       easing: (t: number) => 1 - Math.pow(1 - t, 3),
-      debounce: 320,
+      debounce: 280,
     });
 
-    const sections = [
-      ...document.querySelectorAll<HTMLElement>("#page-root > section"),
-    ].filter((s) => parseFloat(getComputedStyle(s).marginTop) >= 0);
+    const enleve: (() => void)[] = [];
 
-    snap.addElements(sections, { align: "start" });
+    for (const s of document.querySelectorAll<HTMLElement>(
+      "#page-root > section",
+    )) {
+      const declare = s.dataset.snap?.trim();
+      if (declare) {
+        enleve.push(snap.addElement(s, { align: declare.split(/\s+/) }));
+        continue;
+      }
+      // Pas de déclaration : la règle de la marge tranche.
+      if (parseFloat(getComputedStyle(s).marginTop) >= 0) {
+        enleve.push(snap.addElement(s, { align: "start" }));
+      }
+    }
 
-    return () => snap.destroy();
+    return () => {
+      for (const f of enleve) f();
+      snap.destroy();
+    };
     // Le DOM change entièrement d'une page à l'autre : les repères sont à
     // relever à chaque fois.
   }, [lenis, pathname]);

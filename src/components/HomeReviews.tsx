@@ -228,7 +228,11 @@ export function HomeReviews() {
   );
 
   return (
-    <section className={styles.wrap}>
+    /* Deux arrêts déclarés (cf. SectionSnap) : « start » quand la section
+       a fini de glisser sur les logos et remplit l'écran, « end » quand
+       son bas — le bandeau navy — touche le bas du cadre. Sans le second,
+       un scroll appuyé passait par-dessus et tombait droit sur la FAQ. */
+    <section className={styles.wrap} data-snap="start end">
       <BackdropLines arc />
 
       <div className={styles.head}>
