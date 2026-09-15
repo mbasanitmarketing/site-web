@@ -84,7 +84,11 @@ export function PaysageScroll() {
         <div className={styles.head}>
           <h2 className={styles.title}>Nos réalisations</h2>
           <p className={styles.lede}>
-            Nous réalisons vos projets sanitaires en Suisse romande.
+            Nous réalisons vos projets sanitaires en Suisse romande, nous vous
+            accompagnons de la réflexion et de la mise en œuvre jusqu’au
+            dépannage et aux contrats d’entretien. Notre spécialité ? Le haut
+            de gamme et les excellentes finitions, pour villas, régies
+            immobilières et immeubles d’entreprises en Suisse romande.
           </p>
         </div>
       </div>

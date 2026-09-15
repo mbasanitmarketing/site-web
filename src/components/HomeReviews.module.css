@@ -1,0 +1,328 @@
+/* ---------------------------------------------------------------------
+   Avis — d'après « avis mba.png ».
+
+   Tout est centré, sur toute la largeur : cette section ne partage plus
+   la coquille « repère à gauche / contenu à droite » des autres (cf.
+   ServiceSection), la maquette l'en sort volontairement.
+
+   En bas, un bandeau navy pleine largeur porte la citation, à l'anglaise.
+   --------------------------------------------------------------------- */
+
+.wrap {
+  position: relative;
+  isolation: isolate;
+  padding-top: clamp(64px, 12svh, 140px);
+  background: #f5f5f4;
+  color: #0b0b0c;
+}
+
+/* --- Titre, filet, chapô, note --------------------------------------- */
+
+.head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-inline: var(--page-x);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2.1rem, 5vw, 3.9rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+/* Le filet court sous le titre, relevé sur la maquette : ~22 % de la
+   largeur utile, un pixel, très clair. */
+.rule {
+  display: block;
+  width: min(440px, 30%);
+  height: 1px;
+  margin: clamp(18px, 2.6svh, 28px) 0 0;
+  background: rgba(11, 11, 12, 0.18);
+}
+
+.lede {
+  max-width: 62ch;
+  margin: clamp(18px, 2.6svh, 28px) 0 0;
+  font-size: clamp(15px, 1.15vw, 17px);
+  line-height: 1.7;
+  color: rgba(11, 11, 12, 0.72);
+  text-wrap: pretty;
+}
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(10px, 1.1vw, 16px);
+  margin-top: clamp(22px, 3.2svh, 36px);
+  text-decoration: none;
+  color: inherit;
+}
+
+.score {
+  font-size: clamp(15px, 1.15vw, 18px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Le mot, pas la marque : redessiner un logo déposé de mémoire revient à
+   le déformer. */
+.google {
+  font-size: clamp(15px, 1.15vw, 18px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: rgba(11, 11, 12, 0.62);
+}
+
+.rating:hover .google {
+  color: #0b0b0c;
+}
+
+/* --- Étoiles ---------------------------------------------------------- */
+
+.stars {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.stars svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* L'étoile pleine dit la note ; la vide reste dessinée, pour qu'on lise
+   « 5 sur 5 » et pas seulement « des étoiles ». */
+.stars svg[data-on="true"] {
+  fill: #e0a83e;
+}
+
+.stars svg[data-on="false"] {
+  fill: none;
+  stroke: rgba(11, 11, 12, 0.28);
+  stroke-width: 1.5;
+}
+
+/* --- La rangée qui dérive --------------------------------------------- */
+
+/* `.viewport` rogne ; `.marquee` dérive ; `.rail` est la piste, rendue
+   autant de fois qu'il faut. Même mécanique que le bandeau de logos —
+   voir Partners.module.css pour le raisonnement sur le nombre de copies.
+
+   Quand il n'y a pas assez d'avis pour remplir le cadre, `copies` vaut 1
+   et rien ne bouge : la piste est simplement centrée. Répéter le même
+   avis en boucle laisserait croire qu'il y en a dix. */
+.viewport {
+  position: relative;
+  margin-top: clamp(36px, 6svh, 72px);
+  padding-bottom: clamp(48px, 9svh, 110px);
+  overflow: hidden;
+}
+
+.marquee {
+  display: flex;
+  width: max-content;
+  /* Piste unique : centrée, immobile. */
+  margin-inline: auto;
+  max-width: 100%;
+}
+
+.viewportDefile .marquee {
+  --shift: calc(-100% / var(--copies, 2));
+  margin-inline: 0;
+  max-width: none;
+  /* 6 s par avis : la vitesse apparente ne change pas quand la piste
+     s'allonge. */
+  animation: defile calc(var(--n, 4) * 6s) linear infinite;
+}
+
+/* On s'arrête pour laisser lire. */
+.viewport:hover .marquee {
+  animation-play-state: paused;
+}
+
+@keyframes defile {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--shift));
+  }
+}
+
+.rail {
+  display: flex;
+  /* Les cartes pendent d'une même ligne haute, comme sur la maquette :
+     les courtes ne se centrent pas sur les longues. */
+  align-items: flex-start;
+  flex: none;
+  gap: clamp(16px, 1.8vw, 28px);
+  /* La moitié de l'écart de chaque côté : au raccord des deux pistes,
+     les deux moitiés refont exactement un écart. */
+  padding: 0 clamp(8px, 0.9vw, 14px);
+  margin: 0;
+  list-style: none;
+}
+
+/* Une seule piste : elle respire du même retrait que le reste. */
+.viewport:not(.viewportDefile) .rail {
+  padding-inline: var(--page-x);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* --- La carte --------------------------------------------------------- */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  width: clamp(280px, 25vw, 360px);
+  padding: clamp(18px, 1.6vw, 26px);
+  border: 1px solid rgba(11, 11, 12, 0.16);
+  /* Charte : rectangle à 2 px, comme les CTA. */
+  border-radius: 2px;
+  background: #fff;
+}
+
+.cardHead {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(10px, 0.9vw, 14px);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #e0e5f2;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #0b0b0c;
+}
+
+.cardWho {
+  min-width: 0;
+}
+
+.author {
+  margin: 0;
+  font-size: clamp(15px, 1.1vw, 17px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.meta {
+  margin: 3px 0 0;
+  font-size: 12px;
+  line-height: 1.3;
+  color: rgba(11, 11, 12, 0.5);
+}
+
+/* Passe sous le nom quand la carte est étroite : en pleine largeur au
+   pied de l'en-tête, pas serré contre lui. */
+.verified {
+  grid-column: 2;
+  margin: 6px 0 0;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(11, 11, 12, 0.42);
+}
+
+.cardStars {
+  margin-top: clamp(12px, 1.4svh, 16px);
+}
+
+.body {
+  margin: clamp(14px, 1.8svh, 20px) 0 0;
+  font-size: clamp(14px, 1vw, 15px);
+  line-height: 1.75;
+  color: rgba(11, 11, 12, 0.8);
+}
+
+/* --- Le bandeau navy et sa citation ----------------------------------- */
+
+.band {
+  display: grid;
+  place-items: center;
+  padding: clamp(48px, 10svh, 110px) var(--page-x) clamp(32px, 6svh, 64px);
+  background: #070b20;
+  color: #f5f5f4;
+  text-align: center;
+}
+
+.quote {
+  margin: 0;
+  max-width: 26ch;
+}
+
+/* L'anglaise, seul endroit du site où elle sert (cf. layout.tsx). Elle a
+   un œil très petit pour sa taille : d'où le corps et l'interligne
+   généreux, sinon elle devient illisible. */
+.quoteText {
+  margin: 0;
+  font-family: var(--font-script), "Apple Chancery", cursive;
+  font-size: clamp(2rem, 4.6vw, 3.6rem);
+  font-weight: 400;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.quoteBy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: clamp(20px, 3svh, 32px);
+}
+
+.quoteRole {
+  font-size: clamp(10px, 0.78vw, 11px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 244, 0.6);
+}
+
+.quoteAuthor {
+  font-family: var(--font-script), "Apple Chancery", cursive;
+  font-size: clamp(1.15rem, 1.7vw, 1.5rem);
+  line-height: 1;
+}
+
+/* Emplacement en attente : grisé, pour qu'on voie la place réservée sans
+   le prendre pour une vraie citation. */
+.quoteEmpty .quoteText {
+  color: rgba(245, 245, 244, 0.34);
+}
+
+/* --- Écrans étroits --------------------------------------------------- */
+
+@media (max-width: 720px) {
+  .card {
+    width: min(82vw, 330px);
+  }
+  .rule {
+    width: min(240px, 60%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewportDefile .marquee {
+    animation: none;
+    /* Sans animation, la piste doit rester atteignable : on la fait
+       défiler au doigt plutôt que de la figer sur ses premières cartes. */
+    margin-inline: 0;
+  }
+  .viewport {
+    overflow-x: auto;
+  }
+}

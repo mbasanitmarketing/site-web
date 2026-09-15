@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Italianno } from "next/font/google";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { SiteMenu } from "@/components/SiteMenu";
 import { SiteLogo } from "@/components/SiteLogo";
@@ -17,6 +17,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+/* Anglaise, uniquement pour la citation du bandeau navy des avis (cf.
+   « avis mba.png »). Un seul graisse, un seul usage : elle n'a rien à
+   faire ailleurs sur le site, la charte est en Geist. */
+const script = Italianno({
+  variable: "--font-script",
+  weight: "400",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "MBA Sanit — Installations sanitaires & salles de bain en Suisse romande",
   description:
@@ -25,7 +34,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="fr" className={`${geistSans.variable} ${geistMono.variable} ${script.variable}`}>
       <body className="antialiased">
         <SmoothScroll>
           <SiteMenu />
