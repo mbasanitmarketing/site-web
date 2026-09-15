@@ -7,6 +7,19 @@ import { useScrollProgress } from "@/lib/useScrollProgress";
 import styles from "./PartnersGrid.module.css";
 import { BackdropLines } from "./BackdropLines";
 
+/** Photos glissées DANS la trame, à la place de certaines cases : une en
+ *  haut à gauche, une en bas à droite, et une derrière le bloc central.
+ *  C'est ce que montre la maquette — des images qui occupent exactement
+ *  une case, pas un fond qui déborde. Les index sont ceux des cases dans
+ *  l'ordre du DOM ; « center » est le bloc du titre.
+ *
+ *  Ce sont des photos de chantier MBA, pas des images d'illustration. */
+const PHOTOS: Record<number | "center", string> = {
+  0: "/realisation-chaufferie.jpg",
+  7: "/realisation-salle-de-bain.jpg",
+  center: "/realisation-salle-deau.jpg",
+};
+
 /** Cases de la grille : 6 colonnes × 2 rangées, moins le bloc central de
  *  2 × 2 occupé par le titre — soit 8 logos pour remplir la trame.
  *
@@ -107,19 +120,47 @@ export function PartnersGrid() {
               </div>
             ))}
 
-            {Array.from({ length: vides }, (_, i) => (
-              <div
-                key={`vide-${i}`}
-                className={`${styles.cell} ${styles.slot}`}
-                style={{ ["--d" as string]: delays[items.length + i] ?? 0 }}
-              >
-                <span className={styles.slotLabel}>Logo</span>
-              </div>
-            ))}
+            {Array.from({ length: vides }, (_, i) => {
+              const rang = items.length + i;
+              const photo = PHOTOS[rang];
+              return (
+                <div
+                  key={`vide-${i}`}
+                  className={`${styles.cell} ${
+                    photo ? styles.photoCell : styles.slot
+                  }`}
+                  style={{ ["--d" as string]: delays[rang] ?? 0 }}
+                >
+                  {photo ? (
+                    /* alt vide : décorative. La photo ne dit rien que le
+                       titre de la section ne dise déjà. */
+                    <Image
+                      src={photo}
+                      alt=""
+                      fill
+                      sizes="(max-width: 720px) 50vw, 18vw"
+                    />
+                  ) : (
+                    <span className={styles.slotLabel}>Logo</span>
+                  )}
+                </div>
+              );
+            })}
 
             {/* Le trou : il se place explicitement au centre de la trame,
                 donc il ne dépend pas de l'ordre des cases autour. */}
             <div className={styles.center}>
+              {/* Photo en fond du bloc du titre. Très atténuée : le titre
+                  est du texte sombre sur clair, une photo à pleine force
+                  dessous le rendrait illisible. */}
+              <div className={styles.centerPhoto} aria-hidden="true">
+                <Image
+                  src={PHOTOS.center}
+                  alt=""
+                  fill
+                  sizes="(max-width: 720px) 100vw, 34vw"
+                />
+              </div>
               <h2 className={styles.title}>Un réseau de partenaires solides</h2>
               <a className={styles.cta} href="/devis" data-page-transition>
                 Demander un devis

@@ -116,10 +116,25 @@
   color: rgba(11, 11, 12, 0.28);
 }
 
+/* Une case occupée par une photo : elle remplit la case, bord à bord,
+   sans le retrait des cases à logo. Elle garde le même allumage que les
+   autres pendant la traversée (cf. `.cell`). */
+.photoCell {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.photoCell img {
+  object-fit: cover;
+}
+
 /* Le trou central, posé explicitement sur la trame. Sur deux rangées il
    les prend toutes les deux : il reste au milieu en largeur, et la trame
    n'a plus de rangée vide au-dessus ni en dessous. */
 .center {
+  position: relative;
+  overflow: hidden;
   grid-column: 3 / span 2;
   grid-row: 1 / span 2;
   display: flex;
@@ -132,7 +147,26 @@
   text-align: center;
 }
 
+/* La photo du bloc central : posée sous le texte, très atténuée. Le
+   `isolation` du panneau ne suffit pas ici — c'est un enfant direct du
+   bloc, on l'envoie derrière avec un z-index explicite et on remonte le
+   texte au-dessus. */
+.centerPhoto {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+.centerPhoto img {
+  object-fit: cover;
+}
+
 .title {
+  position: relative;
+  z-index: 1;
   margin: 0;
   font-size: clamp(1.1rem, 1.75vw, 1.65rem);
   font-weight: 400;
@@ -145,6 +179,8 @@
    fond transparent, capitales tracées, remplissage inversé au survol. La
    référence utilise une pastille noire pleine — on garde la charte. */
 .cta {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;

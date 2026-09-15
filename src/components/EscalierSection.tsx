@@ -15,7 +15,7 @@ import styles from "./EscalierSection.module.css";
  *     à ce moment-là, la rangée de 3 accordéons apparaît en bas.
  *
  * Contenu : les trois métiers viennent de src/lib/pages.ts ; les
- * accordéons du bas sont encore en lorem, à remplacer.
+ * accordéons du bas portent la réassurance (texte MBA).
  */
 
 /**
@@ -31,18 +31,21 @@ const ITEMS = SERVICES.map((s) => ({
   sub: s.manifesto?.headline ?? s.lede,
 }));
 
+/* Réassurance — texte fourni par MBA. Corrigé à la marge : accents et
+   accords (« entretien », « goût », « chantiers d’exception »), pas le
+   fond. */
 const ACCORDIONS: { title: string; body: string }[] = [
   {
-    title: "Lorem ipsum",
-    body: "Lorem ipsum dolor sit amet consectetur. Leo commodo mi fames sed ut justo.",
+    title: "20 ans d’expertise",
+    body: "Notre équipe, experte depuis plus de 20 ans, vous accompagne sur tous vos projets d’aménagement sanitaire les plus ambitieux.",
   },
   {
-    title: "Lorem ipsum",
-    body: "Praesent commodo cursus magna vel scelerisque nisl consectetur et rhoncus.",
+    title: "Rapidité et passion",
+    body: "Nous nous engageons durablement auprès de nos clients. Nous vous accompagnons de la pose jusqu’à l’entretien. Nous sommes particulièrement adaptés aux suivis de régies et aux chantiers ambitieux.",
   },
   {
-    title: "Lorem ipsum",
-    body: "Vestibulum id ligula porta felis euismod semper. Donec sed odio dui nullam.",
+    title: "100 % de satisfaction",
+    body: "Nous sommes honorés de satisfaire pleinement tous nos clients. Notre goût du détail nous a permis de travailler sur des chantiers d’exception et de satisfaire une clientèle pointilleuse.",
   },
 ];
 

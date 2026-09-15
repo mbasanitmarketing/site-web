@@ -24,7 +24,9 @@ export function Hero() {
   useScrollProgress(trackRef, stageRef, 0.36);
 
   return (
-    <section ref={trackRef} className={styles.track}>
+    /* data-hero-track : SiteLogo s'en sert pour savoir quand la hero est
+       passée et prendre le relais de SON logo (cf. SiteLogo.tsx). */
+    <section ref={trackRef} className={styles.track} data-hero-track>
       <div ref={stageRef} className={styles.stage}>
         {/* Photos */}
         <div className={styles.media}>

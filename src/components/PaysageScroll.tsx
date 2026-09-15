@@ -13,7 +13,7 @@ import styles from "./PaysageScroll.module.css";
  * comme sur la vidéo de référence), puis un carrousel 3D fait défiler les
  * diapos de droite à gauche pendant que la scène reste épinglée.
  *
- * Photos client en place ; le chapô est encore en lorem.
+ * Photos client et chapô en place.
  */
 export function PaysageScroll() {
   const trackRef = useRef<HTMLElement>(null);
@@ -84,9 +84,7 @@ export function PaysageScroll() {
         <div className={styles.head}>
           <h2 className={styles.title}>Nos réalisations</h2>
           <p className={styles.lede}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris.
+            Nous réalisons vos projets sanitaires en Suisse romande.
           </p>
         </div>
       </div>
