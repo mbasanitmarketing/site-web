@@ -1,10 +1,9 @@
 import type { ServiceDetail } from "@/lib/pages";
+import { PHONE_HREF, PHONE_LABEL } from "@/lib/contact";
 import { ServiceSection } from "./ServiceSection";
 import shell from "./ServiceSection.module.css";
 import styles from "./ServiceParts.module.css";
 
-const PHONE = "+41 78 217 29 28";
-const PHONE_HREF = "tel:+41782172928";
 
 /* --- 2. Besoins traités : voir ServiceNeeds.tsx, sa propre scène ---- */
 
@@ -80,7 +79,7 @@ export function ServiceContact() {
           Demander un devis
         </a>
         <a className={styles.button} href={PHONE_HREF}>
-          {PHONE}
+          {PHONE_LABEL}
         </a>
       </div>
     </ServiceSection>

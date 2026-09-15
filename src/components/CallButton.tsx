@@ -1,8 +1,5 @@
+import { PHONE_HREF, PHONE_LABEL } from "@/lib/contact";
 import styles from "./CallButton.module.css";
-
-/** Numéro d'appel MBA Sanit. */
-const PHONE_HREF = "tel:+41782172928";
-const PHONE_LABEL = "+41 78 217 29 28";
 
 /**
  * Bouton d'appel flottant — rectangulaire, anneau blanc + combiné, fixe

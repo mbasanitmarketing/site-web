@@ -6,6 +6,7 @@ import { CATEGORIES, SERVICES } from "@/lib/pages";
 import { useHeaderAutoHide } from "@/lib/useHeaderAutoHide";
 import { GoogleReviews } from "./GoogleReviews";
 import styles from "./SiteMenu.module.css";
+import { PHONE_HREF, PHONE_LABEL } from "@/lib/contact";
 
 type Entry = {
   label: string;
@@ -33,7 +34,7 @@ const ENTRIES: Entry[] = [
   { label: "Demander un devis", href: "/devis" },
 ];
 
-const PHONE = { label: "+41 78 217 29 28", href: "tel:+41782172928" };
+const PHONE = { label: PHONE_LABEL, href: PHONE_HREF };
 
 /**
  * Menu burger du site — fixe en haut à droite, présent sur toutes les

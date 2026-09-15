@@ -1,3 +1,5 @@
+import { PHONE_HREF } from "./contact";
+
 /**
  * Contenu des pages intérieures.
  *
@@ -322,7 +324,7 @@ export const SERVICES: PageContent[] = [
     alt: "Salle d’eau réalisée par MBA Sanit",
     lede: LEDE,
     cue: "Nous appeler",
-    cueHref: "tel:+41782172928",
+    cueHref: PHONE_HREF,
     kicker: "Suisse romande",
     display: "Genève, Carouge, Grand-Lancy et tout le canton",
     displaySmall: true,
