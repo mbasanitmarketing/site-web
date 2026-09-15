@@ -119,11 +119,13 @@
   margin-top: clamp(18px, 3.4svh, 32px);
 }
 
-/* --- Horaires : petit bloc calé vers le milieu ----------------- */
+/* --- Horaires : alignées à gauche, sous les avis ---------------- */
 
+/* Elles étaient poussées vers le milieu (margin-left à 50 %) : elles se
+   retrouvaient dans le vide, sans rien à quoi s'aligner. Elles reprennent
+   la même marge que la note Google juste au-dessus. */
 .hours {
   margin: clamp(34px, 7svh, 64px) 0 clamp(26px, 5svh, 48px);
-  margin-left: clamp(0px, 50%, 640px);
   max-width: 30ch;
   font-size: var(--small);
   line-height: 1.5;
@@ -140,6 +142,11 @@
   align-items: baseline;
   gap: clamp(12px, 2vw, 34px);
   margin-top: auto; /* pousse le bas du footer vers le bas */
+  /* Réserve la place du bouton flottant (fixe en bas à droite) : sans
+     elle il recouvrait la fin de la ligne — et depuis qu'elle est
+     cliquable, il en masquait la zone de clic. Calé sur ses propres
+     valeurs : largeur + marge droite + un peu d'air. */
+  padding-right: calc(clamp(52px, 5.4vw, 62px) + clamp(18px, 4.5vw, 56px) + 16px);
   font-size: var(--small);
   letter-spacing: 0.05em;
   text-transform: uppercase;

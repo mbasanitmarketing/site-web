@@ -68,7 +68,14 @@ export function Footer({
         <span>© 2026. MBA Sanit</span>
         <a href="#privacy">Politique de confidentialité</a>
         <a href="#mentions-legales">Mentions légales</a>
-        <span className={styles.agency}>Site par Atelier Web Romand</span>
+        <a
+          className={styles.agency}
+          href="https://www.atelierwebromand.ch"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Site réalisé avec soin par l’Atelier Web Romand
+        </a>
       </div>
 
       <p className={styles.footnote}>
