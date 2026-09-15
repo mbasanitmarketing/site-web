@@ -174,6 +174,10 @@ export const PAGES: PageContent[] = [
     image: "/equipe.jpg",
     lede: LEDE,
     cue: "Nous rencontrer",
+    /* Avec une cible, le repère devient un VRAI bouton (cf. PageIntro) :
+       même verre dépoli et même rectangle à 2 px que sur les pages de
+       service. Sans elle, c'était un simple texte qui en avait l'air. */
+    cueHref: "/devis",
     /* Pas « Suisse romande » ici : la ligne en dessous le dit déjà. */
     kicker: "Notre équipe",
     /* En colonne (mobile), ce bloc remonte en tête de page : au corps

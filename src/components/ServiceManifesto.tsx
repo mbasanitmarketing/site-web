@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import type { Manifesto } from "@/lib/pages";
 import { useScrollProgress } from "@/lib/useScrollProgress";
+import chip from "./Chip.module.css";
 import styles from "./ServiceManifesto.module.css";
 import { BackdropLines } from "./BackdropLines";
 import { PrestationSteps } from "./PrestationSteps";
@@ -32,7 +33,7 @@ export function ServiceManifesto({ manifesto }: { manifesto: Manifesto }) {
       >
         <div ref={stageRef} className={styles.stage}>
           <div className={styles.grid}>
-            <p className={styles.label}>{manifesto.label}</p>
+            <p className={`${styles.label} ${chip.chip}`}>{manifesto.label}</p>
 
             <div>
               {/* h2 : le h1 de la page est le titre porté par le hero. */}

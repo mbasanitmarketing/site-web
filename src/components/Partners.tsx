@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { PARTNERS, PARTNER_SLOTS } from "@/lib/pages";
+import chip from "./Chip.module.css";
 import styles from "./Partners.module.css";
 
 /**
@@ -91,9 +92,7 @@ export function Partners({ headline }: { headline: string }) {
   return (
     <section className={styles.wrap}>
       <div className={styles.grid}>
-        <p className={styles.label}>
-          Nos partenaires <span aria-hidden="true">→</span>
-        </p>
+        <p className={`${styles.label} ${chip.chip}`}>Nos partenaires</p>
         <h2 className={styles.headline}>{headline}</h2>
       </div>
 

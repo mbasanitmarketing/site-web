@@ -6,6 +6,32 @@
    site : rectangles à 2 px, Geist, pas d'ombres.
    --------------------------------------------------------------------- */
 
+/* --- La scène épinglée des principes ----------------------------------
+
+   260svh de piste pour une scène de 100svh : l'épinglage dure 160svh.
+   Les cartes montent dans son premier tiers (--p 0.06 -> 0.36, soit
+   ~58svh) ; les ~102svh qui restent sont le palier pendant lequel la
+   section équipe monte par-dessus. Elle remonte de -100svh : les deux
+   valeurs vont ensemble, si l'une change, l'autre aussi. */
+.track {
+  position: relative;
+  z-index: 1;
+  height: 260svh;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  /* Pas d'`overflow: hidden` ici : il RECOUPAIT le contenu quand celui-ci
+     dépassait l'écran — le haut du titre disparaissait. Le contenu est
+     dimensionné pour tenir (retraits et écarts ci-dessous) ; s'il déborde
+     malgré tout sur un écran inhabituel, mieux vaut qu'il se voie. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .wrap {
   position: relative;
   isolation: isolate;
@@ -14,31 +40,45 @@
   color: #0b0b0c;
 }
 
-/* La section équipe enchaîne sur la précédente : pas de retrait haut en
-   double, et un filet pour marquer la séparation. */
+/* La scène porte déjà le fond et le retrait : le bloc intérieur n'a plus
+   qu'à se ranger dedans. */
+/* La scène porte le fond ET la couleur du texte. C'est `.wrap` qui les
+   portait ; elle n'est plus sur cette section depuis qu'elle est devenue
+   une piste, et le titre héritait alors du clair-sur-sombre du document —
+   il était écrit en blanc sur fond blanc. */
+.track > .stage {
+  padding: clamp(24px, 4svh, 56px) var(--page-x);
+  background: #f5f5f4;
+  color: #0b0b0c;
+}
+
+/* La section équipe MONTE par-dessus les principes, restés épinglés.
+
+   -100svh : elle part du bas de l'écran et son haut atteint le haut du
+   cadre après exactement 100svh de scroll — pris sur le palier de la
+   scène précédente. z-index 2 : au-dessus de sa piste (1).
+
+   `min-height: 100svh` pour qu'elle recouvre entièrement pendant la
+   montée : une section plus courte laisserait voir les principes
+   dessous. */
 .team {
-  padding-top: clamp(40px, 8svh, 96px);
-  border-top: 1px solid rgba(11, 11, 12, 0.1);
+  z-index: 2;
+  margin-top: -100svh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* La petite étiquette de la référence. */
-.chip {
-  display: inline-block;
-  margin: 0;
-  padding: 7px 14px;
-  border-radius: 2px;
-  background: #e0e5f2;
-  font-size: clamp(10px, 0.78vw, 12px);
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(11, 11, 12, 0.7);
-}
-
+/* Le surtitre en pastille : cf. Chip.module.css, partagé avec les pages
+   de service. */
 .title {
   max-width: 26ch;
   margin: clamp(20px, 3svh, 32px) 0 0;
-  font-size: clamp(1.6rem, 3.2vw, 2.8rem);
+  /* Échelle des phrases longues du site — celle du manifeste des pages de
+     service. Elle était à 3.2vw : aucun autre texte de ce genre n'est
+     aussi gros sur le site, il sautait aux yeux. */
+  font-size: clamp(1.3rem, 2.5vw, 2.25rem);
   font-weight: 400;
   line-height: 1.16;
   letter-spacing: -0.025em;
@@ -62,13 +102,24 @@
   list-style: none;
 }
 
+/* Les cartes montent par le bas, l'une après l'autre. --i est le rang,
+   posé par le composant : une seule règle sert les trois. Chacune dure
+   0.10 de la piste et démarre 0.10 après la précédente, donc la
+   troisième est en place à --p 0.36. */
 .card {
+  --debut: calc(0.06 + var(--i, 0) * 0.1);
+  --in: clamp(0, calc((var(--p, 0) - var(--debut)) / 0.1), 1);
+
   display: flex;
   flex-direction: column;
   padding: clamp(20px, 2.2vw, 32px);
   border: 1px solid rgba(11, 11, 12, 0.14);
   border-radius: 2px;
   background: #fff;
+
+  opacity: var(--in);
+  transform: translateY(calc((1 - var(--in)) * 56px));
+  will-change: opacity, transform;
 }
 
 /* Le pictogramme dans son carré, en haut de la carte. Le grand vide qui
@@ -79,7 +130,10 @@
   place-items: center;
   width: clamp(38px, 3.2vw, 46px);
   height: clamp(38px, 3.2vw, 46px);
-  margin-bottom: clamp(40px, 7svh, 86px);
+  /* La référence laisse un grand vide sous le pictogramme. Il est borné
+     en svh : sur un écran bas, trois cartes trop aérées faisaient
+     déborder la scène épinglée. */
+  margin-bottom: clamp(28px, 5svh, 72px);
   border: 1px solid rgba(11, 11, 12, 0.16);
   border-radius: 2px;
   color: #0b0b0c;
@@ -150,6 +204,33 @@
 }
 
 /* --- Écrans étroits --------------------------------------------------- */
+
+/* --- Écran court ou mouvement réduit : pas d'épinglage ---------------- */
+
+/* Une scène d'un écran qu'on recouvre, c'est précisément ce que le
+   mouvement réduit doit éviter ; et sur un écran très bas, les trois
+   cartes n'y tiendraient pas. Tout reprend sa place dans le flux, les
+   cartes visibles d'emblée. */
+@media (max-height: 700px), (prefers-reduced-motion: reduce) {
+  .track {
+    height: auto;
+  }
+  .stage {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+  .card {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+  .team {
+    margin-top: 0;
+    min-height: 0;
+    border-top: 1px solid rgba(11, 11, 12, 0.1);
+  }
+}
 
 @media (max-width: 900px) {
   .cards {

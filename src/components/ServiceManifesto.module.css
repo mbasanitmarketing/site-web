@@ -51,12 +51,12 @@
    l'index des pages de catégorie, sous la zone du burger et du logo. */
 /* Plus besoin d'être collant : la scène entière l'est, le repère ne peut
    plus sortir de l'écran. */
+/* Le surtitre : la pastille bleue de Chip.module.css. Ce module ne lui
+   donne plus que son alignement dans la grille ; corps, couleur et fond
+   viennent de là-bas, pour que les surtitres du site ne divergent pas. */
 .label {
   align-self: start;
-  margin: 0;
-  font-size: clamp(15px, 1.1vw, 17px);
-  font-weight: 500;
-  line-height: 1.45;
+  justify-self: start;
 }
 
 .headline {

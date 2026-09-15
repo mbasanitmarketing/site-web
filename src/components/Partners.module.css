@@ -31,13 +31,11 @@
 }
 
 /* Petites capitales, comme les autres repères du site. */
+/* Le surtitre : la pastille bleue de Chip.module.css. Ce module ne lui
+   donne plus que son alignement dans la grille — le reste vient de
+   là-bas, pour que les surtitres du site ne divergent pas. */
 .label {
-  margin: 0;
-  font-size: clamp(11px, 0.95vw, 13px);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  line-height: 1.45;
-  color: #0b0b0c;
+  justify-self: start;
 }
 
 .headline {

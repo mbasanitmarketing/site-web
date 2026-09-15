@@ -1,6 +1,11 @@
+"use client";
+
 import Image from "next/image";
+import { useRef } from "react";
+import { useScrollProgress } from "@/lib/useScrollProgress";
 import { EQUIPE, VALEURS } from "@/lib/pages";
 import { BackdropLines } from "./BackdropLines";
+import chip from "./Chip.module.css";
 import styles from "./AboutMba.module.css";
 
 /** Les trois pictogrammes des cartes, dans l'ordre de VALEURS : la durée,
@@ -35,14 +40,28 @@ const ICONES = [
  * ici on garde le rectangle à 2 px de la charte, comme tous les autres
  * blocs du site. C'est la STRUCTURE qui est reprise, pas le style de la
  * maquette d'origine.
+ *
+ * ANIMATION. Le bandeau des principes s'épingle : les trois cartes
+ * montent par le bas l'une après l'autre, puis la scène reste immobile le
+ * temps que la section équipe vienne la recouvrir. Tout dérive de --p,
+ * cf. le module CSS pour les bornes.
  */
 export function AboutMba() {
+  const trackRef = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+
+  // span 1 : --p court sur tout l'épinglage. Les cartes occupent son
+  // premier tiers (cf. le module CSS) ; les deux tiers restants sont le
+  // palier pendant lequel la section équipe monte par-dessus.
+  useScrollProgress(trackRef, stageRef);
+
   return (
     <>
-      <section className={styles.wrap}>
+      <section ref={trackRef} className={styles.track}>
+        <div ref={stageRef} className={styles.stage}>
         <BackdropLines />
 
-        <p className={styles.chip}>Nos principes</p>
+        <p className={chip.chip}>Nos principes</p>
         <h2 className={styles.title}>
           Vingt ans à poser, réparer et entretenir des installations en Suisse
           romande. <span className={styles.soft}>Le haut de gamme, les
@@ -51,7 +70,13 @@ export function AboutMba() {
 
         <ul className={styles.cards}>
           {VALEURS.map((v, i) => (
-            <li key={v.title} className={styles.card}>
+            /* --i : le rang de la carte. C'est lui qui décale son entrée,
+               une après l'autre — une seule règle CSS pour les trois. */
+            <li
+              key={v.title}
+              className={styles.card}
+              style={{ "--i": i } as React.CSSProperties}
+            >
               <span className={styles.badge} aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   {ICONES[i]}
@@ -62,10 +87,11 @@ export function AboutMba() {
             </li>
           ))}
         </ul>
+        </div>
       </section>
 
       <section className={`${styles.wrap} ${styles.team}`}>
-        <p className={styles.chip}>Notre équipe</p>
+        <p className={chip.chip}>Notre équipe</p>
         <h2 className={styles.title}>
           Les mêmes visages du premier relevé à la réception du chantier.{" "}
           <span className={styles.soft}>C’est ce qui fait qu’on connaît vos

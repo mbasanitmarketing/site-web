@@ -82,7 +82,11 @@
      ~9 % en haut (juste au ras des cheveux) et ~28 % en bas — un
      recadrage à mi-cuisse, plus soigné qu'une coupe dans les têtes. */
   object-position: 50% 24%;
-  transform: scale(clamp(0.4, calc(0.4 + var(--p, 0) * 1.43), 1));
+  /* Démarre à 0.72, pas à 0.4 : une vignette au tiers de l'écran au
+     départ faisait dérisoire. Le multiplicateur suit (0.28 / 0.42) pour
+     que le plein cadre soit atteint au MÊME point, --p 0.42 — la suite de
+     la chorégraphie (titre, puis panneau) n'a donc pas bougé. */
+  transform: scale(clamp(0.72, calc(0.72 + var(--p, 0) * 0.667), 1));
   will-change: transform;
 }
 
@@ -244,8 +248,9 @@
 
   .image {
     /* Partir de 0.4 sur une boîte de téléphone donnait une vignette
-       minuscule : moins de course, on démarre plus près. */
-    transform: scale(clamp(0.58, calc(0.58 + var(--p, 0) * 1), 1));
+       minuscule : moins de course, on démarre plus près. Même borne haute
+       que sur grand écran : plein cadre à --p 0.42. */
+    transform: scale(clamp(0.78, calc(0.78 + var(--p, 0) * 0.524), 1));
     /* Ici la boîte est PLUS HAUTE que large : `cover` cale la hauteur et
        coupe sur les côtés — la hauteur passe entière, l'ancrage vertical
        n'a plus rien à rattraper. */

@@ -1,0 +1,28 @@
+/* ---------------------------------------------------------------------
+   Le surtitre en pastille bleue.
+
+   Une seule définition, importée partout où un surtitre apparaît (page
+   à propos, pages de service). Il était né sur la page à propos ; le
+   recopier dans chaque module aurait garanti qu'ils finissent par
+   diverger — l'un arrondi, l'autre pas, l'un plus foncé.
+   --------------------------------------------------------------------- */
+
+.chip {
+  display: inline-block;
+  /* Dans une colonne flex, un `inline-block` s'étire quand même sur toute
+     la largeur : sans ça la pastille traversait la section de part en
+     part. En grille, `.label` pose son propre `justify-self`. */
+  align-self: flex-start;
+  margin: 0;
+  padding: 7px 14px;
+  /* Charte du site : rectangle à 2 px, comme les boutons. */
+  border-radius: 2px;
+  /* Le bleu du manifeste et des bandes de logos. */
+  background: #e0e5f2;
+  font-size: clamp(10px, 0.78vw, 12px);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: rgba(11, 11, 12, 0.7);
+}

@@ -68,12 +68,16 @@
 }
 
 /* Le fond sombre se pose par-dessus le fond pâle : l'opacité suit --in,
-   donc la pastille s'allume avec le texte, sans transition à synchroniser. */
+   donc la pastille s'allume avec le texte, sans transition à synchroniser.
+
+   Le NAVY du site (#070b20), pas le noir de la charte texte : sur l'aplat
+   bleu de cette section, un carré noir tranchait comme un trou. C'est la
+   même famille que le pied de page, le hero et la section contact. */
 .badge::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: #0b0b0c;
+  background: #070b20;
   opacity: var(--in, 0);
 }
 
