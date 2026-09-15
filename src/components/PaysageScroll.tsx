@@ -81,15 +81,24 @@ export function PaysageScroll() {
           </div>
         </div>
 
+        {/* Deux blocs de part et d'autre du haut, d'après « les réalisations
+            version 2.png » : le pavé unique sous le titre pesait trop. Le
+            texte est coupé en deux, une moitié à gauche, l'autre sous le
+            titre à droite. */}
         <div className={styles.head}>
-          <h2 className={styles.title}>Nos réalisations</h2>
-          <p className={styles.lede}>
-            Nous réalisons vos projets sanitaires en Suisse romande, nous vous
-            accompagnons de la réflexion et de la mise en œuvre jusqu’au
-            dépannage et aux contrats d’entretien. Notre spécialité ? Le haut
-            de gamme et les excellentes finitions, pour villas, régies
-            immobilières et immeubles d’entreprises en Suisse romande.
+          <p className={`${styles.lede} ${styles.ledeLeft}`}>
+            Nous réalisons vos projets sanitaires en Suisse romande, et nous
+            vous accompagnons de la réflexion et de la mise en œuvre jusqu’au
+            dépannage et aux contrats d’entretien.
           </p>
+
+          <div className={styles.headRight}>
+            <h2 className={styles.title}>Nos réalisations</h2>
+            <p className={styles.lede}>
+              Notre spécialité ? Le haut de gamme et les excellentes finitions,
+              pour villas, régies immobilières et immeubles d’entreprises.
+            </p>
+          </div>
         </div>
       </div>
     </section>

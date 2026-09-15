@@ -151,13 +151,32 @@
 
   position: absolute;
   top: clamp(28px, 6svh, 72px);
+  left: clamp(20px, 4vw, 60px);
   right: clamp(20px, 4vw, 60px);
   z-index: 2;
-  width: min(46ch, 42vw);
-  text-align: right;
+  /* Les deux blocs aux deux bouts. `flex-end` aligne leurs BAS : comme
+     les deux paragraphes font le même nombre de lignes, leurs hauts se
+     retrouvent au même niveau, le titre débordant au-dessus à droite —
+     c'est la maquette. */
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(24px, 6vw, 96px);
   color: #0b0b0c;
   opacity: var(--in);
   transform: translateY(calc((1 - var(--in)) * 16px));
+}
+
+.headRight {
+  text-align: right;
+}
+
+.ledeLeft {
+  text-align: left;
+}
+
+.head > * {
+  width: min(42ch, 34vw);
 }
 
 .title {
@@ -169,13 +188,14 @@
   text-transform: uppercase;
 }
 
+/* Plus de capitales : en bas de casse, comme sur la maquette. Tout en
+   majuscules, sur quatre lignes, le paragraphe criait. */
 .lede {
   margin: 0;
-  font-size: clamp(11px, 0.92vw, 14px);
-  line-height: 1.5;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: rgba(11, 11, 12, 0.82);
+  font-size: clamp(12px, 0.98vw, 15px);
+  line-height: 1.55;
+  letter-spacing: 0;
+  color: rgba(11, 11, 12, 0.78);
 }
 
 /* --- Le carrousel --- */
@@ -358,8 +378,19 @@
   .rail {
     top: 56%;
   }
+  /* Deux colonnes de 34vw ne tiennent pas sur un téléphone : les blocs
+     s'empilent, tous deux alignés à gauche — un paragraphe court ferré à
+     droite sur un écran étroit se lit mal. */
   .head {
-    width: 68vw;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(10px, 2svh, 16px);
+  }
+  .head > * {
+    width: min(100%, 46ch);
+  }
+  .headRight {
+    text-align: left;
   }
 }
 

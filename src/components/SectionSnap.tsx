@@ -1,0 +1,66 @@
+"use client";
+
+import { useLenis } from "lenis/react";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import Snap from "lenis/snap";
+
+/**
+ * Calage par section : le scroll reste libre, mais dès qu'on le relâche
+ * près d'une frontière de section, il y glisse et s'arrête — d'où la
+ * sensation d'accélération puis de freinage, section après section.
+ *
+ * MODE « PROXIMITÉ », ET PAS « OBLIGATOIRE » — c'est le point important.
+ * Ce site est bâti sur des scènes épinglées qui se jouent AU FIL du
+ * scroll : la hero fait 4860 px de piste, le carrousel 710vh, le panneau
+ * de logos 320svh. Un calage obligatoire sauterait d'un bord à l'autre de
+ * ces pistes et écraserait l'animation qu'elles contiennent — on ne
+ * verrait plus ni le carrousel tourner, ni les logos traverser.
+ *
+ * En proximité, le milieu d'une piste n'est jamais touché : les scènes se
+ * jouent normalement. Le calage n'intervient qu'à l'arrêt, et seulement
+ * si on s'est arrêté assez près d'un point de repos.
+ *
+ * QUELS POINTS DE REPOS ? Le haut de chaque section de premier niveau,
+ * SAUF celles qui remontent sur la précédente (marge haute négative :
+ * panneau de logos, avis). Celles-là ne sont pas des débuts de page, ce
+ * sont des calques posés sur la section d'avant ; s'y caler donnerait un
+ * arrêt au milieu d'un recouvrement. La règle se lit sur la marge
+ * calculée, donc elle n'a rien à maintenir quand une section est ajoutée.
+ *
+ * Mouvement réduit : aucun calage. Un déplacement de page qu'on n'a pas
+ * demandé, c'est précisément ce qu'il faut éviter.
+ */
+export function SectionSnap() {
+  const lenis = useLenis();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (!lenis) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const snap = new Snap(lenis, {
+      type: "proximity",
+      // Ne se déclenche que si on s'immobilise à moins d'un tiers d'écran
+      // du repère. Au-delà, on voulait clairement s'arrêter là où on est.
+      distanceThreshold: "33%",
+      // Le freinage : long et sans à-coup, comme la décélération du reste
+      // du site (cf. SmoothScroll).
+      duration: 0.9,
+      easing: (t: number) => 1 - Math.pow(1 - t, 3),
+      debounce: 320,
+    });
+
+    const sections = [
+      ...document.querySelectorAll<HTMLElement>("#page-root > section"),
+    ].filter((s) => parseFloat(getComputedStyle(s).marginTop) >= 0);
+
+    snap.addElements(sections, { align: "start" });
+
+    return () => snap.destroy();
+    // Le DOM change entièrement d'une page à l'autre : les repères sont à
+    // relever à chaque fois.
+  }, [lenis, pathname]);
+
+  return null;
+}

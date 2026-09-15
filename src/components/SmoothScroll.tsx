@@ -4,6 +4,7 @@ import { ReactLenis } from "lenis/react";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import "lenis/dist/lenis.css";
+import { SectionSnap } from "./SectionSnap";
 
 /**
  * Scroll virtuel.
@@ -41,6 +42,8 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
 
   return (
     <ReactLenis root options={options}>
+      {/* Doit être DANS le fournisseur : il lit l'instance par contexte. */}
+      <SectionSnap />
       {children}
     </ReactLenis>
   );
