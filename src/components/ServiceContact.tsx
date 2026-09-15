@@ -54,14 +54,12 @@ export function ServiceContact() {
         </div>
 
         <div className={styles.media}>
-          <div className={styles.frame}>
-            <Image
-              src="/realisation-chaufferie.jpg"
-              alt="Chaufferie installée par MBA Sanit"
-              fill
-              sizes="(max-width: 900px) 100vw, 50vw"
-            />
-          </div>
+          <Image
+            src="/realisation-chaufferie.jpg"
+            alt="Chaufferie installée par MBA Sanit"
+            fill
+            sizes="(max-width: 900px) 100vw, 47vw"
+          />
         </div>
       </div>
     </section>

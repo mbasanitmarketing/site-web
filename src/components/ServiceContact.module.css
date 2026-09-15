@@ -35,22 +35,27 @@
   background: rgba(168, 118, 62, 0.42);
 }
 
+/* Relevés à x = 161 et x = 1111 sur 1280. */
 .rules::before {
-  left: 12.5%;
+  left: 12.6%;
 }
 
 .rules::after {
-  right: 12.5%;
+  right: 13.2%;
 }
 
+/* Proportions relevées AU PIXEL sur la maquette (1280 x 372) :
+     panneau  x   73 ->  694  (48,5 % de large), y 74 -> 327
+     photo    x  671 -> 1206  (41,8 % de large), y 44 -> 327
+   D'où trois faits que je n'avais pas vus :
+     — les deux blocs sont alignés PAR LE BAS, pas centrés ;
+     — la photo dépasse le panneau de 30 px VERS LE HAUT ;
+     — ils se chevauchent de 23 px, le panneau par-dessus.
+   Les colonnes reprennent ces largeurs : 527 + 21 (partagée) + 452. */
 .grid {
   display: grid;
-  /* Les deux colonnes se recouvrent volontairement : la photo occupe de
-     la colonne 2 à la fin, le panneau de la 1 à la 2 — ils partagent donc
-     la colonne du milieu. C'est la grille qui fait le chevauchement, pas
-     des marges négatives à rattraper. */
-  grid-template-columns: minmax(0, 46fr) minmax(0, 8fr) minmax(0, 46fr);
-  align-items: center;
+  grid-template-columns: minmax(0, 527fr) minmax(0, 21fr) minmax(0, 452fr);
+  align-items: end;
 }
 
 /* --- Le panneau bleu -------------------------------------------------- */
@@ -60,7 +65,10 @@
   grid-row: 1;
   /* Au-dessus de la photo : sur la maquette c'est bien lui qui mord. */
   z-index: 2;
-  padding: clamp(28px, 4vw, 58px);
+  /* Retrait vertical plus serré que l'horizontal : sur la maquette le
+     panneau fait 253 px pour une photo de 283, soit 12 % de moins. C'est
+     ce rapport qui fait dépasser la photo par le haut. */
+  padding: clamp(22px, 2.9vw, 42px) clamp(28px, 4vw, 58px);
   background: #e0e5f2;
   color: #0b0b0c;
 }
@@ -124,20 +132,18 @@
 
 /* --- La photo --------------------------------------------------------- */
 
-/* Pas de liseré autour de la photo : elle remplit son bloc, bord à bord.
-   (J'avais lu un encadrement clair sur la maquette ; il n'y en a pas.) */
+/* Pas de liseré : la photo remplit son bloc, bord à bord. Elle garde le
+   format de la maquette (535 / 283) pour dépasser le panneau vers le
+   haut sans qu'on ait à fixer une hauteur en dur. */
 .media {
+  position: relative;
   grid-column: 2 / 4;
   grid-row: 1;
   z-index: 1;
+  aspect-ratio: 535 / 283;
 }
 
-.frame {
-  position: relative;
-  aspect-ratio: 16 / 11;
-}
-
-.frame img {
+.media img {
   object-fit: cover;
 }
 
