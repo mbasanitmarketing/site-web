@@ -11,8 +11,12 @@
  *   DEVIS_FROM      l'expéditeur, sur un domaine vérifié chez Resend
  *                   (ex. "MBA Sanit <site@mbasanit.ch>")
  */
+import { EMAIL } from "@/lib/contact";
 
-const TO = "contact@mbasanit.ch";
+/* Source unique, comme le numéro de téléphone (src/lib/contact.ts) :
+   contact@mbasanit.ch. Elle reste côté serveur, elle ne part jamais dans
+   le HTML — sinon elle serait moissonnée par les robots. */
+const TO = EMAIL;
 const FROM = process.env.DEVIS_FROM ?? "MBA Sanit <onboarding@resend.dev>";
 
 /** Longueurs max, alignées sur les attributs du formulaire. */
