@@ -159,7 +159,7 @@ export function SiteMenu() {
                         <ul className={styles.subList}>
                           {/* Clé : ni le libellé ni le href ne suffisent
                               seuls. Deux réalisations peuvent porter le
-                              même titre (Piscine), et les sous-liens de
+                              même titre, et les sous-liens de
                               Services pointent tous sur /services. */}
                           {entry.children.map((child) => (
                             <li key={`${child.href}|${child.label}`}>

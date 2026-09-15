@@ -329,7 +329,7 @@ export const SERVICES: PageContent[] = [
     manifesto: manifesto(
       "De l’entretien courant au dépannage.",
     ),
-    relatedRealisations: { category: "piscines-exterieurs", label: "extérieurs" },
+    relatedRealisations: { category: "douches-amenagements-exterieurs", label: "extérieurs" },
     service: service(["Entretien périodique", "Panne ou fuite", "Petites réparations"]),
   },
 ];
@@ -364,16 +364,18 @@ export const CATEGORIES: PageContent[] = [
     tab: "Chauffage",
   },
   {
-    href: "/realisations/piscines-exterieurs",
-    title: "Piscines et extérieurs",
-    image: "/realisation-piscine-1.jpg",
-    alt: "Piscine équipée par MBA Sanit",
+    /* MBA ne construit pas de bassins : douches extérieures, fontaines et
+       aménagements. L'ancienne catégorie et son slug ont été renommés. */
+    href: "/realisations/douches-amenagements-exterieurs",
+    title: "Douches et aménagements extérieurs",
+    image: "/realisation-douche-exterieure-1.jpg",
+    alt: "Douche extérieure en pierre réalisée par MBA Sanit",
     lede: LEDE,
     cue: "Voir les réalisations",
     kicker: "Suisse romande",
     display: "Extérieur",
-    headline: "Piscines et douches extérieures.",
-    tab: "Piscines",
+    headline: "Douches, fontaines et aménagements extérieurs.",
+    tab: "Extérieurs",
   },
 ];
 
@@ -413,9 +415,15 @@ const meta = (categorie: string) => [
  * catégorie : c'est ce qui évite que catégories et réalisations se
  * disputent le même segment d'URL.
  *
- * NB : « Piscine » et « Douche extérieure » apparaissent deux fois — ce
- * sont deux vues, chacune avec sa page. À fusionner si ce sont bien les
- * mêmes chantiers.
+ * NB : les deux entrées de bassin ont été SUPPRIMÉES — ce n'est pas le
+ * métier de MBA. Les deux douches extérieures restantes sont bien deux
+ * chantiers différents (l'une en pierre au bord d'un lac, l'autre en bois
+ * sous la pluie) : chacune a son titre et sa page, ce ne sont plus des
+ * doublons. Les titres décrivent ce qu'on VOIT sur la photo — à remplacer
+ * par les vrais intitulés dès que MBA les donne.
+ *
+ * Il manque une réalisation de FONTAINE : MBA en fait, aucune photo n'a
+ * été fournie.
  */
 export const REALISATIONS: Realisation[] = [
   {
@@ -475,53 +483,11 @@ export const REALISATIONS: Realisation[] = [
     ],
   },
   {
-    category: "piscines-exterieurs",
-    href: "/realisations/piscines-exterieurs/piscine",
-    title: "Piscine",
-    image: "/realisation-piscine-1.jpg",
-    alt: "Piscine équipée par MBA Sanit",
-    lede: LEDE,
-    cue: "Réalisation suivante",
-    kicker: "Suisse romande",
-    display: "Traitement",
- 
-    lieu: "Suisse romande",
-    body: BODY,
-    meta: meta("Piscines et extérieurs"),
-    gallery: [
-      { src: "/realisation-piscine-1.jpg", alt: "Piscine équipée par MBA Sanit" },
-      { src: "/realisation-piscine-2.jpg", alt: "Piscine équipée par MBA Sanit, seconde vue" },
-      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure réalisée par MBA Sanit" },
-      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure réalisée par MBA Sanit, seconde vue" },
-    ],
-  },
-  {
-    category: "piscines-exterieurs",
-    href: "/realisations/piscines-exterieurs/piscine-vue-2",
-    title: "Piscine",
-    image: "/realisation-piscine-2.jpg",
-    alt: "Piscine équipée par MBA Sanit, seconde vue",
-    lede: LEDE,
-    cue: "Réalisation suivante",
-    kicker: "Suisse romande",
-    display: "Traitement",
- 
-    lieu: "Suisse romande",
-    body: BODY,
-    meta: meta("Piscines et extérieurs"),
-    gallery: [
-      { src: "/realisation-piscine-1.jpg", alt: "Piscine équipée par MBA Sanit" },
-      { src: "/realisation-piscine-2.jpg", alt: "Piscine équipée par MBA Sanit, seconde vue" },
-      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure réalisée par MBA Sanit" },
-      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure réalisée par MBA Sanit, seconde vue" },
-    ],
-  },
-  {
-    category: "piscines-exterieurs",
-    href: "/realisations/piscines-exterieurs/douche-exterieure",
-    title: "Douche extérieure",
+    category: "douches-amenagements-exterieurs",
+    href: "/realisations/douches-amenagements-exterieurs/douche-exterieure-pierre",
+    title: "Douche extérieure en pierre",
     image: "/realisation-douche-exterieure-1.jpg",
-    alt: "Douche extérieure réalisée par MBA Sanit",
+    alt: "Douche extérieure en pierre réalisée par MBA Sanit",
     lede: LEDE,
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
@@ -529,20 +495,18 @@ export const REALISATIONS: Realisation[] = [
  
     lieu: "Suisse romande",
     body: BODY,
-    meta: meta("Piscines et extérieurs"),
+    meta: meta("Douches et aménagements extérieurs"),
     gallery: [
-      { src: "/realisation-piscine-1.jpg", alt: "Piscine équipée par MBA Sanit" },
-      { src: "/realisation-piscine-2.jpg", alt: "Piscine équipée par MBA Sanit, seconde vue" },
-      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure réalisée par MBA Sanit" },
-      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure réalisée par MBA Sanit, seconde vue" },
+      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure en pierre réalisée par MBA Sanit" },
+      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure en bois réalisée par MBA Sanit" },
     ],
   },
   {
-    category: "piscines-exterieurs",
-    href: "/realisations/piscines-exterieurs/douche-exterieure-vue-2",
-    title: "Douche extérieure",
+    category: "douches-amenagements-exterieurs",
+    href: "/realisations/douches-amenagements-exterieurs/douche-exterieure-bois",
+    title: "Douche extérieure en bois",
     image: "/realisation-douche-exterieure-2.jpg",
-    alt: "Douche extérieure réalisée par MBA Sanit, seconde vue",
+    alt: "Douche extérieure en bois réalisée par MBA Sanit",
     lede: LEDE,
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
@@ -550,12 +514,10 @@ export const REALISATIONS: Realisation[] = [
  
     lieu: "Suisse romande",
     body: BODY,
-    meta: meta("Piscines et extérieurs"),
+    meta: meta("Douches et aménagements extérieurs"),
     gallery: [
-      { src: "/realisation-piscine-1.jpg", alt: "Piscine équipée par MBA Sanit" },
-      { src: "/realisation-piscine-2.jpg", alt: "Piscine équipée par MBA Sanit, seconde vue" },
-      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure réalisée par MBA Sanit" },
-      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure réalisée par MBA Sanit, seconde vue" },
+      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure en pierre réalisée par MBA Sanit" },
+      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure en bois réalisée par MBA Sanit" },
     ],
   },
 ];
