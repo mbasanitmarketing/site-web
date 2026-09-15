@@ -42,6 +42,12 @@ import Snap from "lenis/snap";
  * C'est ce qui manquait aux avis : sans repère à leur fin, un scroll un
  * peu appuyé passait par-dessus et atterrissait droit sur la FAQ.
  *
+ * AUCUN repère dans le dernier écran du document : sous un tel repère il
+ * ne reste pas de quoi remplir l'écran, donc tout le bas de page tombe
+ * dans son rayon d'attraction et le calage y ramène sans arrêt. C'est ce
+ * qui rendait le pied de page inatteignable — on y descendait, ça
+ * remontait aussitôt.
+ *
  * Mouvement réduit : aucun calage. Un déplacement de page qu'on n'a pas
  * demandé, c'est précisément ce qu'il faut éviter.
  */
@@ -66,23 +72,54 @@ export function SectionSnap() {
       debounce: 280,
     });
 
-    const enleve: (() => void)[] = [];
+    let enleve: (() => void)[] = [];
 
-    for (const s of document.querySelectorAll<HTMLElement>(
-      "#page-root > section",
-    )) {
-      const declare = s.dataset.snap?.trim();
-      if (declare) {
-        enleve.push(snap.addElement(s, { align: declare.split(/\s+/) }));
-        continue;
+    const construire = () => {
+      for (const f of enleve) f();
+      enleve = [];
+
+      // Un repère situé à moins d'un écran du BAS du document est un
+      // piège : sous lui il ne reste pas de quoi remplir l'écran, donc
+      // tout le bas de page tombe dans son rayon d'attraction et le
+      // calage y ramène sans arrêt. C'est ce qui empêchait de rester dans
+      // le pied de page : le repère de la FAQ était à 370 px du bas pour
+      // un seuil de 285, on ne pouvait pas s'arrêter plus bas.
+      const fin =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const utile = (haut: number) => haut < fin - window.innerHeight;
+
+      for (const s of document.querySelectorAll<HTMLElement>(
+        "#page-root > section",
+      )) {
+        const haut = s.getBoundingClientRect().top + window.scrollY;
+        if (!utile(haut)) continue;
+
+        const declare = s.dataset.snap?.trim();
+        if (declare) {
+          enleve.push(snap.addElement(s, { align: declare.split(/\s+/) }));
+          continue;
+        }
+        // Pas de déclaration : la règle de la marge tranche.
+        if (parseFloat(getComputedStyle(s).marginTop) >= 0) {
+          enleve.push(snap.addElement(s, { align: "start" }));
+        }
       }
-      // Pas de déclaration : la règle de la marge tranche.
-      if (parseFloat(getComputedStyle(s).marginTop) >= 0) {
-        enleve.push(snap.addElement(s, { align: "start" }));
-      }
-    }
+    };
+
+    construire();
+
+    // Les hauteurs changent au redimensionnement : un repère qui était
+    // utile peut se retrouver dans le dernier écran, et réciproquement.
+    let t = 0;
+    const onResize = () => {
+      clearTimeout(t);
+      t = window.setTimeout(construire, 200);
+    };
+    window.addEventListener("resize", onResize);
 
     return () => {
+      window.removeEventListener("resize", onResize);
+      clearTimeout(t);
       for (const f of enleve) f();
       snap.destroy();
     };

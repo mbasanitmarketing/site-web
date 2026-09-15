@@ -1,26 +1,41 @@
-import { PHONE_HREF, PHONE_LABEL } from "@/lib/contact";
+import { PHONE_LABEL, WHATSAPP_HREF } from "@/lib/contact";
 import styles from "./CallButton.module.css";
 
 /**
- * Bouton d'appel flottant — rectangulaire, anneau blanc + combiné, fixe
- * en bas à droite, permanent sur tout le site (cf. maquette « Hero
- * section - allumer le feu »). Léger fond sombre flouté pour rester
- * lisible aussi bien sur les sections claires que sur le navy.
+ * Bouton flottant WhatsApp — rectangulaire, filet blanc, fixe en bas à
+ * droite, permanent sur tout le site (cf. maquette « Hero section -
+ * allumer le feu »). Léger fond sombre flouté pour rester lisible aussi
+ * bien sur les sections claires que sur le navy.
+ *
+ * Il ouvrait le composeur téléphonique ; il ouvre maintenant WhatsApp,
+ * seul point WhatsApp du site depuis le retrait du bouton « Contact » du
+ * pied de page. L'icône change avec lui : garder un combiné pour ouvrir
+ * une messagerie aurait promis un appel.
+ *
+ * Le numéro reste joignable en direct ailleurs — dans le menu et dans la
+ * section contact des pages de service.
  */
 export function CallButton() {
   return (
     <a
       className={styles.call}
-      href={PHONE_HREF}
-      aria-label={`Appeler le ${PHONE_LABEL}`}
+      href={WHATSAPP_HREF}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={`Écrire sur WhatsApp au ${PHONE_LABEL}`}
     >
+      {/* Bulle de message avec un combiné : la forme qu'on reconnaît,
+          tracée au filet comme le reste des icônes du site. */}
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path
-          d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"
+          d="M20.5 11.7c0 4.4-3.7 8-8.3 8a8.5 8.5 0 0 1-3.9-.95L3.5 20.2l1.5-4.5a7.8 7.8 0 0 1-1.1-4c0-4.42 3.7-8 8.3-8s8.3 3.58 8.3 8z"
           stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
+          strokeWidth="1.7"
           strokeLinejoin="round"
+        />
+        <path
+          d="M9.3 8.3c.25-.05.5 0 .62.22l.72 1.35c.12.22.08.5-.1.67l-.5.5a.4.4 0 0 0-.7.47c.3.6 1.2 1.5 1.8 1.8a.4.4 0 0 0 .47-.07l.5-.5c.17-.18.45-.22.67-.1l1.35.72c.22.12.27.37.22.62-.15.75-.85 1.3-1.62 1.25-2.4-.15-4.75-2.5-4.9-4.9-.05-.77.5-1.47 1.25-1.62z"
+          fill="currentColor"
         />
       </svg>
     </a>
