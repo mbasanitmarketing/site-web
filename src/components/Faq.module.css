@@ -15,12 +15,19 @@
      toujours collant, peindrait par-dessus ce titre. Sans effet ailleurs. */
   z-index: 5;
   isolation: isolate;
+  /* Un écran de haut, contenu centré dedans. `min-height` et non
+     `height` : sur un écran court, ou avec beaucoup de questions, la
+     section doit pouvoir dépasser plutôt que rogner ses réponses. */
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
   padding: clamp(56px, 11svh, 132px) var(--page-x);
   background: #f5f5f4;
   color: #0b0b0c;
 }
 
 .grid {
+  width: 100%;
   display: grid;
   grid-template-columns: minmax(0, 47fr) minmax(0, 53fr);
   gap: clamp(32px, 6vw, 110px);

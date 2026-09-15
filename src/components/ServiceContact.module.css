@@ -124,13 +124,12 @@
 
 /* --- La photo --------------------------------------------------------- */
 
+/* Pas de liseré autour de la photo : elle remplit son bloc, bord à bord.
+   (J'avais lu un encadrement clair sur la maquette ; il n'y en a pas.) */
 .media {
   grid-column: 2 / 4;
   grid-row: 1;
   z-index: 1;
-  /* Le liseré clair autour de la photo, relevé sur la maquette. */
-  padding: clamp(8px, 0.9vw, 14px);
-  background: #e0e5f2;
 }
 
 .frame {
