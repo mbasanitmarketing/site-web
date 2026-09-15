@@ -1,0 +1,180 @@
+/* ---------------------------------------------------------------------
+   « À propos » de la page équipe — d'après « layout about MBA .png ».
+
+   Structure reprise de la référence : petite étiquette, grand titre en
+   deux tons, puis une rangée de cartes. Le style, lui, reste celui du
+   site : rectangles à 2 px, Geist, pas d'ombres.
+   --------------------------------------------------------------------- */
+
+.wrap {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(56px, 11svh, 130px) var(--page-x);
+  background: #f5f5f4;
+  color: #0b0b0c;
+}
+
+/* La section équipe enchaîne sur la précédente : pas de retrait haut en
+   double, et un filet pour marquer la séparation. */
+.team {
+  padding-top: clamp(40px, 8svh, 96px);
+  border-top: 1px solid rgba(11, 11, 12, 0.1);
+}
+
+/* La petite étiquette de la référence. */
+.chip {
+  display: inline-block;
+  margin: 0;
+  padding: 7px 14px;
+  border-radius: 2px;
+  background: #e0e5f2;
+  font-size: clamp(10px, 0.78vw, 12px);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(11, 11, 12, 0.7);
+}
+
+.title {
+  max-width: 26ch;
+  margin: clamp(20px, 3svh, 32px) 0 0;
+  font-size: clamp(1.6rem, 3.2vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.16;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+/* Le second ton du titre, comme sur la référence : la phrase se poursuit
+   en gris clair. */
+.soft {
+  color: rgba(11, 11, 12, 0.32);
+}
+
+/* --- Les trois cartes ------------------------------------------------- */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.6vw, 26px);
+  margin: clamp(32px, 6svh, 64px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(20px, 2.2vw, 32px);
+  border: 1px solid rgba(11, 11, 12, 0.14);
+  border-radius: 2px;
+  background: #fff;
+}
+
+/* Le pictogramme dans son carré, en haut de la carte. Le grand vide qui
+   le sépare du titre vient de la référence : c'est lui qui donne aux
+   cartes leur respiration. */
+.badge {
+  display: grid;
+  place-items: center;
+  width: clamp(38px, 3.2vw, 46px);
+  height: clamp(38px, 3.2vw, 46px);
+  margin-bottom: clamp(40px, 7svh, 86px);
+  border: 1px solid rgba(11, 11, 12, 0.16);
+  border-radius: 2px;
+  color: #0b0b0c;
+}
+
+.badge svg {
+  width: 55%;
+  height: 55%;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.35vw, 1.3rem);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.cardBody {
+  margin: clamp(10px, 1.4svh, 14px) 0 0;
+  font-size: clamp(13px, 0.98vw, 15px);
+  line-height: 1.65;
+  color: rgba(11, 11, 12, 0.6);
+}
+
+/* --- Les portraits ---------------------------------------------------- */
+
+.people {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.6vw, 26px);
+  margin: clamp(32px, 6svh, 64px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.person {
+  display: flex;
+  flex-direction: column;
+}
+
+.portrait {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 2px;
+  /* couvre le temps du chargement, comme ailleurs sur le site */
+  background: #76767a;
+}
+
+.portrait img {
+  object-fit: cover;
+}
+
+.personName {
+  margin: clamp(12px, 1.6svh, 18px) 0 0;
+  font-size: clamp(15px, 1.1vw, 17px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.personRole {
+  display: block;
+  margin-top: 4px;
+  font-size: clamp(12px, 0.9vw, 13px);
+  font-weight: 400;
+  color: rgba(11, 11, 12, 0.55);
+}
+
+/* --- Écrans étroits --------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  /* Les cartes empilées n'ont plus à respirer autant : le grand vide sous
+     le pictogramme laisserait trois trous. */
+  .badge {
+    margin-bottom: clamp(20px, 3svh, 32px);
+  }
+  .title {
+    max-width: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .people {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* Le troisième portrait prend toute la largeur plutôt que de laisser un
+     trou à côté de lui. */
+  .person:last-child {
+    grid-column: 1 / -1;
+  }
+  .person:last-child .portrait {
+    aspect-ratio: 16 / 10;
+  }
+}

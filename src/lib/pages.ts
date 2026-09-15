@@ -217,6 +217,35 @@ export const DESCRIPTIONS: Record<string, string> = {
     "Entretien courant et dépannage sanitaire et chauffage sur Genève et alentour. Fuite, engorgement, panne de production d’eau chaude : nous intervenons, puis nous suivons l’installation dans la durée. Contrats d’entretien pour les régies immobilières et les propriétaires de villas.",
 };
 
+/* Les trois arguments de réassurance. Texte fourni par MBA (corrigé à la
+   marge : accents et accords). Écrits UNE fois : ils servent aux
+   accordéons de l'accueil et aux cartes de la page équipe — deux versions
+   qui divergeraient seraient pires qu'une. */
+export const VALEURS: { title: string; body: string }[] = [
+  {
+    title: "20 ans d’expertise",
+    body: "Notre équipe, experte depuis plus de 20 ans, vous accompagne sur tous vos projets d’aménagement sanitaire les plus ambitieux.",
+  },
+  {
+    title: "Rapidité et passion",
+    body: "Nous nous engageons durablement auprès de nos clients. Nous vous accompagnons de la pose jusqu’à l’entretien. Nous sommes particulièrement adaptés aux suivis de régies et aux chantiers ambitieux.",
+  },
+  {
+    title: "100 % de satisfaction",
+    body: "Nous sommes honorés de satisfaire pleinement tous nos clients. Notre goût du détail nous a permis de travailler sur des chantiers d’exception et de satisfaire une clientèle pointilleuse.",
+  },
+];
+
+/* Portraits découpés dans la photo d'équipe (public/equipe.jpg) : les
+   trois hommes, de gauche à droite. Celui du milieu est Fred.
+   Les NOMS manquent — MBA doit les donner. Tant qu'un `nom` est vide, la
+   carte ne montre que le portrait : mieux vaut pas de nom qu'un faux. */
+export const EQUIPE: { photo: string; nom?: string; role?: string }[] = [
+  { photo: "/equipe-portrait-1.jpg" },
+  { photo: "/equipe-portrait-2.jpg" },
+  { photo: "/equipe-portrait-3.jpg" },
+];
+
 /* --- Les trois métiers, sous /services ---------------------------- */
 
 /* Trame des sections « manifeste ». Les intitulés sont structurels — ils

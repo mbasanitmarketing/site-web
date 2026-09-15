@@ -1,4 +1,5 @@
 import { PageIntro } from "@/components/PageIntro";
+import { AboutMba } from "@/components/AboutMba";
 import { Footer } from "@/components/Footer";
 import { requirePage } from "@/lib/pages";
 
@@ -10,6 +11,7 @@ export default function Page() {
   return (
     <>
       <PageIntro page={PAGE} />
+      <AboutMba />
       <Footer />
     </>
   );
