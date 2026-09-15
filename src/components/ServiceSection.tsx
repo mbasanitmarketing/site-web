@@ -4,8 +4,9 @@ import { BackdropLines } from "./BackdropLines";
 /**
  * Coquille commune à toutes les sections d'une page de service, d'après la
  * maquette : un repère collant dans une colonne étroite à gauche, le
- * contenu à droite. Neuf sections la partagent (les sept de ServiceParts,
- * plus les avis et la FAQ de l'accueil) — d'où l'extraction.
+ * contenu à droite. Il n'en reste qu'une poignée : les pages de service
+ * ont été allégées (Preuves, Prix, Déroulement, Zone retirées), et les
+ * avis comme la FAQ ont depuis leur propre mise en page.
  */
 export function ServiceSection({
   label,

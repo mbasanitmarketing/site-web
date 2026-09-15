@@ -1,15 +1,15 @@
-import { ServiceSection } from "./ServiceSection";
-import shell from "./ServiceSection.module.css";
-import styles from "./HomeSections.module.css";
+import { Faq } from "./Faq";
+import { ZONE } from "@/lib/pages";
 
 /* --- Questions fréquentes -------------------------------------------- */
 
 /** Trame provisoire : questions et réponses à écrire avec MBA. */
 const FAQ = [
-  {
-    q: "Dans quelles communes intervenez-vous ?",
-    a: "Genève, Carouge, Grand-Lancy et tout le canton. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  },
+  /* La zone d'intervention est écrite une seule fois (cf. ZONE dans
+     src/lib/pages.ts) et sert ici comme sur les pages de service : deux
+     réponses qui divergeraient sur les communes couvertes, ce serait pire
+     que pas de réponse du tout. */
+  ZONE,
   {
     q: "Sous quel délai puis-je obtenir un devis ?",
     a: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
@@ -26,18 +26,10 @@ const FAQ = [
 
 export function HomeFaq() {
   return (
-    <ServiceSection label="Questions fréquentes" className={styles.last}>
-      <h2 className={shell.headline}>Ce qu’on nous demande le plus.</h2>
-      {/* <details> natif : l'accordéon marche sans JavaScript et le clavier
-          le pilote déjà. */}
-      <div className={styles.faq}>
-        {FAQ.map((f) => (
-          <details key={f.q} className={styles.item}>
-            <summary className={styles.question}>{f.q}</summary>
-            <p className={styles.answer}>{f.a}</p>
-          </details>
-        ))}
-      </div>
-    </ServiceSection>
+    <Faq
+      items={FAQ}
+      lede="Ce qu’on nous demande le plus souvent, avant un premier rendez-vous."
+    />
   );
 }
+

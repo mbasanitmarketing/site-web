@@ -269,7 +269,7 @@ const QUESTIONS = [
    repasse ici, en tête de FAQ. Elle y est mieux : c'est une question que
    les gens posent, et une réponse rédigée pèse plus, pour un moteur,
    qu'une liste de communes détachée. Contenu dicté par MBA. */
-const ZONE = {
+export const ZONE = {
   q: "Quelles sont vos zones d’intervention ?",
   a:
     "Nous intervenons avant tout au centre du canton de Genève : la Ville de Genève, " +

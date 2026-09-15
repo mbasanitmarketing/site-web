@@ -4,10 +4,8 @@ import { ServiceManifesto } from "@/components/ServiceManifesto";
 import { ServiceNeeds } from "@/components/ServiceNeeds";
 import { Partners } from "@/components/Partners";
 import { RealisationsCarousel } from "@/components/RealisationsCarousel";
-import {
-  ServiceFaq,
-  ServiceContact,
-} from "@/components/ServiceParts";
+import { Faq } from "@/components/Faq";
+import { ServiceContact } from "@/components/ServiceContact";
 import { Footer } from "@/components/Footer";
 import { SERVICES, getService, realisationsOf, slugOf } from "@/lib/pages";
 
@@ -49,7 +47,12 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
           items={realisationsOf(page.relatedRealisations.category)}
         />
       )}
-      {page.service && <ServiceFaq service={page.service} />}
+      {page.service && (
+        <Faq
+          items={page.service.faq}
+          lede="Zones d’intervention, délais, devis : les réponses aux questions qui reviennent."
+        />
+      )}
       <ServiceContact />
       <Footer />
     </>

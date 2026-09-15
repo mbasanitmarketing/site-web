@@ -1,0 +1,211 @@
+/* ---------------------------------------------------------------------
+   Questions fréquentes — d'après « FAQ - MBA.png ».
+
+   Deux colonnes sensiblement égales, un grand vide entre elles. À gauche
+   le titre est haut, l'encart bleu tout en bas : c'est ce décalage qui
+   fait respirer la maquette, pas une marge arbitraire — d'où le
+   `space-between` sur la colonne.
+   --------------------------------------------------------------------- */
+
+.wrap {
+  position: relative;
+  /* z-index 5 : sur l'accueil, la piste du panneau de logos (4) court
+     jusque derrière cette section — elle est longue, pour rester épinglée
+     pendant que les avis glissent dessus. Sans ça, son panneau bleu,
+     toujours collant, peindrait par-dessus ce titre. Sans effet ailleurs. */
+  z-index: 5;
+  isolation: isolate;
+  padding: clamp(56px, 11svh, 132px) var(--page-x);
+  background: #f5f5f4;
+  color: #0b0b0c;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 47fr) minmax(0, 53fr);
+  gap: clamp(32px, 6vw, 110px);
+  align-items: stretch;
+}
+
+/* --- Colonne de gauche ------------------------------------------------ */
+
+.left {
+  display: flex;
+  flex-direction: column;
+  /* Titre en haut, encart en bas : l'écart entre les deux est ce qui
+     reste, il suit donc la hauteur de la liste d'en face. */
+  justify-content: space-between;
+  gap: clamp(32px, 6svh, 80px);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(1.9rem, 3.9vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.lede {
+  margin: clamp(12px, 1.8svh, 20px) 0 0;
+  max-width: 44ch;
+  font-size: clamp(14px, 1.05vw, 16px);
+  line-height: 1.6;
+  color: rgba(11, 11, 12, 0.55);
+}
+
+/* L'encart bleu, avec le renvoi au formulaire. */
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(16px, 2.4vw, 32px);
+  padding: clamp(20px, 2.4vw, 30px);
+  /* Le bleu du site (manifeste, bandes de logos). */
+  background: #e0e5f2;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: clamp(1rem, 1.35vw, 1.3rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.cardSub {
+  margin: 6px 0 0;
+  font-size: clamp(13px, 0.98vw, 15px);
+  line-height: 1.4;
+  color: rgba(11, 11, 12, 0.7);
+}
+
+/* Bouton plein, à la différence des CTA à filet du reste du site : sur
+   l'aplat bleu, un simple contour se serait perdu. Rayon de la charte. */
+.cardCta {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 1.5svh, 17px) clamp(16px, 1.6vw, 24px);
+  border-radius: 2px;
+  background: #070b20;
+  font-size: clamp(11px, 0.85vw, 13px);
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  text-align: center;
+  color: #f5f5f4;
+  transition: background-color 200ms ease;
+}
+
+.cardCta:hover,
+.cardCta:focus-visible {
+  background: #14203f;
+}
+
+/* --- La liste --------------------------------------------------------- */
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  border-top: 1px solid rgba(11, 11, 12, 0.16);
+}
+
+.item:last-child {
+  border-bottom: 1px solid rgba(11, 11, 12, 0.16);
+}
+
+.question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(16px, 2vw, 32px);
+  padding: clamp(16px, 2.2svh, 24px) 0;
+  font-size: clamp(1rem, 1.35vw, 1.3rem);
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Safari affiche encore son triangle sans ça. */
+.question::-webkit-details-marker {
+  display: none;
+}
+
+/* Le « + » : deux barres, dont une pivotée. À l'ouverture, l'ensemble
+   tourne de 45° et devient une croix — la maquette. */
+.icon {
+  position: relative;
+  flex: none;
+  width: 15px;
+  height: 15px;
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.icon::before,
+.icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: #0b0b0c;
+  transform: translateY(-50%);
+}
+
+.icon::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+.item[open] .icon {
+  transform: rotate(45deg);
+}
+
+.answer {
+  margin: 0;
+  /* Aligné sur la question, en s'arrêtant avant l'icône. */
+  padding: 0 clamp(28px, 3vw, 46px) clamp(18px, 2.4svh, 26px) 0;
+  font-size: clamp(14px, 1.02vw, 16px);
+  line-height: 1.75;
+  color: rgba(11, 11, 12, 0.62);
+}
+
+/* --- Écrans étroits --------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 5svh, 48px);
+  }
+  /* En colonne, l'encart suit le titre : il n'y a plus de hauteur à
+     rattraper, et le laisser en bas l'aurait séparé de la liste par tout
+     l'accordéon. */
+  .left {
+    justify-content: flex-start;
+    gap: clamp(24px, 4svh, 40px);
+  }
+}
+
+@media (max-width: 560px) {
+  /* Le bouton ne tient plus à côté du texte sans l'écraser. */
+  .card {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon,
+  .cardCta {
+    transition: none;
+  }
+}

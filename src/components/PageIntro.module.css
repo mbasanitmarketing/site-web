@@ -159,7 +159,7 @@
   line-height: 1.65;
   letter-spacing: 0.02em;
   color: rgba(245, 245, 244, 0.72);
-  animation: rise 620ms cubic-bezier(0.16, 1, 0.3, 1) 280ms both;
+  animation: rise 380ms cubic-bezier(0.16, 1, 0.3, 1) 110ms both;
 }
 
 .cue {
@@ -169,7 +169,7 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: rgba(245, 245, 244, 0.62);
-  animation: rise 620ms cubic-bezier(0.16, 1, 0.3, 1) 380ms both;
+  animation: rise 380ms cubic-bezier(0.16, 1, 0.3, 1) 190ms both;
 }
 
 /* Deux choses se combinent ici.
@@ -238,7 +238,7 @@
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: rgba(245, 245, 244, 0.9);
-  animation: rise 620ms cubic-bezier(0.16, 1, 0.3, 1) 340ms both;
+  animation: rise 380ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
 }
 
 /* Grande ligne. La référence utilise un didone ; le site n'a que Geist,
@@ -253,7 +253,7 @@
   line-height: 1;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  animation: rise 720ms cubic-bezier(0.16, 1, 0.3, 1) 440ms both;
+  animation: rise 420ms cubic-bezier(0.16, 1, 0.3, 1) 220ms both;
 }
 
 /* Variante « zone d'intervention » : une liste de communes, pas une
@@ -268,6 +268,10 @@
   letter-spacing: 0.04em;
 }
 
+/* Entrées raccourcies (demandé) : les durées passent de 520-720 ms à
+   320-420 ms et les retards de 200-440 ms à 80-220 ms. Le dernier texte
+   est en place à 640 ms au lieu de 1160 — deux fois moins d'attente avant
+   que la page soit lisible. L'ordre d'apparition, lui, est conservé. */
 @keyframes rise {
   from {
     opacity: 0;
@@ -293,7 +297,7 @@
 
 .titleOnly .title,
 .titleOnly .bandHeadline {
-  animation: rise 520ms cubic-bezier(0.16, 1, 0.3, 1) 200ms both;
+  animation: rise 320ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
 }
 
 @media (max-width: 900px) {
