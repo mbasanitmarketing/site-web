@@ -2,7 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { BackdropLines } from "./BackdropLines";
-import { COUNT, PULL_QUOTE, RATING, REVIEWS, REVIEWS_URL } from "@/lib/reviews";
+import {
+  COUNT,
+  PULL_QUOTE,
+  RATING,
+  REVIEWS_AFFICHES,
+  REVIEWS_URL,
+} from "@/lib/reviews";
 import type { Review } from "@/lib/reviews";
 import styles from "./HomeReviews.module.css";
 
@@ -68,11 +74,13 @@ function Carte({ r }: { r: Review }) {
  * fois qu'il faut pour que le cadre reste couvert, et la translation vaut
  * exactement une piste — la boucle ne se voit pas.
  *
- * MAIS : il n'y a qu'UN avis sur la fiche Google. Répéter la même carte
- * en boucle donnerait à croire qu'il y en a dix ; la rangée ne défile
- * donc QUE si les avis réels remplissent déjà l'écran. En dessous, ils
- * sont simplement centrés, immobiles. Le jour où MBA en aura cinq ou six,
- * le défilement s'allumera tout seul.
+ * La fiche Google ne compte qu'UN avis : la rangée est complétée par des
+ * cartes de DÉMONSTRATION, inventées, pour que le carrousel ait de quoi
+ * défiler (demandé). Elles s'éteignent d'une ligne — cf. AVIS_DEMO dans
+ * src/lib/reviews.ts, à retirer avant la mise en ligne.
+ *
+ * La rangée ne défile que si la piste remplit déjà le cadre : en dessous,
+ * les cartes sont simplement centrées, immobiles.
  */
 export function HomeReviews() {
   const note = RATING.toLocaleString("fr-CH");
@@ -112,7 +120,7 @@ export function HomeReviews() {
       className={styles.rail}
       aria-hidden={i > 0 || undefined}
     >
-      {REVIEWS.map((r) => (
+      {REVIEWS_AFFICHES.map((r) => (
         <Carte key={r.author + r.date} r={r} />
       ))}
     </ul>
@@ -153,7 +161,7 @@ export function HomeReviews() {
           style={
             {
               "--copies": copies,
-              "--n": REVIEWS.length,
+              "--n": REVIEWS_AFFICHES.length,
             } as React.CSSProperties
           }
         >

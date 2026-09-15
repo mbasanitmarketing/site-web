@@ -155,9 +155,10 @@
 
 .rail {
   display: flex;
-  /* Les cartes pendent d'une même ligne haute, comme sur la maquette :
-     les courtes ne se centrent pas sur les longues. */
-  align-items: flex-start;
+  /* Toutes à la hauteur de la plus grande : sur une rangée qui défile, des
+     bas de cartes en dents de scie se voient tout de suite. Le texte reste
+     calé en haut (colonne flex), c'est le blanc qui comble. */
+  align-items: stretch;
   flex: none;
   gap: clamp(16px, 1.8vw, 28px);
   /* La moitié de l'écart de chaque côté : au raccord des deux pistes,

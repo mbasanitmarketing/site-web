@@ -46,6 +46,71 @@ export const REVIEWS: Review[] = [
   },
 ];
 
+/* =====================================================================
+   AVIS DE DÉMONSTRATION — À RETIRER AVANT LA MISE EN LIGNE
+
+   Ces avis sont INVENTÉS. Ils ne viennent d'aucun client et d'aucune
+   fiche Google. Ils sont là parce que la fiche n'en compte qu'un seul et
+   que le carrousel de l'accueil n'a rien à faire défiler avec une carte
+   unique — demandé explicitement.
+
+   Publier des témoignages fabriqués sur le site d'une entreprise, c'est
+   affirmer des choses fausses sur son travail. C'est acceptable le temps
+   de la maquette, pas au-delà.
+
+   POUR LES ÉTEINDRE : passer AVIS_DEMO à false, ci-dessous. Une ligne.
+   La section retombe alors sur les avis réels, centrés et immobiles.
+
+   Les noms sont volontairement réduits à un prénom et une initiale : ils
+   ne désignent personne.
+   ===================================================================== */
+
+export const AVIS_DEMO = true;
+
+const DEMO: Review[] = [
+  {
+    author: "Sophie M.",
+    meta: "Avis de démonstration",
+    rating: 5,
+    date: "2026-08-28",
+    body: "Salle de bain refaite entièrement, du démontage aux finitions. Chantier propre, délais tenus, et un vrai souci du détail sur les raccords.",
+  },
+  {
+    author: "Laurent B.",
+    meta: "Avis de démonstration",
+    rating: 5,
+    date: "2026-08-12",
+    body: "Remplacement de la chaudière dans un immeuble de six appartements. Coordination impeccable avec la régie, aucune coupure imprévue.",
+  },
+  {
+    author: "Régie C.",
+    meta: "Avis de démonstration",
+    rating: 5,
+    date: "2026-07-30",
+    body: "Nous leur confions l\u2019entretien de plusieurs immeubles depuis des années. Réactifs sur les dépannages, et toujours joignables.",
+  },
+  {
+    author: "Nadia P.",
+    meta: "Avis de démonstration",
+    rating: 5,
+    date: "2026-07-09",
+    body: "Douche extérieure installée dans le jardin. Conseil juste dès la visite, finitions soignées, résultat exactement comme imaginé.",
+  },
+  {
+    author: "Thomas G.",
+    meta: "Avis de démonstration",
+    rating: 5,
+    date: "2026-06-21",
+    body: "Fuite un dimanche soir, intervention le lendemain matin. Diagnostic clair, réparation nette, facture sans surprise.",
+  },
+];
+
+/** Ce que la section affiche : les avis réels d'abord, puis — tant que
+ *  AVIS_DEMO est vrai — les cartes de démonstration. */
+export const REVIEWS_AFFICHES: Review[] = AVIS_DEMO
+  ? [...REVIEWS, ...DEMO]
+  : REVIEWS;
+
 /**
  * Citation mise en avant sous les avis.
  *
