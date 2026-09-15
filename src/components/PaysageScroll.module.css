@@ -231,6 +231,43 @@
   will-change: transform;
 }
 
+/* --- Le trait doré autour de l'image face au viewer -------------------
+
+   Il se DÉROULE à mesure que la diapo arrive en face : le trait part du
+   haut au milieu, fait le tour et revient à son point de départ, pile
+   quand l'image est de face.
+
+   `--draw` va de 0 à 1 sur la fenêtre qui PRÉCÈDE --face-p ; le trait est
+   donc bouclé à l'instant exact où la diapo est présentée. Ensuite il
+   s'efface avec `--face-in`, la même fenêtre que la légende — les deux ne
+   peuvent pas se désynchroniser.
+
+   Doré relevé sur le logo (#cc9024, la teinte la plus présente). */
+.slideOutline {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  opacity: var(--face-in, 0);
+}
+
+.slideOutline path {
+  stroke: #cc9024;
+  stroke-width: 1.5;
+  /* Le tracé vaut 1 (pathLength). On fait CROÎTRE le tiret depuis le
+     début du tracé — un tiret de longueur --draw suivi d'un trou qui
+     couvre tout le reste.
+
+     Pas `stroke-dashoffset` : décaler un tiret d'une unité fait apparaître
+     le trait par la FIN du tracé, donc il naissait en bas à gauche et
+     remontait à l'envers. Là il part bien du haut au milieu. */
+  stroke-dasharray: var(--draw, 0) 1;
+  stroke-dashoffset: 0;
+}
+
 .slide {
   /* La rotation du rail va de --p 0.14 à 0.94, soit 0.80 de course, et
      présente une diapo à chaque intervalle. Tout se déduit de --count :
@@ -253,6 +290,14 @@
       calc((var(--p, 0) - (var(--face-p) - var(--win))) / var(--fade)),
       calc((var(--face-p) + var(--win) - var(--p, 0)) / var(--fade))
     ),
+    1
+  );
+
+  /* Déroulé du trait doré : 0 à l'entrée dans la fenêtre, 1 pile à
+     --face-p. Il boucle donc au moment où la diapo est de face. */
+  --draw: clamp(
+    0,
+    calc((var(--p, 0) - (var(--face-p) - var(--win))) / var(--win)),
     1
   );
 
@@ -425,5 +470,12 @@
   }
   .slideCta {
     transition: none;
+  }
+}
+
+/* Mouvement réduit : le trait est là, entier, sans se dérouler. */
+@media (prefers-reduced-motion: reduce) {
+  .slideOutline path {
+    stroke-dasharray: none;
   }
 }

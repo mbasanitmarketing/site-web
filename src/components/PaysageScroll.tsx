@@ -67,6 +67,34 @@ export function PaysageScroll() {
                     fill
                     sizes="(max-width: 720px) 74vw, min(46vw, 760px)"
                   />
+
+                  {/* Le trait doré qui fait le tour de l'image quand elle
+                      arrive pile en face. Le tracé part du HAUT AU MILIEU
+                      et revient à son point de départ — d'où le `M 50 0`
+                      plutôt qu'un simple <rect>, qui aurait démarré dans
+                      un coin.
+
+                      `pathLength="1"` : la longueur du tracé vaut 1 quelle
+                      que soit la taille de l'image, donc le CSS peut
+                      dérouler le trait avec un simple 0 -> 1 sans rien
+                      savoir de sa géométrie.
+
+                      `vector-effect` : sans lui, le viewBox carré étiré au
+                      format de l'image écraserait le trait — épais en
+                      haut et en bas, fin sur les côtés. */}
+                  <svg
+                    className={styles.slideOutline}
+                    viewBox="0 0 100 100"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M50 0 H100 V100 H0 V0 Z"
+                      pathLength="1"
+                      fill="none"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  </svg>
                 </div>
                 <p className={styles.slideTitle}>{r.title}</p>
                 <a
