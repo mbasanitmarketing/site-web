@@ -237,13 +237,19 @@ export const VALEURS: { title: string; body: string }[] = [
 ];
 
 /* Portraits découpés dans la photo d'équipe (public/equipe.jpg) : les
-   trois hommes, de gauche à droite. Celui du milieu est Fred.
-   Les NOMS manquent — MBA doit les donner. Tant qu'un `nom` est vide, la
-   carte ne montre que le portrait : mieux vaut pas de nom qu'un faux. */
+   trois hommes, de gauche à droite.
+ 
+   FRED est CERTAIN : c'est celui du milieu, MBA l'a dit explicitement.
+ 
+   Greg à gauche et Yoan à droite : confirmé par MBA, l'ordre n'est donc
+   pas celui dans lequel les prénoms ont été donnés. On met un prénom sur
+   le visage de quelqu'un — d'où la question posée plutôt qu'une
+   supposition. Un `nom` laissé vide n'affiche aucune légende, c'est le
+   repli sûr. */
 export const EQUIPE: { photo: string; nom?: string; role?: string }[] = [
-  { photo: "/equipe-portrait-1.jpg" },
-  { photo: "/equipe-portrait-2.jpg" },
-  { photo: "/equipe-portrait-3.jpg" },
+  { photo: "/equipe-portrait-1.jpg", nom: "Greg" },
+  { photo: "/equipe-portrait-2.jpg", nom: "Fred" },
+  { photo: "/equipe-portrait-3.jpg", nom: "Yoan" },
 ];
 
 /* --- Les trois métiers, sous /services ---------------------------- */
