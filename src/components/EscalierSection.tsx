@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useScrollProgress } from "@/lib/useScrollProgress";
 import { DESCRIPTIONS, SERVICES } from "@/lib/pages";
 import styles from "./EscalierSection.module.css";
@@ -62,6 +62,68 @@ export function EscalierSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const toggle = (i: number) =>
     setOpenIndex((cur) => (cur === i ? null : i));
+
+  /* Ouverture AU SCROLL, pas seulement au clic.
+   *
+   * La scène reste épinglée après que le panneau s'est aligné (--p atteint
+   * 1 à 63 % du trajet, cf. le span ci-dessus) : il reste ensuite 37 % de
+   * palier, la scène immobile. C'est ce palier qu'on occupe — les trois
+   * accordéons s'ouvrent l'un après l'autre, puis la page reprend.
+   *
+   * On recalcule ici la progression sur le trajet ENTIER, sans le span :
+   * `useScrollProgress` bloque son --p à 1 dès 63 %, il ne dirait plus
+   * rien de ce qui se passe pendant le palier.
+   *
+   *   0 -> 0.63   le panneau monte et s'aligne (rien à faire ici)
+   *   0.66 -> 0.95  les trois accordéons, un tiers de la plage chacun
+   *   0.95 -> 1     un temps mort, le troisième ouvert, avant la suite
+   *
+   * Le clic continue de marcher : il pose l'index tout de suite, et le
+   * scroll suivant reprend la main. Mouvement réduit : rien de tout ça,
+   * le clic seul.
+   */
+  useEffect(() => {
+    const track = trackRef.current;
+    const stage = stageRef.current;
+    if (!track || !stage) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const DEBUT = 0.66;
+    const FIN = 0.95;
+
+    let raf = 0;
+    // Mesurée au redimensionnement seulement : une lecture de hauteur par
+    // image forcerait un recalcul de mise en page (cf. useScrollProgress).
+    let travel = track.offsetHeight - stage.offsetHeight;
+
+    const frame = () => {
+      raf = 0;
+      if (travel <= 0) return;
+      const p = -track.getBoundingClientRect().top / travel;
+      if (p < DEBUT) return;
+      const t = Math.min(1, (p - DEBUT) / (FIN - DEBUT));
+      const i = Math.min(2, Math.floor(t * 3));
+      setOpenIndex((cur) => (cur === i ? cur : i));
+    };
+
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(frame);
+    };
+    const onResize = () => {
+      travel = track.offsetHeight - stage.offsetHeight;
+      schedule();
+    };
+
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", onResize);
+    schedule();
+
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", onResize);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
     <section ref={trackRef} className={styles.track}>
