@@ -11,7 +11,10 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding: clamp(48px, 10svh, 120px) var(--page-x);
+  /* Bande basse et large, comme la maquette : 44 px de marge haute pour
+     372 px de hauteur totale, soit 12 %. Avec un grand retrait vertical,
+     la section devenait un pavé au lieu d'un bandeau. */
+  padding: clamp(32px, 5.5svh, 68px) var(--page-x);
   background: #070b20;
   color: #f5f5f4;
 }
@@ -65,10 +68,12 @@
   grid-row: 1;
   /* Au-dessus de la photo : sur la maquette c'est bien lui qui mord. */
   z-index: 2;
-  /* Retrait vertical plus serré que l'horizontal : sur la maquette le
-     panneau fait 253 px pour une photo de 283, soit 12 % de moins. C'est
-     ce rapport qui fait dépasser la photo par le haut. */
-  padding: clamp(22px, 2.9vw, 42px) clamp(28px, 4vw, 58px);
+  /* Retraits relevés sur la maquette : 87 px à gauche pour un panneau de
+     621, soit 14 % — c'est beaucoup, et c'est ce qui empêche le texte de
+     se coller au bord. Le retrait vertical, lui, est plus serré : le
+     panneau fait 253 px pour une photo de 283, et c'est ce rapport qui
+     fait dépasser la photo par le haut. */
+  padding: clamp(24px, 3vw, 44px) clamp(34px, 4.9vw, 78px);
   background: #e0e5f2;
   color: #0b0b0c;
 }
@@ -132,18 +137,31 @@
 
 /* --- La photo --------------------------------------------------------- */
 
-/* Pas de liseré : la photo remplit son bloc, bord à bord. Elle garde le
-   format de la maquette (535 / 283) pour dépasser le panneau vers le
-   haut sans qu'on ait à fixer une hauteur en dur. */
+/* LE LISERÉ EST DE RETOUR, et voilà pourquoi.
+   Relevé au pixel : le bloc clair va de x 671 à 1206, la photo de 695 à
+   1182 — 24 px de marge à gauche et à droite, 17 px en haut et en bas.
+   Ce n'est pas une bordure décorative : c'est ce qui RELIE les deux
+   blocs. Le panneau s'arrête à 694, le bloc de la photo commence à 671 —
+   ils se recouvrent, dans la même couleur, donc l'œil lit UNE seule
+   forme claire qui traverse la section. Sans lui, il ne reste que deux
+   rectangles séparés qui se chevauchent, et la composition tombe à plat.
+   (Retiré à la demande, puis remis après mesure : à rediscuter.) */
 .media {
-  position: relative;
   grid-column: 2 / 4;
   grid-row: 1;
   z-index: 1;
-  aspect-ratio: 535 / 283;
+  /* 17/283 et 24/535 de la maquette, en proportion de la largeur. */
+  padding: clamp(8px, 1.15vw, 19px) clamp(11px, 1.6vw, 27px);
+  background: #e0e5f2;
 }
 
-.media img {
+.frame {
+  position: relative;
+  /* Format de la photo elle-même (487 x 249), pas du bloc. */
+  aspect-ratio: 487 / 249;
+}
+
+.frame img {
   object-fit: cover;
 }
 
