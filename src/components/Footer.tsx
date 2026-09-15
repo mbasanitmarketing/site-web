@@ -1,12 +1,14 @@
 import Image from "next/image";
 import { GoogleReviews } from "./GoogleReviews";
+import { PHONE_LABEL, WHATSAPP_HREF } from "@/lib/contact";
 import styles from "./Footer.module.css";
 
 /**
  * Footer — calqué sur celui de likova.space (mesuré dans le DOM).
  *
  * Bloc navy compact (pas pleine hauteur). En haut : bouton « Contact »
- * (fond blanc, coin bas-droite mordu) puis le mot-marque. Au centre-droit :
+ * (fond blanc, coin bas-droite mordu) qui ouvre WhatsApp, puis le
+ * mot-marque. Au centre-droit :
  * les horaires. En bas : ligne de mentions (© / confidentialité / agence)
  * puis un fin disclaimer pleine largeur.
  *
@@ -22,7 +24,17 @@ export function Footer({ overlap = false }: { overlap?: boolean }) {
       className={`${styles.footer} ${overlap ? styles.overlap : ""}`}
     >
       <div className={styles.top}>
-        <a className={styles.contact} href="#contact">
+        {/* Le seul point WhatsApp du site. Il pointait sur « #contact »,
+            une ancre qui n'existe nulle part : le bouton ne menait donc
+            à rien. Le numéro vient de src/lib/contact.ts, comme partout
+            ailleurs. */}
+        <a
+          className={styles.contact}
+          href={WHATSAPP_HREF}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`Écrire sur WhatsApp au ${PHONE_LABEL}`}
+        >
           Contact
         </a>
         <Image
