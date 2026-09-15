@@ -11,7 +11,13 @@
    --------------------------------------------------------------------- */
 
 .wrap {
-  background: #f5f5f4;
+  /* Le bleu du manifeste (« La prestation ») et de la grille de logos de
+     l'accueil. Une seule source : les fondus des bords doivent fondre
+     vers EXACTEMENT ce fond, sinon on voit une bande plus claire au ras
+     du cadre. */
+  --band: #e0e5f2;
+
+  background: var(--band);
   color: #0b0b0c;
   padding-bottom: clamp(48px, 11svh, 128px);
 }
@@ -158,8 +164,8 @@
   mask-image: linear-gradient(to right, #000, transparent);
   background: linear-gradient(
     to right,
-    #f5f5f4 12%,
-    rgba(245, 245, 244, 0)
+    var(--band) 12%,
+    rgba(224, 229, 242, 0)
   );
 }
 
@@ -167,7 +173,7 @@
   right: 0;
   -webkit-mask-image: linear-gradient(to left, #000, transparent);
   mask-image: linear-gradient(to left, #000, transparent);
-  background: linear-gradient(to left, #f5f5f4 12%, rgba(245, 245, 244, 0));
+  background: linear-gradient(to left, var(--band) 12%, rgba(224, 229, 242, 0));
 }
 
 @media (max-width: 900px) {

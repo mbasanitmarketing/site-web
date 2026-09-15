@@ -228,71 +228,78 @@ export function HomeReviews() {
   );
 
   return (
-    /* Deux arrêts déclarés (cf. SectionSnap) : « start » quand la section
-       a fini de glisser sur les logos et remplit l'écran, « end » quand
-       son bas — le bandeau navy — touche le bas du cadre. Sans le second,
-       un scroll appuyé passait par-dessus et tombait droit sur la FAQ. */
-    <section className={styles.wrap} data-snap="start end">
-      <BackdropLines arc />
+    /* Un seul arrêt déclaré (cf. SectionSnap) : « start », quand la scène
+       a fini de glisser sur les logos. Le maintien, lui, ne vient plus du
+       calage mais de l'épinglage ci-dessous — un point de calage posait le
+       scroll au bon endroit, rien ne l'y retenait. */
+    <section className={styles.track} data-snap="start">
+      {/* La scène s'ÉPINGLE dès qu'elle recouvre l'écran et reste immobile
+          le temps du palier, puis la page reprend son cours. En colonne
+          flex : le bandeau du titre et celui du bas gardent leur taille,
+          c'est la rangée d'avis qui absorbe le reste — la scène fait donc
+          exactement un écran, sur n'importe quelle hauteur. */}
+      <div className={styles.stage}>
+        <BackdropLines arc />
 
-      <div className={styles.head}>
-        <h2 className={styles.title}>Au plus près de vous&nbsp;!</h2>
-        <span className={styles.rule} aria-hidden="true" />
-        <p className={styles.lede}>
-          Villas, régies immobilières et immeubles d’entreprises : nous
-          intervenons dans toute la Suisse romande, de la première visite au
-          contrat d’entretien.
-        </p>
+        <div className={styles.head}>
+          <h2 className={styles.title}>Au plus près de vous&nbsp;!</h2>
+          <span className={styles.rule} aria-hidden="true" />
+          <p className={styles.lede}>
+            Villas, régies immobilières et immeubles d’entreprises : nous
+            intervenons dans toute la Suisse romande, de la première visite
+            au contrat d’entretien.
+          </p>
 
-        <a
-          className={styles.rating}
-          href={REVIEWS_URL}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`Note Google : ${note} sur 5 — ${COUNT} avis`}
-        >
-          <Stars n={Math.round(RATING)} />
-          <span className={styles.score}>{RATING}/5</span>
-          <span className={styles.google}>Google</span>
-        </a>
-      </div>
-
-      <div ref={viewportRef} className={styles.viewport}>
-        <div
-          className={styles.marquee}
-          style={
-            {
-              "--copies": copies,
-              "--n": REVIEWS_AFFICHES.length,
-            } as React.CSSProperties
-          }
-        >
-          {Array.from({ length: copies }, (_, i) => piste(i))}
+          <a
+            className={styles.rating}
+            href={REVIEWS_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Note Google : ${note} sur 5 — ${COUNT} avis`}
+          >
+            <Stars n={Math.round(RATING)} />
+            <span className={styles.score}>{RATING}/5</span>
+            <span className={styles.google}>Google</span>
+          </a>
         </div>
-      </div>
 
-      {/* Bandeau navy : la citation mise en avant. Vide pour l'instant —
-          cf. PULL_QUOTE dans src/lib/reviews.ts. */}
-      <div className={styles.band}>
-        {PULL_QUOTE ? (
-          <figure className={styles.quote}>
-            <blockquote className={styles.quoteText}>
-              “{PULL_QUOTE.text}”
-            </blockquote>
-            <figcaption className={styles.quoteBy}>
-              {PULL_QUOTE.role && (
-                <span className={styles.quoteRole}>{PULL_QUOTE.role}</span>
-              )}
-              <span className={styles.quoteAuthor}>{PULL_QUOTE.author}</span>
-            </figcaption>
-          </figure>
-        ) : (
-          <figure className={`${styles.quote} ${styles.quoteEmpty}`}>
-            <blockquote className={styles.quoteText}>
-              “La phrase qui restera en tête.”
-            </blockquote>
-          </figure>
-        )}
+        <div ref={viewportRef} className={styles.viewport}>
+          <div
+            className={styles.marquee}
+            style={
+              {
+                "--copies": copies,
+                "--n": REVIEWS_AFFICHES.length,
+              } as React.CSSProperties
+            }
+          >
+            {Array.from({ length: copies }, (_, i) => piste(i))}
+          </div>
+        </div>
+
+        {/* Bandeau navy : la citation mise en avant. Vide pour l'instant —
+            cf. PULL_QUOTE dans src/lib/reviews.ts. */}
+        <div className={styles.band}>
+          {PULL_QUOTE ? (
+            <figure className={styles.quote}>
+              <blockquote className={styles.quoteText}>
+                “{PULL_QUOTE.text}”
+              </blockquote>
+              <figcaption className={styles.quoteBy}>
+                {PULL_QUOTE.role && (
+                  <span className={styles.quoteRole}>{PULL_QUOTE.role}</span>
+                )}
+                <span className={styles.quoteAuthor}>{PULL_QUOTE.author}</span>
+              </figcaption>
+            </figure>
+          ) : (
+            <figure className={`${styles.quote} ${styles.quoteEmpty}`}>
+              <blockquote className={styles.quoteText}>
+                “La phrase qui restera en tête.”
+              </blockquote>
+            </figure>
+          )}
+        </div>
       </div>
     </section>
   );

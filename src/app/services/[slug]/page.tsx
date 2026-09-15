@@ -5,8 +5,6 @@ import { ServiceNeeds } from "@/components/ServiceNeeds";
 import { Partners } from "@/components/Partners";
 import { RealisationsCarousel } from "@/components/RealisationsCarousel";
 import {
-  ServiceSteps,
-  ServiceArea,
   ServiceFaq,
   ServiceContact,
 } from "@/components/ServiceParts";
@@ -33,23 +31,24 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
   return (
     <>
       {/* Ordre de la structure demandée : introduction, besoins,
-          partenaires, réalisations, déroulement, zone, questions,
-          contact. Deux sections ont été retirées (demandé) : « Preuves »
-          et « Prix ». Ni l'une ni l'autre n'avait de toute façon rien à
-          montrer — MBA n'a fourni ni ses qualifications ni une fourchette
-          de tarifs. */}
+          partenaires, réalisations, questions, contact.
+
+          Quatre sections ont été retirées à la demande de MBA :
+          « Preuves », « Prix », « Déroulement » et « Zone d'intervention ».
+          Les deux premières n'avaient de toute façon rien à montrer (ni
+          qualifications ni fourchette de tarifs fournies) ; la zone, elle,
+          n'a pas disparu — elle est passée en première question de la FAQ,
+          rédigée. */}
       <PageIntro page={page} />
       {page.manifesto && <ServiceManifesto manifesto={page.manifesto} />}
       {page.service && <ServiceNeeds service={page.service} />}
-      <Partners headline="Les marques avec lesquelles nous travaillons." />
+      <Partners headline="Un réseau de partenaires solide" />
       {page.relatedRealisations && (
         <RealisationsCarousel
           title={`Nos réalisations ${page.relatedRealisations.label}`}
           items={realisationsOf(page.relatedRealisations.category)}
         />
       )}
-      {page.service && <ServiceSteps service={page.service} />}
-      {page.service && <ServiceArea service={page.service} />}
       {page.service && <ServiceFaq service={page.service} />}
       <ServiceContact />
       <Footer />

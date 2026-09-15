@@ -114,7 +114,9 @@ export type ServiceDetail = {
    *  Vide tant que MBA n'a pas
    *  fourni la liste — on n'invente pas une certification. */
   qualifications: string[];
-  /** Déroulement, de la demande à la réalisation. */
+  /** RETIRÉ DE L'AFFICHAGE : la section « Déroulement » a été supprimée
+   *  des pages de service. Champ conservé pour mémoire.
+   *  Déroulement, de la demande à la réalisation. */
   steps: { title: string; body: string }[];
   /** RETIRÉ DE L'AFFICHAGE : la section « Prix » a été supprimée des
    *  pages de service. Le champ reste pour mémoire, comme
@@ -122,7 +124,10 @@ export type ServiceDetail = {
    *  un chiffre plausible mais inventé, il serait pris pour un
    *  engagement. */
   pricing: { tarif: string; note: string; factors: string[] };
-  /** Zone d'intervention : communes couvertes et contraintes utiles. */
+  /** RETIRÉ DE L'AFFICHAGE : la section « Zone d'intervention » a été
+   *  supprimée. Elle n'a pas disparu du site pour autant — elle est
+   *  passée en PREMIÈRE question de la FAQ, rédigée (cf. ZONE).
+   *  Zone d'intervention : communes couvertes et contraintes utiles. */
   area: { communes: string[]; note: string };
   /** Questions fréquentes. */
   faq: { q: string; a: string }[];
@@ -256,10 +261,28 @@ const FACTEURS = [
 ];
 
 const QUESTIONS = [
-  "Intervenez-vous dans tout le canton de Genève ?",
   "Sous quel délai puis-je obtenir un devis ?",
   "Le devis est-il payant ?",
 ];
+
+/* La zone d'intervention avait sa propre section ; elle a été retirée et
+   repasse ici, en tête de FAQ. Elle y est mieux : c'est une question que
+   les gens posent, et une réponse rédigée pèse plus, pour un moteur,
+   qu'une liste de communes détachée. Contenu dicté par MBA. */
+const ZONE = {
+  q: "Quelles sont vos zones d’intervention ?",
+  a:
+    "Nous intervenons avant tout au centre du canton de Genève : la Ville de Genève, " +
+    "Carouge, Lancy, Onex, Vernier, Chêne-Bougeries, Thônex et Plan-les-Ouates. " +
+    "C’est là que nous sommes le plus rapides à nous déplacer, aussi bien pour une " +
+    "installation complète que pour un dépannage. " +
+    "Nous nous déplaçons aussi sans difficulté plus loin dans le canton — Meyrin, " +
+    "Versoix, Bernex, Veyrier, Collonge-Bellerive, Satigny, Bellevue ou " +
+    "Perly-Certoux : n’hésitez pas à nous appeler même si votre commune n’est pas " +
+    "citée ici. " +
+    "Enfin, pour les grands chantiers, nous intervenons également dans le canton de " +
+    "Vaud.",
+};
 
 const COMMUNES = [
   "Genève",
@@ -300,7 +323,7 @@ const service = (needs: string[]): ServiceDetail => ({
     factors: FACTEURS,
   },
   area: { communes: COMMUNES, note: LEDE },
-  faq: QUESTIONS.map((q, i) => ({ q, a: i % 2 ? BODY_B : BODY_A })),
+  faq: [ZONE, ...QUESTIONS.map((q, i) => ({ q, a: i % 2 ? BODY_B : BODY_A }))],
 });
 
 export const SERVICES: PageContent[] = [

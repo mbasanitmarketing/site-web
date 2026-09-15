@@ -22,27 +22,54 @@
 
    z-index 5 : au-dessus de la piste des logos (4). Si l'une des deux
    hauteurs change, refaire ce calcul. */
-.wrap {
+.track {
   position: relative;
   z-index: 5;
+  /* 100svh de scène + 55svh de palier : une fois qu'elle recouvre
+     l'écran, elle s'y arrête franchement avant que la page reprenne. */
+  height: 155svh;
   margin-top: -130svh;
+}
+
+/* La scène : épinglée, exactement un écran, jamais plus. Colonne flex —
+   le bandeau du titre et celui du bas gardent leur taille, la rangée
+   d'avis absorbe le reste. Pas d'arithmétique de marges à ajuster écran
+   par écran : ça tient à toutes les hauteurs. */
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   isolation: isolate;
-  padding-top: clamp(64px, 12svh, 140px);
+  padding-top: clamp(40px, 7svh, 90px);
   background: #f5f5f4;
   color: #0b0b0c;
 }
 
 /* Là où le panneau de logos renonce à son épinglage (cf. son module), il
    n'y a plus rien à recouvrir : la section reprend sa place dans le flux. */
+/* Là où le panneau de logos renonce à son épinglage, il n'y a plus rien
+   à recouvrir — et sur un écran très court, une scène épinglée d'un écran
+   ne tiendrait de toute façon pas. La section reprend sa place dans le
+   flux, hauteur libre. */
 @media (max-height: 620px), (prefers-reduced-motion: reduce) {
-  .wrap {
+  .track {
+    height: auto;
     margin-top: 0;
+  }
+  .stage {
+    position: static;
+    height: auto;
+    overflow: visible;
   }
 }
 
 /* --- Titre, filet, chapô, note --------------------------------------- */
 
 .head {
+  flex: none;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -145,8 +172,13 @@
   --rail-h: clamp(250px, 34svh, 310px);
 
   position: relative;
-  margin-top: clamp(36px, 6svh, 72px);
-  padding-bottom: clamp(48px, 9svh, 110px);
+  /* Prend toute la place qui reste entre le titre et le bandeau navy, et
+     centre la rangée dedans. `min-height: 0` : sans lui, un enfant flex ne
+     descend jamais sous sa taille de contenu et la scène déborderait. */
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
   overflow: hidden;
 }
 
@@ -157,6 +189,7 @@
    Cet état n'existe plus. */
 .marquee {
   display: flex;
+  flex: none;
   width: max-content;
   --shift: calc(-100% / var(--copies, 2));
   /* 6 s par avis : la vitesse apparente ne change pas quand la piste
@@ -362,9 +395,10 @@
 /* --- Le bandeau navy et sa citation ----------------------------------- */
 
 .band {
+  flex: none;
   display: grid;
   place-items: center;
-  padding: clamp(48px, 10svh, 110px) var(--page-x) clamp(32px, 6svh, 64px);
+  padding: clamp(28px, 6svh, 72px) var(--page-x) clamp(24px, 5svh, 56px);
   background: #070b20;
   color: #f5f5f4;
   text-align: center;
