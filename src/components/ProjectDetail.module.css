@@ -72,7 +72,7 @@
 
 .meta {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(20px, 3vw, 48px);
   margin: 0;
   padding-top: clamp(24px, 4.5svh, 44px);

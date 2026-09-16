@@ -5,7 +5,10 @@ import { CATEGORIES, requirePage } from "@/lib/pages";
 
 const PAGE = requirePage("/realisations");
 
-export const metadata = { title: `${PAGE.title} — MBA Sanit` };
+export const metadata = {
+  title: `${PAGE.title} — MBA Sanit`,
+  description: PAGE.lede,
+};
 
 export default function Page() {
   return (

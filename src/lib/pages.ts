@@ -7,7 +7,9 @@ import { PHONE_HREF } from "./contact";
  * d'ici. C'est ce qui permet à la transition d'afficher immédiatement
  * l'image et le titre de la page d'arrivée, avant même de naviguer.
  *
- * Textes provisoires (lorem) — seuls `title` et `image` sont « vrais ».
+ * Textes rédigés à partir de ce que MBA a dit de son activité (métiers,
+ * clientèle, zone, vingt ans de métier). Rien d'inventé sur les dates,
+ * les lieux précis, les marques ou les prix — à relire avec MBA.
  */
 export type PageContent = {
   /** Route, sert aussi de clé. */
@@ -66,9 +68,6 @@ export type PageContent = {
    *  complet reste juste en dessous, en titre de page. */
   tab?: string;
 };
-
-const LEDE =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.";
 
 
 /**
@@ -153,9 +152,9 @@ export const PAGES: PageContent[] = [
     href: "/services",
     title: "Services",
     image: "/services-1.jpg",
-    lede: LEDE,
+    lede: "Installation sanitaire, chauffage et pompes à chaleur, entretien et dépannage : MBA Sanit conçoit, pose et suit vos installations à Genève et en Suisse romande, pour les particuliers, les régies immobilières et les entreprises.",
     cue: "Notre démarche",
-    kicker: "Lorem ipsum dolor",
+    kicker: "Nos métiers",
     display: "Genève, Carouge, Grand-Lancy et tout le canton",
     displaySmall: true,
   },
@@ -163,16 +162,16 @@ export const PAGES: PageContent[] = [
     href: "/realisations",
     title: "Réalisations",
     image: "/services-2.jpg",
-    lede: LEDE,
+    lede: "Salles de bain, chaufferies, douches et aménagements extérieurs : une sélection de chantiers menés par MBA Sanit à Genève et en Suisse romande, de la conception aux finitions.",
     cue: "Voir le catalogue",
-    kicker: "Consectetur adipiscing",
-    display: "Elit sed",
+    kicker: "Nos chantiers",
+    display: "Sur mesure",
   },
   {
     href: "/equipe",
     title: "L’équipe",
     image: "/equipe.jpg",
-    lede: LEDE,
+    lede: "Installateurs sanitaires et chauffagistes, nous cumulons plus de vingt ans de métier. Une équipe resserrée, un interlocuteur unique, pour les villas, les régies immobilières et les entreprises de Genève et de Suisse romande.",
     cue: "Nous rencontrer",
     /* Avec une cible, le repère devient un VRAI bouton (cf. PageIntro) :
        même verre dépoli et même rectangle à 2 px que sur les pages de
@@ -193,10 +192,10 @@ export const PAGES: PageContent[] = [
        est sans photo (heroPlain). */
     image: "/hero-light.jpg",
     heroPlain: true,
-    lede: LEDE,
+    lede: "Décrivez votre projet sanitaire ou de chauffage : MBA Sanit vous recontacte pour convenir d’une visite sur place, puis vous remet un devis détaillé.",
     cue: "Nous écrire",
-    kicker: "Dolore magna aliqua",
-    display: "Ad minim",
+    kicker: "Votre projet",
+    display: "Genève et Suisse romande",
   },
 ];
 
@@ -258,38 +257,45 @@ export const EQUIPE: { photo: string; nom?: string; role?: string }[] = [
 
 /* --- Les trois métiers, sous /services ---------------------------- */
 
-/* Trame des sections « manifeste ». Les intitulés sont structurels — ils
-   ne promettent rien de précis — et les paragraphes sont du lorem : seule
-   la mise en page est arrêtée. Tout ce texte est à écrire par MBA. */
-const manifesto = (headline: string): Manifesto => ({
+/* Sections « manifeste » : un chapô propre à chaque métier, puis les
+   quatre étapes d'un chantier. Les étapes décrivent la méthode que MBA
+   décrit lui-même (visite, devis, chantier, suivi jusqu'à l'entretien) —
+   aucun délai ni aucune garantie chiffrée. */
+const manifesto = (
+  headline: string,
+  intro: string,
+  objet: string,
+): Manifesto => ({
   label: "La prestation",
   headline,
-  intro: LEDE,
-  /* Quatre étapes : la bande défile de 1 à 4. Intitulés structurels et
-     paragraphes en lorem — tout ce texte est à écrire par MBA. */
+  intro,
   blocks: [
-    { title: "Le rendez-vous et le relevé", body: BODY_A },
-    { title: "Le devis détaillé", body: BODY_B },
-    { title: "Le chantier", body: BODY_A },
-    { title: "La réception et le suivi", body: BODY_B },
+    {
+      title: "Le rendez-vous et le relevé",
+      body: `Nous nous déplaçons pour voir l’existant, prendre les mesures et comprendre vos attentes. C’est sur place que se décident les bons choix pour ${objet} : accès, raccordements, contraintes du bâtiment.`,
+    },
+    {
+      title: "Le devis détaillé",
+      body: "Vous recevez un devis poste par poste : fournitures, main-d’œuvre et options clairement séparées. Nous prenons le temps d’en discuter avec vous, ou avec votre régie, avant de fixer le calendrier.",
+    },
+    {
+      title: "Le chantier",
+      body: "Un interlocuteur unique suit les travaux du premier au dernier jour. Nous coordonnons les autres corps de métier, protégeons les lieux et limitons les coupures d’eau et de chauffage, y compris en logement occupé.",
+    },
+    {
+      title: "La réception et le suivi",
+      body: "Mise en service, contrôle et explications à la remise des clés. Nous restons ensuite votre contact pour l’entretien et le dépannage : nous connaissons déjà l’installation quand il faut intervenir.",
+    },
   ],
 });
 
-const BODY_A =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-
-const BODY_B =
-  "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-
-/* Contenu provisoire des pages de service. Écrit par moi pour caler la
-   mise en page : à reprendre mot à mot avec MBA. Les titres sont des
-   catégories, pas des promesses ; les paragraphes sont du lorem. */
+/* RETIRÉ DE L'AFFICHAGE (section « Déroulement ») : gardé pour mémoire. */
 const ETAPES = [
-  "Premier contact",
-  "Visite sur place",
-  "Devis détaillé",
-  "Réalisation",
-  "Réception",
+  { title: "Premier contact", body: "Par téléphone ou par le formulaire de devis." },
+  { title: "Visite sur place", body: "Relevé de l’existant et des contraintes." },
+  { title: "Devis détaillé", body: "Poste par poste, options séparées." },
+  { title: "Réalisation", body: "Un interlocuteur unique sur le chantier." },
+  { title: "Réception", body: "Mise en service, contrôle et suivi." },
 ];
 
 const FACTEURS = [
@@ -395,8 +401,8 @@ const COMMUNES = [
   "Plan-les-Ouates",
 ];
 
-const service = (needs: string[]): ServiceDetail => ({
-  needs: needs.map((title, i) => ({ title, body: i % 2 ? BODY_B : BODY_A })),
+const service = (needs: { title: string; body: string }[]): ServiceDetail => ({
+  needs,
   included: [
     "Déplacement et prise de mesures",
     "Fourniture du matériel",
@@ -413,14 +419,14 @@ const service = (needs: string[]): ServiceDetail => ({
      s\u2019invente pas. À remplir avec les vraies (CFC, agréments,
      assurances, partenariats fabricants…). */
   qualifications: [],
-  steps: ETAPES.map((title, i) => ({ title, body: i % 2 ? BODY_B : BODY_A })),
+  steps: ETAPES,
   pricing: {
     /* Aucun chiffre inventé : la page affiche « à définir ». */
     tarif: "",
-    note: LEDE,
+    note: "Chaque installation est différente : le prix se fixe après la visite.",
     factors: FACTEURS,
   },
-  area: { communes: COMMUNES, note: LEDE },
+  area: { communes: COMMUNES, note: ZONE.a },
   faq: FAQ_ITEMS,
 });
 
@@ -430,7 +436,7 @@ export const SERVICES: PageContent[] = [
     title: "Sanitaire & salles de bain",
     image: "/realisation-salle-de-bain.jpg",
     alt: "Salle de bain réalisée par MBA Sanit",
-    lede: LEDE,
+    lede: "Installation sanitaire et rénovation de salles de bain à Genève : alimentation, évacuation, appareils et robinetterie, posés avec un soin particulier pour les finitions.",
     cue: "Demander un devis",
     cueHref: "/devis",
     kicker: "Suisse romande",
@@ -438,16 +444,31 @@ export const SERVICES: PageContent[] = [
     displaySmall: true,
     manifesto: manifesto(
       "De la pose d’un sanitaire à la salle de bain complète.",
+      "Salle de bain, salle d’eau, WC ou cuisine : nous prenons en charge l’installation sanitaire de A à Z — alimentation en eau, évacuations, pose des appareils et de la robinetterie — pour les villas, les appartements et les immeubles de Genève et de Suisse romande.",
+      "votre salle de bain",
     ),
     relatedRealisations: { category: "sanitaire-salles-de-bain", label: "sanitaire" },
-    service: service(["Rénovation complète d’une salle de bain", "Remplacement d’un appareil sanitaire", "Installation vétuste ou fuite"]),
+    service: service([
+      {
+        title: "Rénovation complète d’une salle de bain",
+        body: "Dépose de l’ancienne installation, reprise des alimentations et des évacuations, pose de la douche ou de la baignoire, du meuble vasque, du WC et de la robinetterie. Nous coordonnons les autres métiers pour vous livrer une pièce finie.",
+      },
+      {
+        title: "Remplacement d’un appareil sanitaire",
+        body: "WC suspendu, lavabo, receveur de douche, mitigeur ou chauffe-eau : nous remplaçons un seul élément proprement, en l’adaptant aux raccordements existants et sans toucher au reste de la pièce.",
+      },
+      {
+        title: "Installation vétuste ou fuite",
+        body: "Tuyauterie ancienne, pression faible, traces d’humidité ou fuite déclarée : nous localisons l’origine, réparons ce qui doit l’être et vous conseillons sur ce qu’il vaut mieux remplacer avant la prochaine panne.",
+      },
+    ]),
   },
   {
     href: "/services/chauffage-pompes-a-chaleur",
     title: "Chauffage & pompes à chaleur",
     image: "/realisation-chaufferie.jpg",
     alt: "Chaufferie installée par MBA Sanit",
-    lede: LEDE,
+    lede: "Chauffage et pompes à chaleur à Genève et en Suisse romande : remplacement de chaudière, passage à la pompe à chaleur, production d’eau chaude, distribution et radiateurs.",
     cue: "Demander un devis",
     cueHref: "/devis",
     kicker: "Suisse romande",
@@ -455,16 +476,31 @@ export const SERVICES: PageContent[] = [
     displaySmall: true,
     manifesto: manifesto(
       "Du remplacement d’une chaudière à la pompe à chaleur.",
+      "Nous étudions votre installation de chauffage existante avant de proposer une solution : remplacement de la chaudière, passage à une pompe à chaleur, modernisation de la chaufferie ou de la distribution. Pour les villas comme pour les immeubles gérés par une régie.",
+      "votre chauffage",
     ),
     relatedRealisations: { category: "chauffage-pompes-a-chaleur", label: "chauffage" },
-    service: service(["Remplacement d’une chaudière", "Passage à la pompe à chaleur", "Distribution et radiateurs"]),
+    service: service([
+      {
+        title: "Remplacement d’une chaudière",
+        body: "Chaudière en fin de vie, pannes à répétition ou consommation trop élevée : nous dimensionnons le nouvel équipement, déposons l’ancien et remettons l’installation en service en limitant la coupure de chauffage.",
+      },
+      {
+        title: "Passage à la pompe à chaleur",
+        body: "Remplacer le mazout ou le gaz par une pompe à chaleur demande d’examiner le bâtiment, les émetteurs et la production d’eau chaude. Nous vous aidons à choisir une solution adaptée, puis nous l’installons et la mettons en service.",
+      },
+      {
+        title: "Distribution et radiateurs",
+        body: "Radiateurs froids, circuits déséquilibrés, vannes bloquées : nous remplaçons les radiateurs, reprenons les conduites et équilibrons le réseau pour une chaleur homogène dans toutes les pièces.",
+      },
+    ]),
   },
   {
     href: "/services/entretien-depannage",
     title: "Entretien & dépannage",
     image: "/realisation-salle-deau.jpg",
     alt: "Salle d’eau réalisée par MBA Sanit",
-    lede: LEDE,
+    lede: "Entretien et dépannage sanitaire et chauffage à Genève : fuites, engorgements, pannes d’eau chaude, et contrats d’entretien pour les régies immobilières et les propriétaires.",
     cue: "Nous appeler",
     cueHref: PHONE_HREF,
     kicker: "Suisse romande",
@@ -472,9 +508,24 @@ export const SERVICES: PageContent[] = [
     displaySmall: true,
     manifesto: manifesto(
       "De l’entretien courant au dépannage.",
+      "Une installation bien entretenue tombe moins souvent en panne et dure plus longtemps. Nous assurons l’entretien régulier de vos équipements sanitaires et de chauffage, et nous intervenons en dépannage à Genève et alentour, sur nos installations comme sur celles que nous reprenons.",
+      "votre intervention",
     ),
     relatedRealisations: { category: "douches-amenagements-exterieurs", label: "extérieurs" },
-    service: service(["Entretien périodique", "Panne ou fuite", "Petites réparations"]),
+    service: service([
+      {
+        title: "Entretien périodique",
+        body: "Contrôle de la production de chaleur et d’eau chaude, détartrage, vérification des organes de sécurité et de la robinetterie. Des contrats d’entretien sont proposés aux régies immobilières et aux propriétaires de villas.",
+      },
+      {
+        title: "Panne ou fuite",
+        body: "Plus d’eau chaude, chauffage à l’arrêt, fuite ou canalisation bouchée : appelez-nous, nous établissons le diagnostic sur place et remettons l’installation en état de fonctionner.",
+      },
+      {
+        title: "Petites réparations",
+        body: "Chasse d’eau qui coule, robinet qui goutte, siphon à changer, mitigeur à remplacer : les petites interventions comptent aussi, et elles évitent souvent une réparation plus lourde.",
+      },
+    ]),
   },
 ];
 
@@ -488,7 +539,7 @@ export const CATEGORIES: PageContent[] = [
     title: "Sanitaire & salles de bain",
     image: "/realisation-salle-de-bain.jpg",
     alt: "Salle de bain réalisée par MBA Sanit",
-    lede: LEDE,
+    lede: "Salles de bain et salles d’eau réalisées par MBA Sanit à Genève et en Suisse romande : rénovations complètes et installations sanitaires sur mesure.",
     cue: "Voir les réalisations",
     kicker: "Suisse romande",
     display: "Sur mesure",
@@ -500,7 +551,7 @@ export const CATEGORIES: PageContent[] = [
     title: "Chauffage & pompes à chaleur",
     image: "/realisation-chaufferie.jpg",
     alt: "Chaufferie installée par MBA Sanit",
-    lede: LEDE,
+    lede: "Chaufferies et pompes à chaleur installées par MBA Sanit : production de chaleur, eau chaude sanitaire et distribution, à Genève et en Suisse romande.",
     cue: "Voir les réalisations",
     kicker: "Suisse romande",
     display: "Production",
@@ -514,7 +565,7 @@ export const CATEGORIES: PageContent[] = [
     title: "Douches et aménagements extérieurs",
     image: "/realisation-douche-exterieure-1.jpg",
     alt: "Douche extérieure en pierre réalisée par MBA Sanit",
-    lede: LEDE,
+    lede: "Douches extérieures, fontaines et aménagements de jardin réalisés par MBA Sanit à Genève et en Suisse romande.",
     cue: "Voir les réalisations",
     kicker: "Suisse romande",
     display: "Extérieur",
@@ -538,18 +589,15 @@ export const HERO_BAND: ReadonlySet<string> = new Set(
   CATEGORIES.map((c) => c.href),
 );
 
-/* Contenus provisoires des fiches projet. Le vrai texte, l'année, le lieu
-   et les prestations sont à remplir projet par projet. */
-const BODY = [
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-];
-
-const meta = (categorie: string) => [
+/* Fiches projet. Les textes décrivent ce que montrent les photos et le
+   travail que ce type de chantier demande ; ni l'année ni la commune ne
+   sont affirmées — MBA ne les a pas données. L'« Année » et le « Lieu »
+   « À définir » ont été retirés de la fiche : ils faisaient site pas fini.
+   À ajouter projet par projet dès que MBA les fournit. */
+const meta = (categorie: string, prestations: string) => [
   { label: "Catégorie", value: categorie },
-  { label: "Année", value: "À définir" },
-  { label: "Lieu", value: "À définir" },
-  { label: "Prestations", value: "Lorem ipsum, dolor sit amet" },
+  { label: "Zone", value: "Genève et Suisse romande" },
+  { label: "Prestations", value: prestations },
 ];
 
 /* --- Les réalisations, rangées par catégorie ---------------------- */
@@ -576,14 +624,17 @@ export const REALISATIONS: Realisation[] = [
     title: "Salle de bain",
     image: "/realisation-salle-de-bain.jpg",
     alt: "Salle de bain réalisée par MBA Sanit",
-    lede: LEDE,
+    lede: "Une salle de bain au carrelage vert profond, meuble vasque en bois et miroir encastré : une rénovation complète pensée jusqu’aux finitions.",
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Sur mesure",
  
     lieu: "Suisse romande",
-    body: BODY,
-    meta: meta("Sanitaire & salles de bain"),
+    body: [
+      "Cette salle de bain a été entièrement repensée : dépose de l’ancienne installation, reprise des alimentations et des évacuations, puis pose d’un meuble vasque suspendu en bois, d’un WC et de la robinetterie. Le carrelage vert profond et le bois clair donnent à la pièce une atmosphère chaleureuse.",
+      "Sur ce type de rénovation, tout se joue dans les détails : alignement des appareils sur le calepinage du carrelage, raccordements invisibles, niches et miroir intégrés. C’est ce soin des finitions que nos clients viennent chercher, qu’il s’agisse d’une villa ou d’un appartement en immeuble.",
+    ],
+    meta: meta("Sanitaire & salles de bain", "Rénovation complète, alimentation et évacuation, pose des appareils et de la robinetterie"),
     gallery: [
       { src: "/realisation-salle-de-bain.jpg", alt: "Salle de bain réalisée par MBA Sanit" },
       { src: "/realisation-salle-deau.jpg", alt: "Salle d’eau réalisée par MBA Sanit" },
@@ -595,14 +646,17 @@ export const REALISATIONS: Realisation[] = [
     title: "Salle d’eau",
     image: "/realisation-salle-deau.jpg",
     alt: "Salle d’eau réalisée par MBA Sanit",
-    lede: LEDE,
+    lede: "Une salle d’eau avec douche à l’italienne vitrée, faïence bleue et sol en terrazzo : des lignes nettes et un entretien facile.",
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Aménagement",
  
     lieu: "Suisse romande",
-    body: BODY,
-    meta: meta("Sanitaire & salles de bain"),
+    body: [
+      "La douche à l’italienne occupe toute la largeur de la pièce : receveur de plain-pied, caniveau d’évacuation linéaire, paroi vitrée fixe et colonne de douche avec pomme de tête. Une niche carrelée intégrée à la paroi évite tout accessoire rapporté.",
+      "Le WC suspendu, avec son bâti-support caché dans le coffrage, libère le sol et simplifie le nettoyage. Faïence bleue posée à la verticale et terrazzo au sol : une salle d’eau sobre, pensée pour durer.",
+    ],
+    meta: meta("Sanitaire & salles de bain", "Douche à l’italienne, évacuation linéaire, WC suspendu, robinetterie"),
     gallery: [
       { src: "/realisation-salle-de-bain.jpg", alt: "Salle de bain réalisée par MBA Sanit" },
       { src: "/realisation-salle-deau.jpg", alt: "Salle d’eau réalisée par MBA Sanit" },
@@ -614,14 +668,17 @@ export const REALISATIONS: Realisation[] = [
     title: "Chaufferie",
     image: "/realisation-chaufferie.jpg",
     alt: "Chaufferie installée par MBA Sanit",
-    lede: LEDE,
+    lede: "Une chaufferie moderne avec pompe à chaleur, ballon d’eau chaude et distribution entièrement reprise.",
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Production",
  
     lieu: "Suisse romande",
-    body: BODY,
-    meta: meta("Chauffage & pompes à chaleur"),
+    body: [
+      "Dans cette chaufferie, la production de chaleur a été renouvelée autour d’une pompe à chaleur, associée à un ballon pour l’eau chaude sanitaire. Les conduites isolées, les vannes et les circulateurs ont été reposés de façon lisible, pour faciliter l’entretien.",
+      "Une chaufferie bien organisée se contrôle rapidement et se dépanne plus vite. C’est aussi ce qui permet d’assurer ensuite un entretien régulier, dans les villas comme dans les immeubles gérés par une régie.",
+    ],
+    meta: meta("Chauffage & pompes à chaleur", "Pompe à chaleur, production d’eau chaude, distribution et mise en service"),
     gallery: [
       { src: "/realisation-chaufferie.jpg", alt: "Chaufferie installée par MBA Sanit" },
     ],
@@ -632,14 +689,17 @@ export const REALISATIONS: Realisation[] = [
     title: "Douche extérieure en pierre",
     image: "/realisation-douche-exterieure-1.jpg",
     alt: "Douche extérieure en pierre réalisée par MBA Sanit",
-    lede: LEDE,
+    lede: "Une douche extérieure en pierre naturelle et inox, intégrée au jardin : alimentation et évacuation pensées pour durer dehors.",
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Extérieur",
  
     lieu: "Suisse romande",
-    body: BODY,
-    meta: meta("Douches et aménagements extérieurs"),
+    body: [
+      "Une colonne de douche en inox se détache d’une paroi en pierre naturelle, sur un sol dallé équipé d’un caniveau d’évacuation. L’alimentation en eau et les raccordements sont conçus pour résister aux intempéries et au gel, avec une vidange prévue pour l’hiver.",
+      "Douches de jardin, fontaines et points d’eau extérieurs demandent les mêmes exigences qu’une salle de bain, avec en plus les contraintes du dehors : pente, drainage, matériaux et protection des conduites.",
+    ],
+    meta: meta("Douches et aménagements extérieurs", "Douche extérieure, alimentation eau chaude et froide, évacuation, mise hors gel"),
     gallery: [
       { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure en pierre réalisée par MBA Sanit" },
       { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure en bois réalisée par MBA Sanit" },
@@ -651,14 +711,17 @@ export const REALISATIONS: Realisation[] = [
     title: "Douche extérieure en bois",
     image: "/realisation-douche-exterieure-2.jpg",
     alt: "Douche extérieure en bois réalisée par MBA Sanit",
-    lede: LEDE,
+    lede: "Une douche extérieure habillée de bois, pour profiter du jardin : un aménagement simple, robuste et facile à entretenir.",
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Extérieur",
  
     lieu: "Suisse romande",
-    body: BODY,
-    meta: meta("Douches et aménagements extérieurs"),
+    body: [
+      "Cette douche extérieure associe une paroi en bois brut à une colonne de douche en inox, sur un receveur en pierre sombre. Les raccordements sont dissimulés derrière la paroi et l’eau est évacuée proprement, sans détremper le jardin autour.",
+      "Nous réalisons ce type d’aménagement pour les jardins et les terrasses de villas à Genève et en Suisse romande, avec une attention particulière à l’hivernage de l’installation.",
+    ],
+    meta: meta("Douches et aménagements extérieurs", "Douche extérieure, raccordements, évacuation, mise hors gel"),
     gallery: [
       { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure en pierre réalisée par MBA Sanit" },
       { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure en bois réalisée par MBA Sanit" },

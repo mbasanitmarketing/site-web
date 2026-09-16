@@ -15,7 +15,8 @@ export async function generateMetadata({
 }: PageProps<"/realisations/[categorie]">) {
   const { categorie } = await params;
   const page = getCategory(categorie);
-  return { title: page ? `${page.title} — MBA Sanit` : "MBA Sanit" };
+  if (!page) return { title: "MBA Sanit" };
+  return { title: `${page.title} — MBA Sanit`, description: page.lede };
 }
 
 export default async function Page({

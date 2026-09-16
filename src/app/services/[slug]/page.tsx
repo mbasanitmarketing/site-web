@@ -18,7 +18,8 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/services/[slug]">) {
   const { slug } = await params;
   const page = getService(slug);
-  return { title: page ? `${page.title} — MBA Sanit` : "MBA Sanit" };
+  if (!page) return { title: "MBA Sanit" };
+  return { title: `${page.title} — MBA Sanit`, description: page.lede };
 }
 
 export default async function Page({ params }: PageProps<"/services/[slug]">) {

@@ -79,10 +79,11 @@ export function Footer({
       </div>
 
       <p className={styles.footnote}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
+        MBA Sanit, installateur sanitaire et chauffagiste à Genève :
+        installation et rénovation de salles de bain, chauffage et pompes à
+        chaleur, douches et aménagements extérieurs, entretien et dépannage,
+        pour les particuliers, les régies immobilières et les entreprises de
+        Genève et de Suisse romande.
       </p>
       </footer>
     </div>

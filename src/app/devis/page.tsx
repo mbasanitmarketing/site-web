@@ -4,7 +4,10 @@ import { requirePage } from "@/lib/pages";
 
 const PAGE = requirePage("/devis");
 
-export const metadata = { title: `${PAGE.title} — MBA Sanit` };
+export const metadata = {
+  title: `${PAGE.title} — MBA Sanit`,
+  description: PAGE.lede,
+};
 
 /* Pas d'ouverture (PageIntro) ici : le formulaire est l'unique raison de
    venir sur cette page, il arrive donc directement en haut. C'est lui qui

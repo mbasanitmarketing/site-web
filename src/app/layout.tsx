@@ -27,9 +27,9 @@ const script = Italianno({
 });
 
 export const metadata: Metadata = {
-  title: "MBA Sanit — Installations sanitaires & salles de bain en Suisse romande",
+  title: "MBA Sanit — Sanitaire, chauffage et salles de bain à Genève",
   description:
-    "MBA Sanit — installations sanitaires et salles de bain sur mesure en Suisse romande.",
+    "Installateur sanitaire et chauffagiste à Genève et en Suisse romande depuis plus de 20 ans : salles de bain sur mesure, chauffage et pompes à chaleur, douches extérieures, entretien et dépannage.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
