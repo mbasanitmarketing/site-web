@@ -26,3 +26,9 @@
   line-height: 1.2;
   color: rgba(11, 11, 12, 0.7);
 }
+
+/* Posée sur une section déjà bleue (manifeste, bande de partenaires des
+   pages de service) : la pastille bleue s'y fondait. Elle passe en blanc. */
+.chip.onBlue {
+  background: #fff;
+}

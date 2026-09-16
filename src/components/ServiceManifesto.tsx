@@ -34,7 +34,7 @@ export function ServiceManifesto({ manifesto }: { manifesto: Manifesto }) {
       >
         <div ref={stageRef} className={styles.stage}>
           <div className={styles.grid}>
-            <p className={`${styles.label} ${chip.chip}`}>{manifesto.label}</p>
+            <p className={`${styles.label} ${chip.chip} ${chip.onBlue}`}>{manifesto.label}</p>
 
             <div>
               {/* h2 : le h1 de la page est le titre porté par le hero. */}

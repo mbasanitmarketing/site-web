@@ -93,7 +93,7 @@ export function Partners({ headline }: { headline: string }) {
   return (
     <section className={styles.wrap}>
       <div className={styles.grid}>
-        <p className={`${styles.label} ${chip.chip}`}>Nos partenaires</p>
+        <p className={`${styles.label} ${chip.chip} ${chip.onBlue}`}>Nos partenaires</p>
         <h2 className={`${styles.headline} ${titre.h2}`}>{headline}</h2>
       </div>
 
