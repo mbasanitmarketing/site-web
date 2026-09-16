@@ -47,7 +47,14 @@ export function PageIntro({
             pour ce geste. `Link` donne une navigation client préchargée,
             donc quasi instantanée — là où un <a> nu rechargerait toute la
             page, ce qui serait plus lent, pas plus rapide. */}
-        <nav className={styles.bandTabs} aria-label="Catégories de réalisations">
+        {/* Sur mobile, ce même <nav> devient la barre fixe du bas d'écran
+            (cf. CSS) ; `data-tabbar` sert au pied de page à lui laisser
+            la place. */}
+        <nav
+          className={styles.bandTabs}
+          aria-label="Catégories de réalisations"
+          data-tabbar
+        >
           <ul className={styles.tabList}>
             {CATEGORIES.map((c) => (
               <li key={c.href}>

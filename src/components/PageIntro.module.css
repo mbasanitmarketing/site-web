@@ -84,6 +84,65 @@
   }
 }
 
+/* --- Mobile : les onglets deviennent une barre fixe --------------------
+   Cf. « mobile tab bar realisations.png » : trois cases à filet blanc,
+   en bas d'écran à gauche du bouton WhatsApp, à sa hauteur et avec son
+   fond sombre flouté. Position et taille reprennent la géométrie de
+   CallButton (décalage au bord + largeur) : changer les deux ensemble. */
+@media (max-width: 860px) {
+  .bandTabs {
+    --btn: clamp(52px, 5.4vw, 62px);
+    --edge: clamp(18px, 4.5vw, 56px);
+    position: fixed;
+    left: var(--edge);
+    right: calc(var(--edge) + var(--btn) + 8px);
+    bottom: var(--edge);
+    z-index: 80;
+    height: var(--btn);
+    padding: 0;
+    border: 1.5px solid rgba(255, 255, 255, 0.9);
+    border-radius: 2px;
+    background: rgba(16, 16, 20, 0.26);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+  .bandTabs .tabList {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    height: 100%;
+  }
+  /* Séparateurs : filet blanc entre les cases. */
+  .bandTabs li + li {
+    border-left: 1px solid rgba(255, 255, 255, 0.9);
+  }
+  .bandTabs .tab {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    padding: 0 4px;
+    border-bottom: 0;
+    font-size: clamp(11px, 3.3vw, 14px);
+    letter-spacing: 0.02em;
+    color: #fff;
+  }
+  .bandTabs .tab:hover,
+  .bandTabs .tab:focus-visible {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  /* Sortis du flux, les onglets ne dégagent plus l'en-tête : le titre
+     reprend leur marge haute, sinon il remonte sous le burger. */
+  .band .bandText {
+    padding-top: clamp(90px, 12svh, 140px);
+  }
+  /* Catégorie en cours : case pleine, texte foncé. */
+  .bandTabs .tab[aria-current="page"] {
+    background: rgba(245, 245, 244, 0.92);
+    color: #0b0b0c;
+  }
+}
+
 /* Le texte se cale bas dans le bandeau, près de la photo, comme sur la
    référence. */
 .bandText {

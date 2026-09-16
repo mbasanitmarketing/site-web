@@ -212,3 +212,12 @@
     margin-left: 0;
   }
 }
+
+/* Pages de catégorie, mobile : la barre d'onglets fixe (PageIntro) flotte
+   sur le bas de page. On lui rend sa hauteur (bouton 52 px + deux
+   décalages de bord) pour que la dernière ligne du pied reste lisible. */
+@media (max-width: 860px) {
+  :global(body):has([data-tabbar]) .footer {
+    padding-bottom: calc(clamp(52px, 5.4vw, 62px) + 2 * clamp(18px, 4.5vw, 56px));
+  }
+}
