@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { PageIntro } from "@/components/PageIntro";
-import { CategoryIndex } from "@/components/CategoryIndex";
+import { CategoryCarousel } from "@/components/CategoryCarousel";
 import { Footer } from "@/components/Footer";
 import { CATEGORIES, getCategory, realisationsOf, slugOf } from "@/lib/pages";
 
@@ -28,9 +28,8 @@ export default async function Page({
   return (
     <>
       <PageIntro page={page} />
-      {/* Index collant + pile des réalisations (cf. « realisations
-          layout - template.mov ») */}
-      <CategoryIndex category={page} items={realisationsOf(categorie)} />
+      {/* Les réalisations sur une rangée qui défile, avec flèches. */}
+      <CategoryCarousel items={realisationsOf(categorie)} />
       <Footer />
     </>
   );

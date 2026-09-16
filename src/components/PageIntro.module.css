@@ -27,120 +27,94 @@
   color: #0b0b0c;
 }
 
-/* Les onglets ouvrent le bandeau ; leur marge haute dégage la zone du
-   burger et du logo (~90 px). */
+/* --- Onglets : barre fixe en bas d'écran --------------------------------
+   Cf. « mobile tab bar realisations.png » : trois cases à filet blanc, fond
+   sombre flouté, à la hauteur du bouton WhatsApp. Sur téléphone elle
+   occupe la largeur à gauche du bouton ; sur ordinateur elle se centre.
+   Position et taille reprennent la géométrie de CallButton (décalage au
+   bord + largeur) : changer les deux ensemble.
+
+   Libellés courts partout : les noms complets sont trop longs pour une
+   case, et le nom de la catégorie est de toute façon en titre de page. */
 .bandTabs {
-  padding: clamp(90px, 12svh, 140px) var(--page-x) 0;
+  --btn: clamp(52px, 5.4vw, 62px);
+  --edge: clamp(18px, 4.5vw, 56px);
+  position: fixed;
+  left: 50%;
+  bottom: var(--edge);
+  z-index: 80;
+  height: var(--btn);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+  background: rgba(16, 16, 20, 0.26);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  transform: translateX(-50%);
 }
 
 .tabList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(14px, 2.2vw, 38px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  height: 100%;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-/* Le filet est toujours là, transparent quand l'onglet est inactif :
-   passer d'un onglet à l'autre ne décale donc rien. */
+/* Séparateurs : filet blanc entre les cases. */
+.tabList li + li {
+  border-left: 1px solid rgba(255, 255, 255, 0.9);
+}
+
 .tab {
-  display: inline-block;
-  padding-bottom: 6px;
+  display: grid;
+  place-items: center;
+  width: clamp(150px, 12vw, 190px);
+  height: 100%;
+  padding: 0 4px;
   white-space: nowrap;
-  border-bottom: 1px solid transparent;
-  font-size: clamp(11px, 0.95vw, 13px);
-  letter-spacing: 0.12em;
+  font-size: 14px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   text-decoration: none;
-  color: rgba(11, 11, 12, 0.42);
-  transition: color 220ms ease;
+  color: #fff;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
 }
 
 .tab:hover,
 .tab:focus-visible {
-  color: rgba(11, 11, 12, 0.75);
+  background: rgba(255, 255, 255, 0.1);
 }
 
+/* Catégorie en cours : case pleine, texte foncé. */
 .tab[aria-current="page"] {
-  border-bottom-color: #0b0b0c;
+  background: rgba(245, 245, 244, 0.92);
   color: #0b0b0c;
 }
 
-/* Les trois noms complets font 626 px : sous ~860 px de large, la rangée
-   débordait et l'onglet actif pouvait rester hors champ. On bascule sur
-   les libellés courts, qui tiennent en entier — le nom complet est de
-   toute façon juste en dessous, en titre de page. */
-.tabShort {
+.tabLong {
   display: none;
 }
 
 @media (max-width: 860px) {
-  .tabLong {
-    display: none;
+  .bandTabs {
+    left: var(--edge);
+    right: calc(var(--edge) + var(--btn) + 8px);
+    transform: none;
   }
-  .tabShort {
-    display: inline;
+  .tab {
+    width: auto;
+    font-size: clamp(11px, 3.3vw, 14px);
+    letter-spacing: 0.02em;
   }
 }
 
-/* --- Mobile : les onglets deviennent une barre fixe --------------------
-   Cf. « mobile tab bar realisations.png » : trois cases à filet blanc,
-   en bas d'écran à gauche du bouton WhatsApp, à sa hauteur et avec son
-   fond sombre flouté. Position et taille reprennent la géométrie de
-   CallButton (décalage au bord + largeur) : changer les deux ensemble. */
-@media (max-width: 860px) {
-  .bandTabs {
-    --btn: clamp(52px, 5.4vw, 62px);
-    --edge: clamp(18px, 4.5vw, 56px);
-    position: fixed;
-    left: var(--edge);
-    right: calc(var(--edge) + var(--btn) + 8px);
-    bottom: var(--edge);
-    z-index: 80;
-    height: var(--btn);
-    padding: 0;
-    border: 1.5px solid rgba(255, 255, 255, 0.9);
-    border-radius: 2px;
-    background: rgba(16, 16, 20, 0.26);
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
-  }
-  .bandTabs .tabList {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0;
-    height: 100%;
-  }
-  /* Séparateurs : filet blanc entre les cases. */
-  .bandTabs li + li {
-    border-left: 1px solid rgba(255, 255, 255, 0.9);
-  }
-  .bandTabs .tab {
-    display: grid;
-    place-items: center;
-    height: 100%;
-    padding: 0 4px;
-    border-bottom: 0;
-    font-size: clamp(11px, 3.3vw, 14px);
-    letter-spacing: 0.02em;
-    color: #fff;
-  }
-  .bandTabs .tab:hover,
-  .bandTabs .tab:focus-visible {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
-  }
-  /* Sortis du flux, les onglets ne dégagent plus l'en-tête : le titre
-     reprend leur marge haute, sinon il remonte sous le burger. */
-  .band .bandText {
-    padding-top: clamp(90px, 12svh, 140px);
-  }
-  /* Catégorie en cours : case pleine, texte foncé. */
-  .bandTabs .tab[aria-current="page"] {
-    background: rgba(245, 245, 244, 0.92);
-    color: #0b0b0c;
-  }
+/* Sortis du flux, les onglets ne dégagent plus l'en-tête : le titre
+   reprend leur marge haute, sinon il remonte sous le burger. */
+.band .bandText {
+  padding-top: clamp(90px, 12svh, 140px);
 }
 
 /* Le texte se cale bas dans le bandeau, près de la photo, comme sur la
@@ -385,13 +359,6 @@
   .banner {
     aspect-ratio: 3 / 2;
     max-height: none;
-  }
-  .tabList {
-    gap: 10px 18px;
-  }
-  .tab {
-    font-size: 11px;
-    letter-spacing: 0.1em;
   }
 }
 

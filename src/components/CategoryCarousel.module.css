@@ -1,0 +1,244 @@
+/* ---------------------------------------------------------------------
+   Page de catégorie — rangée de réalisations qui défile (cf. les avis de
+   l'accueil), flèches au style de la barre d'onglets : filet blanc, fond
+   sombre flouté, rayon 2 px.
+   --------------------------------------------------------------------- */
+
+.wrap {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(56px, 11svh, 130px);
+  background: #f5f5f4;
+  color: #0b0b0c;
+}
+
+.stage {
+  /* Largeur d'une carte : les flèches s'en servent pour se centrer sur la
+     photo, dont le format est fixe. */
+  --card-w: clamp(260px, 30vw, 460px);
+  --gap: clamp(14px, 1.6vw, 24px);
+  position: relative;
+}
+
+/* --- Rangée ---------------------------------------------------------- */
+
+.viewport {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Bords flous, comme les avis : 80 px, resserrés sur téléphone. */
+.viewport::before,
+.viewport::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 80px;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.viewport::before {
+  left: 0;
+  -webkit-mask-image: linear-gradient(to right, #000, transparent);
+  mask-image: linear-gradient(to right, #000, transparent);
+  background: linear-gradient(to right, #f5f5f4 10%, rgba(245, 245, 244, 0));
+}
+.viewport::after {
+  right: 0;
+  -webkit-mask-image: linear-gradient(to left, #000, transparent);
+  mask-image: linear-gradient(to left, #000, transparent);
+  background: linear-gradient(to left, #f5f5f4 10%, rgba(245, 245, 244, 0));
+}
+
+.marquee {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+/* La moitié de l'écart de chaque côté : au raccord de deux pistes, les
+   deux moitiés refont exactement un écart. */
+.rail {
+  display: flex;
+  flex: none;
+  column-gap: var(--gap);
+  margin: 0;
+  padding: 0 calc(var(--gap) / 2);
+  list-style: none;
+}
+
+.card {
+  flex: none;
+  width: var(--card-w);
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+}
+
+.shot {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: #76767a;
+}
+
+.shot img {
+  object-fit: cover;
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link:hover .shot img,
+.link:focus-visible .shot img {
+  transform: scale(1.04);
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: clamp(14px, 1.8svh, 20px);
+}
+
+.title {
+  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.lieu {
+  flex: none;
+  font-size: 13px;
+  color: rgba(11, 11, 12, 0.55);
+}
+
+.more {
+  align-self: flex-start;
+  margin-top: clamp(10px, 1.4svh, 14px);
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(11, 11, 12, 0.3);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: border-color 220ms ease;
+}
+
+.link:hover .more,
+.link:focus-visible .more {
+  border-color: #a8763e;
+}
+
+/* --- Flèches --------------------------------------------------------- */
+
+/* Posées sur la photo, à mi-hauteur, dans la gouttière du site : le
+   filet blanc se lit sur l'image, comme la barre d'onglets. */
+.arrows {
+  position: absolute;
+  left: var(--page-x);
+  right: var(--page-x);
+  top: calc(var(--card-w) / 3);
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.arrow {
+  display: grid;
+  place-items: center;
+  width: clamp(48px, 4.4vw, 56px);
+  height: clamp(48px, 4.4vw, 56px);
+  padding: 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+  background: rgba(16, 16, 20, 0.26);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background-color 200ms ease;
+}
+
+.arrow:hover,
+.arrow:focus-visible {
+  background: rgba(16, 16, 20, 0.5);
+}
+
+.arrow svg {
+  width: 42%;
+  height: 42%;
+}
+
+/* --- Appel à l'action ------------------------------------------------- */
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 14px 22px;
+  margin-top: clamp(40px, 7svh, 80px);
+  padding-inline: var(--page-x);
+}
+
+.note {
+  margin: 0;
+  font-size: 15px;
+  color: rgba(11, 11, 12, 0.6);
+}
+
+/* Le bouton du site (cf. PageIntro .cueButton), décliné sur fond clair. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  padding: clamp(10px, 1.2svh, 13px) clamp(18px, 1.7vw, 26px);
+  border: 1px solid rgba(11, 11, 12, 0.85);
+  border-radius: 2px;
+  font-size: clamp(10px, 0.85vw, 12px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  color: #0b0b0c;
+  text-decoration: none;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.button:hover,
+.button:focus-visible {
+  background: #0b0b0c;
+  color: #f5f5f4;
+}
+
+@media (max-width: 720px) {
+  .stage {
+    --card-w: 78vw;
+  }
+  .viewport::before,
+  .viewport::after {
+    width: 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shot img,
+  .more,
+  .arrow,
+  .button {
+    transition: none;
+  }
+  .link:hover .shot img {
+    transform: none;
+  }
+}
