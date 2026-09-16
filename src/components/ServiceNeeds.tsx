@@ -43,7 +43,7 @@ export function ServiceNeeds({ service }: { service: ServiceDetail }) {
             Décoratives : rien à lire, rien à cliquer. */}
         <div className={styles.rain} aria-hidden="true" />
 
-        <p className={styles.label}>À votre écoute</p>
+        <h2 className={`${styles.label} ${titre.h2}`}>À votre écoute</h2>
 
         <div className={styles.media}>
           <Image
@@ -54,9 +54,10 @@ export function ServiceNeeds({ service }: { service: ServiceDetail }) {
             className={styles.image}
           />
           <div className={styles.onImage}>
-            <h2 className={`${styles.headline} ${titre.h2} ${titre.onDark}`}>
+            {/* Sous-titre de la section, dont « À votre écoute » est le h2. */}
+            <h3 className={`${styles.headline} ${titre.h2} ${titre.onDark}`}>
               Les situations qui amènent à appeler.
-            </h2>
+            </h3>
             <a className={styles.cta} href="/devis" data-page-transition>
               Demander un devis
             </a>
@@ -68,7 +69,7 @@ export function ServiceNeeds({ service }: { service: ServiceDetail }) {
           <ul className={styles.cases}>
             {service.needs.map((n) => (
               <li key={n.title} className={styles.case}>
-                <h3 className={styles.caseTitle}>{n.title}</h3>
+                <h4 className={styles.caseTitle}>{n.title}</h4>
                 <p className={styles.caseBody}>{n.body}</p>
               </li>
             ))}

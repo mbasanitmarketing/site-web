@@ -38,36 +38,34 @@
 
 /* --- Les lignes dorées qui tombent -----------------------------------
 
-   Un filet doré tous les 30 px, sur toute la scène, qui DESCEND pendant
+   Un filet doré VERTICAL tous les 30 px, sur toute la largeur, qui DESCEND pendant
    que l'image grandit — et qui a fini sa course quand l'image atteint son
    plein cadre (--p 0.42), le même point que la fin du zoom. Les deux
    bornes sont liées : si l'une bouge, l'autre aussi.
 
    Une seule trame répétée plutôt que des dizaines d'éléments : c'est un
    seul calque à peindre, et l'écart de 30 px est exact quelle que soit la
-   hauteur de l'écran.
-
-   La trame est plus haute que la scène (-40 % en haut) : en descendant,
-   elle ne doit pas laisser apparaître de vide au-dessus. */
+   hauteur de l'écran. */
 .rain {
   --fall: clamp(0, calc(var(--p, 0) / 0.42), 1);
 
   position: absolute;
-  inset: -40% 0 0;
+  inset: 0;
   z-index: 0;
   pointer-events: none;
   background-image: repeating-linear-gradient(
-    to bottom,
+    to right,
     rgba(204, 144, 36, 0.55) 0 1px,
     transparent 1px 30px
   );
-  /* Les filets s'éteignent vers le bas : ils tombent, ils ne défilent pas
-     comme un rideau. */
-  -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent);
-  mask-image: linear-gradient(to bottom, #000 40%, transparent);
-  transform: translateY(calc(var(--fall) * 58svh));
-  opacity: calc((1 - var(--fall)) * 0.9);
-  will-change: transform, opacity;
+  /* Pointe douce en bas et départ fondu en haut : ce sont des traits qui
+     tombent, pas un grillage fixe. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent);
+  /* Du haut (à moitié hors champ) jusque sous le bas de la scène : à
+     --p 0.42 la trame est sortie, sa course est finie. */
+  transform: translateY(calc(-50% + var(--fall) * 150%));
+  will-change: transform;
 }
 
 /* --- Le titre, dans son propre bandeau au-dessus de l'image --------- */
@@ -79,11 +77,7 @@
   padding: clamp(140px, 20svh, 220px) var(--page-x) clamp(32px, 5svh, 52px);
   /* Centré dans le bandeau, pas collé au bord gauche. */
   text-align: center;
-  font-size: clamp(2.2rem, 4.4vw, 3.6rem);
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -0.015em;
-  color: #0b0b0c;
+  /* Typo : celle des h2 du site (Heading.module.css). */
 }
 
 /* --- L'image qui grandit ---------------------------------------------- */
@@ -277,7 +271,6 @@
     /* Le grand retrait du haut calait le titre sous le logo et le burger
        fixes : sur mobile ils sont plus bas, et le texte plus gros. */
     padding: clamp(92px, 13svh, 128px) var(--page-x) clamp(18px, 3svh, 28px);
-    font-size: clamp(1.9rem, 8.4vw, 2.5rem);
   }
 
   .image {
