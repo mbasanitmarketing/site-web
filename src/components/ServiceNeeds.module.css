@@ -38,14 +38,11 @@
 
 /* --- Les lignes dorées qui tombent -----------------------------------
 
-   Un filet doré VERTICAL tous les 30 px, sur toute la largeur, qui DESCEND pendant
-   que l'image grandit — et qui a fini sa course quand l'image atteint son
+   Six filets dorés VERTICAUX (cinq sur téléphone), répartis sur la
+   largeur, qui DESCENDENT pendant que l'image grandit — et qui ont fini
+   leur course quand l'image atteint son
    plein cadre (--p 0.42), le même point que la fin du zoom. Les deux
-   bornes sont liées : si l'une bouge, l'autre aussi.
-
-   Une seule trame répétée plutôt que des dizaines d'éléments : c'est un
-   seul calque à peindre, et l'écart de 30 px est exact quelle que soit la
-   hauteur de l'écran. */
+   bornes sont liées : si l'une bouge, l'autre aussi. */
 .rain {
   --fall: clamp(0, calc(var(--p, 0) / 0.42), 1);
 
@@ -53,11 +50,12 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image: repeating-linear-gradient(
-    to right,
-    rgba(204, 144, 36, 0.55) 0 1px,
-    transparent 1px 30px
-  );
+  /* Six filets répartis (space-around : écarts égaux, demi-écart aux
+     bords). De vrais éléments d’1 px plutôt qu’une trame en dégradé :
+     dans une case de largeur fractionnaire, le dégradé tombait entre deux
+     pixels et certains filets pâlissaient. */
+  display: flex;
+  justify-content: space-around;
   /* Pointe douce en bas et départ fondu en haut : ce sont des traits qui
      tombent, pas un grillage fixe. */
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent);
@@ -66,6 +64,11 @@
      --p 0.42 la trame est sortie, sa course est finie. */
   transform: translateY(calc(-50% + var(--fall) * 150%));
   will-change: transform;
+}
+
+.rain i {
+  width: 1px;
+  background: rgba(204, 144, 36, 0.55);
 }
 
 /* --- Le titre, dans son propre bandeau au-dessus de l'image --------- */
@@ -265,6 +268,10 @@
 @media (max-width: 720px) {
   .stage {
     --panel-h: clamp(212px, 30svh, 268px);
+  }
+  /* Cinq sur téléphone. */
+  .rain i:nth-child(6) {
+    display: none;
   }
 
   .label {

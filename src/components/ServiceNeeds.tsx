@@ -41,7 +41,11 @@ export function ServiceNeeds({ service }: { service: ServiceDetail }) {
             derrière elle. */}
         {/* Les lignes dorées qui tombent pendant que l'image grandit.
             Décoratives : rien à lire, rien à cliquer. */}
-        <div className={styles.rain} aria-hidden="true" />
+        <div className={styles.rain} aria-hidden="true">
+          {Array.from({ length: 6 }, (_, i) => (
+            <i key={i} />
+          ))}
+        </div>
 
         <h2 className={`${styles.label} ${titre.h2}`}>MBA, toute une équipe à votre écoute</h2>
 
