@@ -43,7 +43,7 @@ export function ServiceNeeds({ service }: { service: ServiceDetail }) {
             Décoratives : rien à lire, rien à cliquer. */}
         <div className={styles.rain} aria-hidden="true" />
 
-        <h2 className={`${styles.label} ${titre.h2}`}>À votre écoute</h2>
+        <h2 className={`${styles.label} ${titre.h2}`}>MBA, toute une équipe à votre écoute</h2>
 
         <div className={styles.media}>
           <Image
@@ -54,7 +54,7 @@ export function ServiceNeeds({ service }: { service: ServiceDetail }) {
             className={styles.image}
           />
           <div className={styles.onImage}>
-            {/* Sous-titre de la section, dont « À votre écoute » est le h2. */}
+            {/* Sous-titre de la section, dont « MBA, toute une équipe à votre écoute » est le h2. */}
             <h3 className={`${styles.headline} ${titre.h2} ${titre.onDark}`}>
               Les situations qui amènent à appeler.
             </h3>
