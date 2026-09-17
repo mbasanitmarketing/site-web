@@ -25,6 +25,8 @@ type Entry = {
   stage: HTMLElement;
   span: number;
   travel: number;
+  /** Dernière valeur écrite, pour ne pas la réécrire à l'identique. */
+  dernier: string;
 };
 
 const entries = new Set<Entry>();
@@ -44,8 +46,17 @@ function frame() {
   for (const e of entries) {
     const p =
       e.travel > 0 ? Math.min(1, Math.max(0, -tops[i] / e.travel)) : 0;
-    e.stage.style.setProperty("--p", p.toFixed(4));
     i++;
+    // Écrire une propriété personnalisée sur la scène invalide le style de
+    // TOUTE sa descendance : le navigateur recalcule chaque enfant qui en
+    // hérite. Hors de l'écran, la valeur reste collée à 0 ou à 1 — on la
+    // réécrivait quand même, soixante fois par seconde, pour rien. Trois
+    // décimales suffisent (un millième de la course) et augmentent le
+    // nombre d'images où rien ne change.
+    const valeur = p.toFixed(3);
+    if (valeur === e.dernier) continue;
+    e.dernier = valeur;
+    e.stage.style.setProperty("--p", valeur);
   }
 }
 
@@ -80,7 +91,7 @@ export function useScrollProgress(
     const stage = stageRef.current;
     if (!track || !stage) return;
 
-    const entry: Entry = { track, stage, span, travel: 0 };
+    const entry: Entry = { track, stage, span, travel: 0, dernier: "" };
     measure(entry);
     if (entries.size === 0) listen();
     entries.add(entry);

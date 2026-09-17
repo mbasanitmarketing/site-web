@@ -592,3 +592,18 @@
     display: none;
   }
 }
+
+/* TÉLÉPHONE : le serpent doré s'arrête de tourner.
+   Le dégradé conique tournant est REDESSINÉ à chaque image, masque
+   compris, et il tourne même quand la page ne bouge pas : sur un
+   téléphone, il vole des images au défilement de la scène épinglée. On
+   garde le cadre doré, on retire la rotation et les particules. */
+@media (max-width: 900px) {
+  .slideOutline::before {
+    background: linear-gradient(140deg, #cc9024, #f0cc60 45%, #cc9024);
+    animation: none;
+  }
+  .spark {
+    display: none;
+  }
+}
