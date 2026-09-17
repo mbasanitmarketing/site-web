@@ -242,3 +242,17 @@
     transform: none;
   }
 }
+
+/* MOBILE : PAS DE FLOU D'ARRIÈRE-PLAN SUR LES BORDS.
+   `backdrop-filter` oblige le navigateur à reflouter ce qui passe dessous
+   à chaque image — or dessous, ça défile en permanence. Sur un téléphone,
+   c'est l'une des opérations les plus coûteuses qui soient, et elle se
+   paie en défilement saccadé. Le dégradé de fond, lui, suffit à faire
+   disparaître les cartes sur les bords : c'est ce qu'on garde. */
+@media (max-width: 900px) {
+  .viewport::before,
+  .viewport::after {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

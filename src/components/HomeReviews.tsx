@@ -147,6 +147,10 @@ export function HomeReviews() {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let raf = 0;
+    // Relevée une fois : la liste ne change qu'avec `copies`, qui relance
+    // cet effet. L'interroger à chaque image coûtait une recherche dans le
+    // DOM soixante fois par seconde, pour un résultat identique.
+    const cartes = Array.from(viewport.querySelectorAll<HTMLElement>("li"));
     let ouverte: HTMLElement | null = null;
     // Carte sous le curseur. Elle prend le pas sur celle du milieu tant
     // que la souris est dessus ; dès qu'elle en sort, la boucle rend la
@@ -183,7 +187,7 @@ export function HomeReviews() {
 
       let meilleure: HTMLElement | null = null;
       let ecart = Infinity;
-      for (const c of viewport.querySelectorAll<HTMLElement>("li")) {
+      for (const c of cartes) {
         const b = c.getBoundingClientRect();
         // Hors cadre : jamais candidate, sinon une carte d'une copie
         // voisine, invisible, volerait l'ouverture à celle du milieu.

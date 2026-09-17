@@ -58,6 +58,14 @@ export function SectionSnap() {
   useEffect(() => {
     if (!lenis) return;
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    /* PAS DE CALAGE AU DOIGT. Sur un écran tactile, le défilement est
+       natif (Lenis ne touche pas au tactile) et porté par l'inertie du
+       système. Le calage, lui, lance une animation de scroll en
+       JavaScript 280 ms après l'arrêt : les deux se disputent la page et
+       le défilement paraît saccadé. Le repère vise aussi une hauteur
+       d'écran qui change quand la barre d'adresse du navigateur se
+       rétracte. Sur téléphone, le scroll natif fait mieux tout seul. */
+    if (matchMedia("(pointer: coarse)").matches) return;
 
     const snap = new Snap(lenis, {
       type: "proximity",
