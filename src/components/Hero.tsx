@@ -14,6 +14,11 @@ import styles from "./Hero.module.css";
  * la scène ; toutes les valeurs animées en dérivent dans Hero.module.css.
  * Aucun re-render React : on écrit directement sur le noeud à chaque frame.
  */
+/** Le navigateur sait-il animer sur la position de défilement ? */
+const SCROLL_CSS =
+  typeof CSS !== "undefined" &&
+  CSS.supports?.("animation-timeline: view()") === true;
+
 export function Hero() {
   const trackRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -21,7 +26,10 @@ export function Hero() {
   // 0.36 : l'animation aboutit tôt (~160vh) ; la hero reste ensuite
   // épinglée et FIGÉE pendant que la section escalier monte par-dessus et
   // s'aligne. Calé avec .track de EscalierSection (voir son .module.css).
-  useScrollProgress(trackRef, stageRef, 0.36);
+  // `false` là où le navigateur sait animer sur le scroll : c'est alors
+  // le CSS qui écrit `--p` (cf. Hero.module.css), sans passer par le fil
+  // principal. La boucle JS reste le repli des navigateurs plus anciens.
+  useScrollProgress(trackRef, stageRef, 0.36, !SCROLL_CSS);
 
   return (
     /* data-hero-track : SiteLogo s'en sert pour savoir quand la hero est

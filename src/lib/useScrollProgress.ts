@@ -85,11 +85,14 @@ export function useScrollProgress(
   trackRef: RefObject<HTMLElement | null>,
   stageRef: RefObject<HTMLElement | null>,
   span = 1,
+  /** `false` quand la scène écrit `--p` elle-même en CSS (animation liée
+   *  au scroll) : la boucle JS n'aurait plus qu'à lutter contre elle. */
+  actif = true,
 ) {
   useEffect(() => {
     const track = trackRef.current;
     const stage = stageRef.current;
-    if (!track || !stage) return;
+    if (!track || !stage || !actif) return;
 
     const entry: Entry = { track, stage, span, travel: 0, dernier: "" };
     measure(entry);
@@ -101,5 +104,5 @@ export function useScrollProgress(
       entries.delete(entry);
       if (entries.size === 0) unlisten();
     };
-  }, [trackRef, stageRef, span]);
+  }, [trackRef, stageRef, span, actif]);
 }

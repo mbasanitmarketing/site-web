@@ -15,6 +15,47 @@
   height: 540vh;
 }
 
+/* --- Animation pilotée par le scroll du navigateur ---------------------
+ *
+ * Par défaut, `--p` est écrite en JavaScript à chaque image. Sur
+ * téléphone, le défilement est porté par le compositeur, pas par le fil
+ * principal : quand celui-ci est occupé, l'image du doigt avance et
+ * l'animation reste en arrière d'une ou deux images. C'est exactement la
+ * saccade qu'on voit.
+ *
+ * Là où le navigateur sait animer SUR le scroll lui-même (Chrome 115+,
+ * Safari 26+), on lui confie `--p` : la valeur est alors liée à la
+ * position de défilement, elle ne peut plus être en retard dessus.
+ * `contain 0% -> 36%` reproduit exactement la course du JS : du moment
+ * où la piste couvre l'écran jusqu'à 36 % de son trajet (le `span`).
+ * Ailleurs, rien ne change — le JS continue (cf. useScrollProgress).
+ */
+@property --p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@keyframes progresse {
+  from {
+    --p: 0;
+  }
+  to {
+    --p: 1;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .track {
+    view-timeline: --hero block;
+  }
+  .stage {
+    animation: progresse linear both;
+    animation-timeline: --hero;
+    animation-range: contain 0% contain 36%;
+  }
+}
+
 .stage {
   --header-h: 60px; /* hauteur de la zone logo */
   /* course verticale partagée : le titre, le trait et le CTA montent
