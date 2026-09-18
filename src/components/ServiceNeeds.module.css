@@ -308,25 +308,41 @@
     padding: clamp(18px, 3svh, 26px) 0 clamp(18px, 3svh, 26px) var(--page-x);
   }
 
-  .cases {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: 76%;
-    gap: 16px;
-    padding-right: var(--page-x);
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
+  /* Les trois textes défilent vers la gauche AU SCROLL, pendant que la
+     section reste épinglée — et non plus au doigt. Le geste horizontal
+     obligeait à deviner qu'il existait ; là, il suffit de continuer à
+     lire la page.
+
+     La course : à --k = 1, le bord droit de la rangée vient se poser sur
+     la gouttière droite de l'écran. `-100%` se rapporte à la largeur de
+     la RANGÉE, `100vw` à celle de l'écran : l'arrêt est donc exact quel
+     que soit le nombre de textes, sans rien calculer en JavaScript.
+
+     0.56 -> 0.94 : commence une fois le panneau monté (0.80 pour la fin
+     de sa montée, mais le recouvrement est voulu — ça enchaîne), et
+     s'achève avant la fin de la piste, pour que la section suivante (la
+     FAQ) arrive sur une rangée immobile. */
+  .panel {
+    overflow: hidden;
   }
 
-  .cases::-webkit-scrollbar {
-    display: none;
+  .cases {
+    --k: clamp(0, calc((var(--p, 0) - 0.56) / 0.38), 1);
+
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 76vw;
+    gap: 16px;
+    width: max-content;
+    padding-right: var(--page-x);
+    overflow: visible;
+    transform: translateX(
+      calc(var(--k) * (-100% + 100vw - 2 * var(--page-x)))
+    );
+    will-change: transform;
   }
 
   .case {
-    scroll-snap-align: start;
     padding-top: 12px;
   }
 
