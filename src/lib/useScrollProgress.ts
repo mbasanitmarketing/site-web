@@ -69,16 +69,25 @@ function onResize() {
   schedule();
 }
 
+/* Les écouteurs sont posés UNE FOIS et ne sont plus retirés.
+ *
+ * Par précaution, pas pour corriger un bug observé : ils étaient attachés
+ * au premier abonné et retirés dès qu'il n'en restait aucun. Tant que la
+ * hero s'abonnait, le compte ne tombait jamais à zéro en cours de page ;
+ * depuis qu'elle est animée en CSS, il peut y passer. Si un montage et un
+ * démontage s'y entrelaçaient (React en double-montage, ou une navigation
+ * client), l'écouteur pouvait se retrouver détaché alors qu'une scène
+ * vient de s'abonner — et toute la page resterait figée.
+ *
+ * Deux écouteurs passifs pour la vie de l'onglet, c'est un coût nul ; la
+ * boucle, elle, ne tourne que s'il y a des scènes à mettre à jour. */
+let ecoute = false;
+
 function listen() {
+  if (ecoute) return;
+  ecoute = true;
   window.addEventListener("scroll", schedule, { passive: true });
   window.addEventListener("resize", onResize);
-}
-
-function unlisten() {
-  window.removeEventListener("scroll", schedule);
-  window.removeEventListener("resize", onResize);
-  if (raf) cancelAnimationFrame(raf);
-  raf = 0;
 }
 
 export function useScrollProgress(
@@ -96,13 +105,12 @@ export function useScrollProgress(
 
     const entry: Entry = { track, stage, span, travel: 0, dernier: "" };
     measure(entry);
-    if (entries.size === 0) listen();
+    listen();
     entries.add(entry);
     schedule();
 
     return () => {
       entries.delete(entry);
-      if (entries.size === 0) unlisten();
     };
   }, [trackRef, stageRef, span, actif]);
 }

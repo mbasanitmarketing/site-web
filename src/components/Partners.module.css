@@ -207,55 +207,54 @@
 }
 
 /* --- Entrée de la section ---------------------------------------------
-   Trois temps, liés à la POSITION DE DÉFILEMENT (view()) et non à un
-   minuteur : le surtitre, puis la grande ligne, puis le bandeau de logos
-   qui s'ouvre depuis le centre. Le scroll pilote, donc revenir en arrière
-   rembobine — rien ne « se joue » une fois pour toutes au mauvais moment.
+   Trois temps : le repère, puis la grande ligne, puis le bandeau de logos
+   qui s'ouvre depuis le centre. Déclenchés par `data-vu`, posé en
+   JavaScript quand la section arrive à l'écran (cf. Partners.tsx).
 
-   Là où le navigateur ne sait pas lier une animation au scroll, rien ne
-   bouge : tout est visible d'emblée, ce qui est le bon repli. */
-@keyframes monteAuScroll {
-  from {
-    opacity: 0;
-    transform: translateY(26px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+   De simples TRANSITIONS, et non une animation liée au scroll comme
+   ailleurs sur le site : celles-ci fonctionnent sur tous les navigateurs,
+   y compris les Safari d'iPhone antérieurs à iOS 26, où l'entrée ne se
+   jouait pas du tout. */
+.wrap[data-anim="true"] .label,
+.wrap[data-anim="true"] .headline {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 620ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.headline {
+  transition-delay: 120ms;
+}
+
+.viewport {
+  transition: clip-path 900ms cubic-bezier(0.16, 1, 0.3, 1) 260ms;
 }
 
 /* Le bandeau s'ouvre du centre vers les deux bords. `clip-path` plutôt
    qu'une largeur : la piste garde sa géométrie, donc le défilement des
    logos n'est pas perturbé pendant l'ouverture. */
-@keyframes ouvreBandeau {
-  from {
-    clip-path: inset(0 50% 0 50%);
-    opacity: 0;
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-    opacity: 1;
-  }
+.wrap[data-anim="true"] .viewport {
+  clip-path: inset(0 50% 0 50%);
 }
 
-@supports (animation-timeline: view()) {
-  @media not (prefers-reduced-motion: reduce) {
-    .label,
-    .headline {
-      animation: monteAuScroll linear both;
-      animation-timeline: view();
-    }
-    .label {
-      animation-range: entry 15% entry 55%;
-    }
-    .headline {
-      animation-range: entry 22% entry 65%;
-    }
-    .viewport {
-      animation: ouvreBandeau linear both;
-      animation-timeline: view();
-      animation-range: entry 30% entry 90%;
-    }
+.wrap[data-vu="true"] .label,
+.wrap[data-vu="true"] .headline {
+  opacity: 1;
+  transform: none;
+}
+
+.wrap[data-vu="true"] .viewport {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Mouvement réduit : tout est en place d'emblée (le composant pose
+   `data-vu` sans attendre) et rien ne glisse. */
+@media (prefers-reduced-motion: reduce) {
+  .label,
+  .headline,
+  .viewport {
+    transition: none;
   }
 }

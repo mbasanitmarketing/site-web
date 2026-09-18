@@ -40,6 +40,7 @@ export function Partners({ headline }: { headline: string }) {
           node: <span className={styles.slot}>Logo</span>,
         }));
 
+  const sectionRef = useRef<HTMLElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const rowRef = useRef<HTMLUListElement>(null);
   // 2 au premier rendu (serveur comme client : pas d'écart d'hydratation),
@@ -90,8 +91,47 @@ export function Partners({ headline }: { headline: string }) {
     </ul>
   );
 
+  /* ENTRÉE DE LA SECTION.
+   *
+   * Un observateur d'intersection pose `data-vu` quand la section arrive
+   * à l'écran, et le CSS enchaîne trois transitions (repère, grande
+   * ligne, bandeau qui s'ouvre). Et PAS une animation liée au scroll
+   * (`animation-timeline`) comme ailleurs sur le site : Safari sur iPhone
+   * ne la connaît que depuis iOS 26, et sur un téléphone plus ancien il
+   * ne se passait alors rien du tout. Les transitions, elles, marchent
+   * partout.
+   *
+   * Une seule fois : on cesse d'observer dès que c'est joué — une entrée
+   * qui se rejoue à chaque passage devient un tic. */
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      section.dataset.vu = "true";
+      return;
+    }
+    /* On ARME l'animation seulement ici, une fois le script en marche :
+       tant que `data-anim` n'est pas posé, le contenu est visible. Sans
+       ça, un observateur qui ne se déclencherait jamais (script bloqué,
+       navigateur exotique) laisserait la section vide pour toujours. */
+    section.dataset.anim = "true";
+
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        section.dataset.vu = "true";
+        io.disconnect();
+      },
+      // Se déclenche quand un bon quart de la section est entré : pas dès
+      // le premier pixel, sinon tout est fini avant d'être lisible.
+      { threshold: 0.25 },
+    );
+    io.observe(section);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <section className={styles.wrap}>
+    <section ref={sectionRef} className={styles.wrap}>
       <div className={styles.grid}>
         <p className={`${styles.label} ${chip.chip} ${chip.onBlue}`}>Nos partenaires</p>
         <h2 className={`${styles.headline} ${titre.h2}`}>{headline}</h2>
