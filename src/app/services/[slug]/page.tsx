@@ -29,8 +29,8 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
 
   return (
     <>
-      {/* Ordre : introduction, prestation, réalisations, besoins,
-          partenaires, questions, contact.
+      {/* Ordre : introduction, prestation, réalisations, partenaires,
+          besoins, questions, contact.
 
           Quatre sections ont été retirées à la demande de MBA :
           « Preuves », « Prix », « Déroulement » et « Zone d'intervention ».
@@ -50,8 +50,8 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
           items={realisationsOf(page.relatedRealisations.category)}
         />
       )}
-      {page.service && <ServiceNeeds service={page.service} />}
       <Partners headline="Un réseau de partenaires solide" />
+      {page.service && <ServiceNeeds service={page.service} />}
       {page.service && (
         <Faq
           items={page.service.faq}
