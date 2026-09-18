@@ -107,3 +107,38 @@
     transform: translateY(-50%);
   }
 }
+
+/* TÉLÉPHONE : visible sur la première hauteur d'écran, puis effacée.
+   Sur un écran étroit, elle passe sur les textes du site — au-dessus de
+   la photo d'ouverture elle a sa place, dans le corps de page non.
+
+   L'effacement est lié à la POSITION DE DÉFILEMENT (scroll()), pas à un
+   minuteur : elle disparaît là où le contenu commence, et revient si on
+   remonte. Là où le navigateur ne sait pas faire, elle est simplement
+   masquée sur téléphone — mieux vaut pas de pastille qu'une pastille
+   collée en travers du texte. */
+@keyframes effacerBadge {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (max-width: 860px) {
+  @supports (animation-timeline: scroll()) {
+    .badge {
+      animation: effacerBadge linear both;
+      animation-timeline: scroll(root);
+      animation-range: 55svh 85svh;
+    }
+  }
+  @supports not (animation-timeline: scroll()) {
+    .badge {
+      display: none;
+    }
+  }
+}
