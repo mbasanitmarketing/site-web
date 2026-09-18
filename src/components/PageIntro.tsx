@@ -1,6 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CATEGORIES, HERO_BAND, type PageContent } from "@/lib/pages";
+import {
+  CATEGORIES,
+  HERO_BAND,
+  HERO_COURT,
+  type PageContent,
+} from "@/lib/pages";
 import styles from "./PageIntro.module.css";
 
 /**
@@ -94,8 +99,12 @@ export function PageIntro({
     );
   }
 
+  /* Fiches projet : bannière basse au lieu du plein écran — la photo est
+     reprise juste en dessous dans la galerie. */
+  const court = HERO_COURT.has(page.href) ? styles.court : "";
+
   return (
-    <section className={`${styles.intro} ${only}`}>
+    <section className={`${styles.intro} ${court} ${only}`}>
       {/* Sans photo : ni image ni dégradé de lisibilité, qui n'aurait plus
           rien à faire lire. Le fond uni de .intro suffit. */}
       {!page.heroPlain && (

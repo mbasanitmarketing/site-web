@@ -194,20 +194,23 @@
   bottom: clamp(12px, 1.4vw, 20px);
   display: grid;
   place-items: center;
-  width: clamp(74px, 6.6vw, 92px);
-  height: clamp(74px, 6.6vw, 92px);
-  border-radius: 50%;
-  /* Même traitement que le bouton d'appel flottant : disque sombre
-     translucide, flou d'arrière-plan et anneau blanc fin. */
+  padding: clamp(9px, 1.1svh, 12px) clamp(14px, 1.5vw, 22px);
+  /* Rectangle à 2 px : la charte des boutons du site (CTA, flèches du
+     carrousel, barre d'onglets). C'était le seul rond du site. */
+  border-radius: 2px;
+  /* Même traitement que le bouton d'appel flottant : fond sombre
+     translucide, flou d'arrière-plan et filet blanc fin. */
   border: 1.5px solid rgba(255, 255, 255, 0.9);
   background: rgba(16, 16, 20, 0.26);
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   color: #fff;
-  font-size: clamp(11px, 0.85vw, 13px);
+  font-size: clamp(10px, 0.85vw, 12px);
   font-weight: 500;
-  line-height: 1.2;
-  text-align: center;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
   opacity: 0;
   transform: scale(0.9);
   transition:
@@ -231,13 +234,31 @@
 
 /* --- Agrandissement ----------------------------------------------- */
 
+/* Le <dialog> occupe tout l'écran et centre la photo lui-même.
+   Avant, il se dimensionnait sur la largeur (92vw) et laissait la hauteur
+   libre : sur un téléphone tenu à la verticale, une photo en paysage
+   agrandie dépassait en haut, sous la barre d'état, et le haut était
+   coupé. Ici la photo est bornée par les DEUX côtés, et le centrage ne
+   dépend plus de la mise en page du dialogue. */
 .lightbox {
-  width: min(92vw, 1400px);
+  position: fixed;
+  inset: 0;
+  width: 100%;
   max-width: none;
-  max-height: 92svh;
+  height: 100%;
+  max-height: none;
   padding: 0;
   border: 0;
   background: transparent;
+  /* Une zone de sécurité en haut : le bouton de fermeture y tient sans
+     recouvrir la photo, et l'encoche du téléphone est dégagée. */
+  --marge-h: clamp(16px, 4vw, 48px);
+  --marge-v: calc(clamp(64px, 9svh, 96px) + env(safe-area-inset-top, 0px));
+}
+
+.lightbox[open] {
+  display: grid;
+  place-items: center;
 }
 .lightbox::backdrop {
   background: rgba(6, 6, 8, 0.88);
@@ -245,15 +266,16 @@
 
 .lightboxImage {
   display: block;
-  width: 100%;
+  width: auto;
   height: auto;
-  max-height: 92svh;
+  max-width: calc(100vw - 2 * var(--marge-h));
+  max-height: calc(100svh - 2 * var(--marge-v));
   object-fit: contain;
 }
 
 .close {
   position: fixed;
-  top: clamp(12px, 2.4vw, 28px);
+  top: calc(clamp(12px, 2.4vw, 28px) + env(safe-area-inset-top, 0px));
   right: clamp(12px, 2.4vw, 28px);
   display: grid;
   place-items: center;

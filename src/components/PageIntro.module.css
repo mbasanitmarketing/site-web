@@ -15,6 +15,20 @@
   color: #f5f5f4;
 }
 
+/* Ouverture courte (fiches projet) : la photo ne prend plus tout l'écran.
+   Elle y faisait double emploi avec la galerie juste en dessous, et il
+   fallait un écran entier de défilement avant d'atteindre le texte. Les
+   blocs de titre restent calés en bas, ils suivent la hauteur. */
+.court {
+  height: min(62svh, 560px);
+}
+
+@media (max-width: 720px) {
+  .court {
+    height: min(52svh, 420px);
+  }
+}
+
 /* --- Variante « bandeau + bannière » (pages de catégorie) -----------
    Relevé sur « realisations layout - template.mov », frame où l'image
    tient entière : bandeau 170 px sous le header, puis la photo pleine

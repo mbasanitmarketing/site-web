@@ -589,6 +589,7 @@ export const HERO_BAND: ReadonlySet<string> = new Set(
   CATEGORIES.map((c) => c.href),
 );
 
+
 /* Fiches projet. Les textes décrivent ce que montrent les photos et le
    travail que ce type de chantier demande ; ni l'année ni la commune ne
    sont affirmées — MBA ne les a pas données. L'« Année » et le « Lieu »
@@ -728,6 +729,15 @@ export const REALISATIONS: Realisation[] = [
     ],
   },
 ];
+
+/** Pages dont l'ouverture est une BANNIÈRE basse, et non une photo plein
+ *  écran : les fiches projet. La photo y est déjà reprise juste en
+ *  dessous, dans la galerie — la montrer en grand une première fois ne
+ *  servait qu'à retarder la lecture. Déclaré ici pour que le calque de
+ *  transition (qui rend le même composant) tombe au même endroit. */
+export const HERO_COURT: ReadonlySet<string> = new Set(
+  REALISATIONS.map((r) => r.href),
+);
 
 /* --- Partenaires --------------------------------------------------- */
 
