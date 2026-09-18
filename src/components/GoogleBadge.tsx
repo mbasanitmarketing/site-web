@@ -25,7 +25,11 @@ export function GoogleBadge() {
       rel="noreferrer"
       aria-label={`Avis Google : ${note} sur 5 — ${COUNT} avis. Voir la fiche.`}
     >
-      <span className={styles.marque}>Avis Google</span>
+      <span className={styles.marque}>
+        Avis
+        <br />
+        Google
+      </span>
       <span className={styles.note}>{note}</span>
       <span className={styles.etoiles} aria-hidden="true">
         {Array.from({ length: 5 }, (_, i) => (
