@@ -119,12 +119,16 @@
 }
 
 /* Les cartes montent par le bas, l'une après l'autre. --i est le rang,
-   posé par le composant : une seule règle sert les trois. Chacune dure
-   0.10 de la piste et démarre 0.10 après la précédente, donc la
-   troisième est en place à --p 0.36. */
+   posé par le composant : une seule règle sert les trois.
+
+   La PREMIÈRE part sans attendre (début 0) : le texte au-dessus, lui, est
+   là dès que la scène s'épingle, et un retard faisait paraître la carte
+   en panne. Elle est en place au bout de 0.06 de la piste, soit un
+   petit coup de molette ; les deux suivantes s'enchaînent tous les 0.08,
+   la troisième est posée à --p 0.22. */
 .card {
-  --debut: calc(0.06 + var(--i, 0) * 0.1);
-  --in: clamp(0, calc((var(--p, 0) - var(--debut)) / 0.1), 1);
+  --debut: calc(var(--i, 0) * 0.08);
+  --in: clamp(0, calc((var(--p, 0) - var(--debut)) / 0.06), 1);
 
   display: flex;
   flex-direction: column;
