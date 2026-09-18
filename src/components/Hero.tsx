@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { useScrollProgress } from "@/lib/useScrollProgress";
@@ -18,6 +18,34 @@ import styles from "./Hero.module.css";
 const SCROLL_CSS =
   typeof CSS !== "undefined" &&
   CSS.supports?.("animation-timeline: view()") === true;
+
+/**
+ * Photo de la hero, en deux versions : paysage sur ordinateur, portrait
+ * sur téléphone (les cadrages larges y étaient inexploitables).
+ *
+ * `getImageProps` + `<picture>` : c'est la marche à suivre de cette
+ * version de Next pour l'art direction (cf. la doc du composant Image,
+ * section « Art direction »). Le navigateur ne télécharge QUE la version
+ * retenue — deux <Image> dont on cacherait l'une en CSS les chargeraient
+ * toutes les deux.
+ */
+function Photo({ bureau, telephone }: { bureau: string; telephone: string }) {
+  const commun = { alt: "", fill: true, priority: true, sizes: "120vw" };
+  const {
+    props: { srcSet: srcBureau },
+  } = getImageProps({ ...commun, src: bureau });
+  const {
+    props: { srcSet: srcTelephone, ...reste },
+  } = getImageProps({ ...commun, src: telephone });
+
+  return (
+    <picture>
+      {/* Même palier que le reste du site (cf. les media queries à 720). */}
+      <source media="(min-width: 721px)" srcSet={srcBureau} />
+      <img {...reste} srcSet={srcTelephone} alt="" />
+    </picture>
+  );
+}
 
 export function Hero() {
   const trackRef = useRef<HTMLElement>(null);
@@ -38,9 +66,12 @@ export function Hero() {
       <div ref={stageRef} className={styles.stage}>
         {/* Photos */}
         <div className={styles.media}>
-          <Image src="/hero-dark.jpg" alt="" fill priority sizes="120vw" />
+          <Photo bureau="/hero-dark.jpg" telephone="/hero-dark-mobile.jpg" />
           <div className={styles.light}>
-            <Image src="/hero-light.jpg" alt="" fill priority sizes="120vw" />
+            <Photo
+              bureau="/hero-light.jpg"
+              telephone="/hero-light-mobile.jpg"
+            />
           </div>
         </div>
 
