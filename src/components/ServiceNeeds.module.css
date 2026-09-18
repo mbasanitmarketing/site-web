@@ -266,8 +266,24 @@
    glisser au doigt — accroche de défilement, et une carte qui dépasse au
    bord pour que ça se voie. */
 @media (max-width: 720px) {
+  /* Piste allongée (300 -> 360vh) : il faut de la place pour TROIS temps
+     distincts — le panneau monte, on laisse lire, puis les textes
+     défilent. À 300vh les deux derniers se chevauchaient et le premier
+     texte partait avant d'avoir été lu. */
+  .track {
+    height: 360vh;
+  }
+
   .stage {
     --panel-h: clamp(212px, 30svh, 268px);
+  }
+
+  /* Le panneau monte plus tôt et plus vite qu'au bureau : il doit être
+     EN PLACE avant que quoi que ce soit ne bouge horizontalement. */
+  .panel {
+    transform: translateY(
+      calc((1 - clamp(0, calc((var(--p, 0) - 0.44) / 0.14), 1)) * 100%)
+    );
   }
   /* Cinq sur téléphone. */
   .rain i:nth-child(6) {
@@ -318,16 +334,17 @@
      la RANGÉE, `100vw` à celle de l'écran : l'arrêt est donc exact quel
      que soit le nombre de textes, sans rien calculer en JavaScript.
 
-     0.56 -> 0.94 : commence une fois le panneau monté (0.80 pour la fin
-     de sa montée, mais le recouvrement est voulu — ça enchaîne), et
-     s'achève avant la fin de la piste, pour que la section suivante (la
-     FAQ) arrive sur une rangée immobile. */
+     TROIS TEMPS, sans recouvrement :
+       0.44 -> 0.58  le panneau monte et les textes s'installent
+       0.58 -> 0.66  rien ne bouge : le temps de lire le premier
+       0.66 -> 0.94  les textes défilent vers la gauche
+     puis la piste se termine sur une rangée immobile, et la FAQ arrive. */
   .panel {
     overflow: hidden;
   }
 
   .cases {
-    --k: clamp(0, calc((var(--p, 0) - 0.56) / 0.38), 1);
+    --k: clamp(0, calc((var(--p, 0) - 0.66) / 0.28), 1);
 
     grid-template-columns: none;
     grid-auto-flow: column;
