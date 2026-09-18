@@ -34,12 +34,16 @@
   padding: clamp(32px, 6svh, 72px) var(--page-x);
 }
 
+/* Le blanc était tout entier en haut et en bas de la scène (centrage),
+   et il n'en restait presque plus entre le titre et les images. On le
+   redistribue : l'écart intérieur double, les vignettes grandissent, donc
+   les marges hautes et basses se réduisent d'autant. */
 .head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  margin-bottom: clamp(20px, 4svh, 40px);
+  margin-bottom: clamp(24px, 6svh, 72px);
 }
 
 .title {
@@ -87,9 +91,17 @@
 }
 
 /* --per : nombre de vignettes visibles. Une seule valeur à changer par
-   palier, la largeur des vignettes s'en déduit. */
+   palier, la largeur des vignettes s'en déduit.
+
+   Bornée par le NOMBRE de projets (--n, posé par le composant) : une
+   catégorie qui n'en a que deux affichait deux vignettes de quart de
+   largeur et laissait la moitié de la rangée vide — c'est ce qui donnait
+   une scène presque vide, avec des images minuscules au milieu. */
 .rail {
-  --per: 4;
+  /* Jamais moins de deux parts sur un grand écran : une seule vignette
+     pleine largeur en 3:2 ferait près de 800 px de haut et dépasserait de
+     la scène (cas d'une catégorie à un seul projet, comme le chauffage). */
+  --per: min(4, max(2, var(--n, 4)));
   --gap: clamp(12px, 1.6vw, 22px);
 
   display: flex;
@@ -160,13 +172,13 @@
    mesure que l'écran rétrécit : on en retire une à chaque palier. */
 @media (max-width: 1100px) {
   .rail {
-    --per: 3;
+    --per: min(3, max(2, var(--n, 3)));
   }
 }
 
 @media (max-width: 900px) {
   .rail {
-    --per: 2;
+    --per: min(2, var(--n, 2));
   }
 }
 
@@ -175,6 +187,13 @@
      peut faire glisser */
   .slide {
     flex-basis: 86%;
+  }
+  /* Portrait sur téléphone : en 3:2, la vignette ne faisait que 200 px de
+     haut au milieu d'un écran de 844 — deux cents pixels d'image pour six
+     cents de blanc. Le format vertical remplit la scène sans rien couper
+     d'essentiel (les photos sont recadrées au centre). */
+  .media {
+    aspect-ratio: 4 / 5;
   }
   .media img {
     transition: none;

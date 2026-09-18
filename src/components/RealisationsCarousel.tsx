@@ -109,7 +109,13 @@ export function RealisationsCarousel({
         )}
       </div>
 
-      <ul className={styles.rail} ref={railRef}>
+      {/* --n : le nombre réel de projets. Le CSS s'en sert pour ne jamais
+          découper la rangée en plus de parts qu'il n'y a d'images. */}
+      <ul
+        className={styles.rail}
+        ref={railRef}
+        style={{ "--n": items.length } as React.CSSProperties}
+      >
         {items.map((r) => (
           <li key={r.href} className={styles.slide}>
             <a className={styles.card} href={r.href} data-page-transition>
