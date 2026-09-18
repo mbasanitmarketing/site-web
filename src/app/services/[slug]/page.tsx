@@ -29,8 +29,8 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
 
   return (
     <>
-      {/* Ordre de la structure demandée : introduction, besoins,
-          partenaires, réalisations, questions, contact.
+      {/* Ordre : introduction, prestation, réalisations, besoins,
+          partenaires, questions, contact.
 
           Quatre sections ont été retirées à la demande de MBA :
           « Preuves », « Prix », « Déroulement » et « Zone d'intervention ».
@@ -40,18 +40,21 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
           rédigée. */}
       <PageIntro page={page} />
       {page.manifesto && <ServiceManifesto manifesto={page.manifesto} />}
-      {page.service && <ServiceNeeds service={page.service} />}
-      <Partners headline="Un réseau de partenaires solide" />
+      {/* Les réalisations montent juste après « La prestation » : on voit
+          le travail avant de lire le reste. Elles ne sont donc plus
+          collées à la FAQ — celle-ci ne glisse plus par-dessus, faute
+          d'une section épinglée devant elle (cf. `overSticky`, retiré). */}
       {page.relatedRealisations && (
         <RealisationsCarousel
           title={`Nos réalisations ${page.relatedRealisations.label}`}
           items={realisationsOf(page.relatedRealisations.category)}
         />
       )}
+      {page.service && <ServiceNeeds service={page.service} />}
+      <Partners headline="Un réseau de partenaires solide" />
       {page.service && (
         <Faq
           items={page.service.faq}
-          overSticky
           lede="Zones d’intervention, chantiers, entretien : les réponses aux questions qui reviennent."
         />
       )}

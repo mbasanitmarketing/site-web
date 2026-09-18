@@ -6,24 +6,20 @@
    pointeur, une pleine largeur et l'amorce de la suivante au doigt.
    --------------------------------------------------------------------- */
 
-/* La scène reste épinglée pendant que la FAQ monte par-dessus.
+/* Section ordinaire, d'un écran de haut.
 
-   200svh de piste pour une scène de 100svh : l'épinglage dure donc
-   100svh, soit exactement la course dont la FAQ a besoin pour passer du
-   bas de l'écran au haut. Elle remonte de -100svh (cf. Faq.module.css) :
-   les deux valeurs vont ensemble, si l'une change, l'autre aussi. */
+   Elle était ÉPINGLÉE sur 200svh pour que la FAQ vienne la recouvrir.
+   Depuis qu'elle est remontée juste après « La prestation », la FAQ n'est
+   plus derrière elle : garder l'épinglage aurait imposé un écran de
+   défilement pour rien, sur une scène immobile. */
 .track {
   position: relative;
   z-index: 1;
-  height: 200svh;
 }
 
 /* Colonne centrée, un écran de haut : le carrousel tient largement
-   dedans, et la scène ne peut pas dépasser du cadre pendant qu'elle est
-   épinglée. */
+   dedans. */
 .stage {
-  position: sticky;
-  top: 0;
   height: 100svh;
   overflow: hidden;
   display: flex;
