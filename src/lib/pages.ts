@@ -626,7 +626,9 @@ export const REALISATIONS: Realisation[] = [
     image: "/realisation-salle-de-bain.jpg",
     alt: "Salle de bain réalisée par MBA Sanit",
     lede: "Une salle de bain au carrelage vert profond, meuble vasque en bois et miroir encastré : une rénovation complète pensée jusqu’aux finitions.",
-    cue: "Réalisation suivante",
+    /* Pas de repère sur une fiche projet : « Réalisation suivante »
+       annonçait un lien qui n’existe pas ici. */
+    cue: "",
     kicker: "Suisse romande",
     display: "Sur mesure",
     /* Ligne normale (15 px) : sur une fiche projet, l’affiche géante
@@ -651,7 +653,9 @@ export const REALISATIONS: Realisation[] = [
     image: "/realisation-salle-deau.jpg",
     alt: "Salle d’eau réalisée par MBA Sanit",
     lede: "Une salle d’eau avec douche à l’italienne vitrée, faïence bleue et sol en terrazzo : des lignes nettes et un entretien facile.",
-    cue: "Réalisation suivante",
+    /* Pas de repère sur une fiche projet : « Réalisation suivante »
+       annonçait un lien qui n’existe pas ici. */
+    cue: "",
     kicker: "Suisse romande",
     display: "Aménagement",
     /* Ligne normale (15 px) : sur une fiche projet, l’affiche géante
@@ -676,7 +680,9 @@ export const REALISATIONS: Realisation[] = [
     image: "/realisation-chaufferie.jpg",
     alt: "Chaufferie installée par MBA Sanit",
     lede: "Une chaufferie moderne avec pompe à chaleur, ballon d’eau chaude et distribution entièrement reprise.",
-    cue: "Réalisation suivante",
+    /* Pas de repère sur une fiche projet : « Réalisation suivante »
+       annonçait un lien qui n’existe pas ici. */
+    cue: "",
     kicker: "Suisse romande",
     display: "Production",
     /* Ligne normale (15 px) : sur une fiche projet, l’affiche géante
@@ -700,7 +706,9 @@ export const REALISATIONS: Realisation[] = [
     image: "/realisation-douche-exterieure-1.jpg",
     alt: "Douche extérieure en pierre réalisée par MBA Sanit",
     lede: "Une douche extérieure en pierre naturelle et inox, intégrée au jardin : alimentation et évacuation pensées pour durer dehors.",
-    cue: "Réalisation suivante",
+    /* Pas de repère sur une fiche projet : « Réalisation suivante »
+       annonçait un lien qui n’existe pas ici. */
+    cue: "",
     kicker: "Suisse romande",
     display: "Extérieur",
     /* Ligne normale (15 px) : sur une fiche projet, l’affiche géante
@@ -725,7 +733,9 @@ export const REALISATIONS: Realisation[] = [
     image: "/realisation-douche-exterieure-2.jpg",
     alt: "Douche extérieure en bois réalisée par MBA Sanit",
     lede: "Une douche extérieure habillée de bois, pour profiter du jardin : un aménagement simple, robuste et facile à entretenir.",
-    cue: "Réalisation suivante",
+    /* Pas de repère sur une fiche projet : « Réalisation suivante »
+       annonçait un lien qui n’existe pas ici. */
+    cue: "",
     kicker: "Suisse romande",
     display: "Extérieur",
     /* Ligne normale (15 px) : sur une fiche projet, l’affiche géante

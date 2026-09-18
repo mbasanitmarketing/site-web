@@ -128,7 +128,7 @@ export function PageIntro({
             ressemblait à un lien sans en être un. `data-page-transition`
             uniquement pour les routes internes : un tel: doit composer le
             numéro, pas déclencher le balayage. */}
-        {page.cueHref ? (
+        {!page.cue ? null : page.cueHref ? (
           <a
             className={`${styles.cue} ${styles.cueButton}`}
             href={page.cueHref}
