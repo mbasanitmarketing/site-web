@@ -109,6 +109,37 @@
 
 /* --- Les trois cartes ------------------------------------------------- */
 
+/* La PREMIÈRE carte n'attend pas l'épinglage.
+ *
+ * `--p` ne démarre qu'au moment où le haut de la piste touche le haut de
+ * l'écran : jusque-là, la carte restait invisible alors qu'elle était déjà
+ * à l'écran. Elle est donc animée sur SA PROPRE entrée dans le cadre
+ * (`view()`), qui commence bien avant. L'animation l'emporte sur les
+ * déclarations d'opacité et de position ci-dessous — les deux ne peuvent
+ * pas se contredire.
+ *
+ * Les cartes 2 et 3 gardent l'enchaînement au scroll : c'est lui qui fait
+ * l'effet d'escalier. Là où `view()` n'existe pas, tout retombe sur --p,
+ * comme avant. */
+@keyframes monteCarte {
+  from {
+    opacity: 0;
+    transform: translateY(56px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .cards > .card:first-child {
+    animation: monteCarte linear both;
+    animation-timeline: view();
+    animation-range: entry 15% entry 85%;
+  }
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
