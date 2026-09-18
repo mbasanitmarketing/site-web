@@ -205,3 +205,57 @@
     backdrop-filter: none;
   }
 }
+
+/* --- Entrée de la section ---------------------------------------------
+   Trois temps, liés à la POSITION DE DÉFILEMENT (view()) et non à un
+   minuteur : le surtitre, puis la grande ligne, puis le bandeau de logos
+   qui s'ouvre depuis le centre. Le scroll pilote, donc revenir en arrière
+   rembobine — rien ne « se joue » une fois pour toutes au mauvais moment.
+
+   Là où le navigateur ne sait pas lier une animation au scroll, rien ne
+   bouge : tout est visible d'emblée, ce qui est le bon repli. */
+@keyframes monteAuScroll {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Le bandeau s'ouvre du centre vers les deux bords. `clip-path` plutôt
+   qu'une largeur : la piste garde sa géométrie, donc le défilement des
+   logos n'est pas perturbé pendant l'ouverture. */
+@keyframes ouvreBandeau {
+  from {
+    clip-path: inset(0 50% 0 50%);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media not (prefers-reduced-motion: reduce) {
+    .label,
+    .headline {
+      animation: monteAuScroll linear both;
+      animation-timeline: view();
+    }
+    .label {
+      animation-range: entry 15% entry 55%;
+    }
+    .headline {
+      animation-range: entry 22% entry 65%;
+    }
+    .viewport {
+      animation: ouvreBandeau linear both;
+      animation-timeline: view();
+      animation-range: entry 30% entry 90%;
+    }
+  }
+}
