@@ -629,6 +629,9 @@ export const REALISATIONS: Realisation[] = [
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Sur mesure",
+    /* Ligne normale (15 px) : sur une fiche projet, l’affiche géante
+       écrasait le nom du projet juste à côté. */
+    displaySmall: true,
  
     lieu: "Suisse romande",
     body: [
@@ -651,6 +654,9 @@ export const REALISATIONS: Realisation[] = [
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Aménagement",
+    /* Ligne normale (15 px) : sur une fiche projet, l’affiche géante
+       écrasait le nom du projet juste à côté. */
+    displaySmall: true,
  
     lieu: "Suisse romande",
     body: [
@@ -673,6 +679,9 @@ export const REALISATIONS: Realisation[] = [
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Production",
+    /* Ligne normale (15 px) : sur une fiche projet, l’affiche géante
+       écrasait le nom du projet juste à côté. */
+    displaySmall: true,
  
     lieu: "Suisse romande",
     body: [
@@ -694,6 +703,9 @@ export const REALISATIONS: Realisation[] = [
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Extérieur",
+    /* Ligne normale (15 px) : sur une fiche projet, l’affiche géante
+       écrasait le nom du projet juste à côté. */
+    displaySmall: true,
  
     lieu: "Suisse romande",
     body: [
@@ -716,6 +728,9 @@ export const REALISATIONS: Realisation[] = [
     cue: "Réalisation suivante",
     kicker: "Suisse romande",
     display: "Extérieur",
+    /* Ligne normale (15 px) : sur une fiche projet, l’affiche géante
+       écrasait le nom du projet juste à côté. */
+    displaySmall: true,
  
     lieu: "Suisse romande",
     body: [
