@@ -147,6 +147,9 @@
      cliquable, il en masquait la zone de clic. Calé sur ses propres
      valeurs : largeur + marge droite + un peu d'air. */
   padding-right: calc(clamp(52px, 5.4vw, 62px) + clamp(18px, 4.5vw, 56px) + 16px);
+  /* À gauche, c'est la pastille d'avis Google qui flotte (GoogleBadge) :
+     même réserve, de l'autre côté. */
+  padding-left: calc(clamp(120px, 12vw, 170px) + clamp(18px, 4.5vw, 56px));
   font-size: var(--small);
   letter-spacing: 0.05em;
   text-transform: uppercase;

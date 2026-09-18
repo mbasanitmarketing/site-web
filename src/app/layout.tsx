@@ -4,6 +4,7 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import { SiteMenu } from "@/components/SiteMenu";
 import { SiteLogo } from "@/components/SiteLogo";
 import { CallButton } from "@/components/CallButton";
+import { GoogleBadge } from "@/components/GoogleBadge";
 import { PageTransition } from "@/components/PageTransition";
 import "./globals.css";
 
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {/* Enveloppe ciblée par la transition de page (globals.css) */}
           <div id="page-root">{children}</div>
           <CallButton />
+          <GoogleBadge />
           <PageTransition />
         </SmoothScroll>
       </body>
