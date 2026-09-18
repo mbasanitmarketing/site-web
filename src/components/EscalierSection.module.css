@@ -346,38 +346,90 @@
     bottom: auto;
     height: 25svh;
   }
+  /* Le texte et les accordéons sont deux blocs posés en absolu : rien
+     n'empêchait leurs hauteurs de se croiser. Sur un téléphone réglé sur
+     un texte plus grand, le pavé débordait et les accordéons lui
+     passaient dessus (capture client). Chacun reçoit donc SA BANDE, et le
+     texte ne peut plus déborder de la sienne. */
   .copy {
     left: clamp(16px, 2.2vw, 40px);
     right: clamp(16px, 2.2vw, 40px);
     width: auto;
     top: 41svh;
     bottom: auto;
+    /* Hauteur FIXE, et non un maximum : c'est elle qui garantit que rien
+       ne descend sur les accordéons, quel que soit le réglage de taille
+       de texte du téléphone. */
+    height: 24svh;
   }
-  .heading {
-    font-size: 1.2rem;
+
+  /* Dans cette bande : le titre et le bouton gardent leur taille, c'est
+     le paragraphe qui absorbe ce qui reste. Le bouton reste donc toujours
+     visible — avant, un texte réglé en très grand le poussait hors de la
+     bande et il se faisait rogner. */
+  .copyItem {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 24svh;
   }
+
   .sub {
+    /* Le paragraphe prend ce qui reste de la bande, et pas un pixel de
+       plus : c'est lui qui cède, jamais le bouton. */
+    flex: 1;
+    min-height: 0;
     margin-top: 0.6rem;
     font-size: 0.92rem;
     line-height: 1.45;
+    /* Quatre lignes au maximum ; au-delà, c'est la hauteur disponible qui
+       coupe. Le paragraphe entier reste dans la page pour un moteur de
+       recherche, seul l'affichage est borné. */
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 4;
     overflow: hidden;
+    /* Quand c'est la hauteur de la bande qui coupe (et non le compteur de
+       lignes), la coupe tombe en plein milieu d'une ligne et ça fait
+       panne. Le fondu sur les vingt derniers pixels la rend volontaire. */
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      #000 calc(100% - 20px),
+      transparent
+    );
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 20px), transparent);
+  }
+
+  .cta {
+    flex: none;
+    align-self: flex-start;
+  }
+  .heading {
+    font-size: 1.2rem;
   }
   .cta {
     margin-top: 0.9rem;
   }
 
-  /* mobile : accordéons empilés, corps dans le flux */
+  /* mobile : accordéons empilés, corps dans le flux.
+     Ancrés par le HAUT, juste sous la bande du texte : accrochés au bas
+     de l'écran, ils remontaient sur le texte à mesure qu'ils
+     grandissaient. */
   .accordions {
     grid-template-columns: 1fr;
     gap: clamp(8px, 1.6svh, 14px);
-    bottom: clamp(12px, 3svh, 28px);
+    top: 68svh;
+    bottom: auto;
   }
   .accBody p {
     font-size: 0.86rem;
     line-height: 1.45;
+    /* Trois lignes : le volet ouvert ne doit pas pousser les deux autres
+       hors de l'écran. */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
   }
   .accBody {
     position: static;
