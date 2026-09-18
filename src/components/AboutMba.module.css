@@ -52,6 +52,18 @@
   color: #0b0b0c;
 }
 
+/* Le contenu est centré dans la scène : sur un grand écran, la moitié du
+   vide se retrouvait AU-DESSUS du surtitre — près de 600 px sur un 27
+   pouces, un trou entre la photo d'équipe et le texte. Ce retrait bas
+   déplace le centre vers le haut et divise ce vide par deux, sans rien
+   coller au bord : il suit la hauteur d'écran, donc il ne fait rien sur
+   un portable et beaucoup sur un grand moniteur. */
+@media (min-width: 721px) {
+  .track > .stage {
+    padding-bottom: clamp(40px, 30svh, 380px);
+  }
+}
+
 /* La section équipe MONTE par-dessus les principes, restés épinglés.
 
    -100svh : elle part du bas de l'écran et son haut atteint le haut du
@@ -62,6 +74,9 @@
    montée : une section plus courte laisserait voir les principes
    dessous. */
 .team {
+  /* Blanc franc, et non le blanc cassé du reste : la section des portraits
+     se détache de celle des principes qu'elle recouvre au scroll. */
+  background: #fff;
   z-index: 2;
   margin-top: -100svh;
   min-height: 100svh;
