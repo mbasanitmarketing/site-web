@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { REALISATIONS } from "@/lib/pages";
 import { useScrollProgress } from "@/lib/useScrollProgress";
 import titre from "./Heading.module.css";
@@ -24,6 +24,79 @@ export function PaysageScroll() {
   // puis la scène reste épinglée jusqu'à 1070 sans bouger — le palier
   // pendant lequel le panneau partenaires glisse par-dessus.
   useScrollProgress(trackRef, stageRef, 0.852);
+
+  /* GLISSEMENT AU DOIGT.
+   *
+   * La rotation du cylindre est une fonction de la position de défilement,
+   * et rien d'autre. Faire tourner le carrousel au doigt revient donc à
+   * FAIRE DÉFILER LA PAGE de la distance correspondante : les deux
+   * commandes restent d'accord, et le reste de la scène (le blanc qui
+   * monte, le texte, le panneau qui suit) avance avec.
+   *
+   * La conversion se calcule sur la géométrie réelle : la rotation
+   * complète occupe 80 % de la course d'épinglage (cf. --turn dans le
+   * module CSS), répartie sur `count` intervalles. Un glissement de 45 %
+   * de la largeur d'écran avance donc d'une diapo.
+   *
+   * `touch-action: pan-y` (CSS) laisse le défilement vertical au
+   * navigateur et ne nous réserve que l'horizontal : on ne vole jamais un
+   * geste de lecture normal.
+   */
+  useEffect(() => {
+    const track = trackRef.current;
+    const stage = stageRef.current;
+    if (!track || !stage) return;
+    if (!matchMedia("(pointer: coarse)").matches) return;
+
+    const count = Math.max(1, REALISATIONS.length - 1);
+    let x0 = 0;
+    let y0 = 0;
+    let horizontal = false;
+    let actif = false;
+
+    const debut = (e: PointerEvent) => {
+      if (e.pointerType !== "touch") return;
+      actif = true;
+      horizontal = false;
+      x0 = e.clientX;
+      y0 = e.clientY;
+    };
+
+    const bouge = (e: PointerEvent) => {
+      if (!actif || e.pointerType !== "touch") return;
+      const dx = e.clientX - x0;
+      const dy = e.clientY - y0;
+      // Tant que le geste n'est pas franchement horizontal, on ne touche
+      // à rien : c'est peut-être un scroll vertical qui commence.
+      if (!horizontal) {
+        if (Math.abs(dx) < 12 || Math.abs(dx) <= Math.abs(dy)) return;
+        horizontal = true;
+      }
+      x0 = e.clientX;
+      y0 = e.clientY;
+
+      const course = (track.offsetHeight - stage.offsetHeight) * 0.852 * 0.8;
+      const parDiapo = course / count;
+      const delta = (-dx / (innerWidth * 0.45)) * parDiapo;
+      scrollTo({ top: scrollY + delta });
+    };
+
+    const fin = () => {
+      actif = false;
+      horizontal = false;
+    };
+
+    stage.addEventListener("pointerdown", debut, { passive: true });
+    stage.addEventListener("pointermove", bouge, { passive: true });
+    stage.addEventListener("pointerup", fin, { passive: true });
+    stage.addEventListener("pointercancel", fin, { passive: true });
+    return () => {
+      stage.removeEventListener("pointerdown", debut);
+      stage.removeEventListener("pointermove", bouge);
+      stage.removeEventListener("pointerup", fin);
+      stage.removeEventListener("pointercancel", fin);
+    };
+  }, []);
 
   return (
     <section ref={trackRef} className={styles.track}>

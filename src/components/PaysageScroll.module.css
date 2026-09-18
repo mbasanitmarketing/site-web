@@ -57,6 +57,10 @@
   position: sticky;
   top: 0;
   height: 100svh;
+  /* Le glissement HORIZONTAL nous est réservé (il fait tourner le
+     carrousel, cf. PaysageScroll.tsx) ; le vertical reste au navigateur,
+     donc un scroll de lecture normal n'est jamais intercepté. */
+  touch-action: pan-y;
   /* overflow seul clippe mal les enfants 3D (preserve-3d) : les diapos
      pivotées débordaient et faisaient un bord « en escalier » au raccord
      avec le footer. clip-path force un rognage rectangulaire net. */
