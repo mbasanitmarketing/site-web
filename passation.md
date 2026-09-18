@@ -26,7 +26,7 @@ reste à créer — délibérément repoussé, on valide en local d'abord.
 | Section 2 (arrivée d'image + panneau) | Fonctionnelle, validée sur le principe |
 | Suite du site | Rien |
 | Git | **Fait** — dépôt privé `mbasanitmarketing/site-web` |
-| Vercel | Rien, volontairement repoussé |
+| Vercel | **En ligne** — <https://site-web-mba.vercel.app>, déploiement automatique à chaque push. Projet sous le compte du CLIENT : invisible depuis le compte agence, ne pas en conclure qu'il n'existe pas. |
 
 ---
 
@@ -264,10 +264,12 @@ planche-contact, mesure de netteté, détourage du logo).
    ipsum et des aplats gris. Quatre photos client sont disponibles dans le dossier
    parent (chaufferie, salles de bain, réalisations).
 4. **La suite du site** — sections non définies à ce jour.
-5. **Vercel** — à brancher sur le dépôt GitHub quand le client le voudra. Rien
-   n'y dépend du code : c'est une étape isolée. Question ouverte : le projet
-   Vercel se crée sous le compte du client (cohérent avec le dépôt) ou sous
-   celui de l'agence ?
+5. **Vercel** — FAIT. Le site est en ligne sur
+   <https://site-web-mba.vercel.app> et chaque push sur `main` déclenche un
+   déploiement. Le projet vit sous le compte du client, comme le dépôt : la
+   CLI connectée au compte de l'agence ne le voit donc PAS. Avant la mise en
+   ligne publique, il reste à couper `AVIS_DEMO` (avis inventés) et à
+   renseigner `RESEND_API_KEY` pour que le formulaire de devis parte.
 
 ### Git — en place
 
