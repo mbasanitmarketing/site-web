@@ -249,10 +249,39 @@ export const VALEURS: { title: string; body: string }[] = [
    le visage de quelqu'un — d'où la question posée plutôt qu'une
    supposition. Un `nom` laissé vide n'affiche aucune légende, c'est le
    repli sûr. */
-export const EQUIPE: { photo: string; nom?: string; role?: string }[] = [
-  { photo: "/equipe-portrait-1.jpg", nom: "Greg" },
-  { photo: "/equipe-portrait-2.jpg", nom: "Fred" },
-  { photo: "/equipe-portrait-3.jpg", nom: "Yoan" },
+export const EQUIPE: {
+  photo: string;
+  nom?: string;
+  role?: string;
+  /** Deux lignes sous le portrait. */
+  texte?: string;
+}[] = [
+  /* ATTENTION — les RÔLES ci-dessous sont des PROPOSITIONS, pas des faits :
+     MBA n'a donné que les prénoms et la place de chacun sur la photo. Fred
+     est bien l'interlocuteur (il nous l'a dit) ; la spécialité prêtée à
+     Greg et à Yoan est à confirmer ou à remplacer par Fred avant la mise
+     en ligne. Un champ vide n'affiche rien, c'est le repli sûr. */
+  {
+    photo: "/equipe-portrait-1.jpg",
+    nom: "Greg",
+    role: "Installations sanitaires",
+    texte:
+      "Sur le chantier au quotidien : alimentations, évacuations et pose des appareils, jusqu’aux finitions.",
+  },
+  {
+    photo: "/equipe-portrait-2.jpg",
+    nom: "Fred",
+    role: "Votre interlocuteur",
+    texte:
+      "Il vient sur place, prend les mesures, établit le devis et suit le chantier jusqu’à la réception.",
+  },
+  {
+    photo: "/equipe-portrait-3.jpg",
+    nom: "Yoan",
+    role: "Chauffage et eau chaude",
+    texte:
+      "Chaudières, pompes à chaleur et production d’eau chaude : de l’étude de l’existant à la mise en service.",
+  },
 ];
 
 /* --- Les trois métiers, sous /services ---------------------------- */

@@ -120,6 +120,7 @@ export function AboutMba() {
                   {p.role && <span className={styles.personRole}>{p.role}</span>}
                 </p>
               )}
+              {p.texte && <p className={styles.personTexte}>{p.texte}</p>}
             </li>
           ))}
         </ul>

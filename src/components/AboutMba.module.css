@@ -204,6 +204,14 @@
   color: rgba(11, 11, 12, 0.55);
 }
 
+/* Deux lignes sous le nom : 15 px, comme tout paragraphe du site. */
+.personTexte {
+  margin: clamp(8px, 1.1svh, 12px) 0 0;
+  font-size: clamp(14px, 1.05vw, 15px);
+  line-height: 1.5;
+  color: rgba(11, 11, 12, 0.66);
+}
+
 /* --- Écrans étroits --------------------------------------------------- */
 
 /* --- Écran court ou mouvement réduit : pas d'épinglage ---------------- */
@@ -211,8 +219,14 @@
 /* Une scène d'un écran qu'on recouvre, c'est précisément ce que le
    mouvement réduit doit éviter ; et sur un écran très bas, les trois
    cartes n'y tiendraient pas. Tout reprend sa place dans le flux, les
-   cartes visibles d'emblée. */
-@media (max-height: 700px), (prefers-reduced-motion: reduce) {
+   cartes visibles d'emblée.
+
+   TÉLÉPHONE (≤ 720 px) : même traitement. Empilées en une colonne, les
+   trois cartes font 700 px pour un écran de 844 : la scène s'épinglait
+   donc avec un écran presque vide, et il fallait défiler dans le vide
+   avant de les voir monter une à une. C'est le blanc qu'on voyait sur
+   mobile. Sans épinglage, elles sont lisibles tout de suite. */
+@media (max-width: 720px), (max-height: 700px), (prefers-reduced-motion: reduce) {
   .track {
     height: auto;
   }

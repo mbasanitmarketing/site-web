@@ -38,7 +38,7 @@ export function Hero() {
       <div ref={stageRef} className={styles.stage}>
         {/* Photos */}
         <div className={styles.media}>
-          <Image src="/hero-dark.png" alt="" fill priority sizes="120vw" />
+          <Image src="/hero-dark.jpg" alt="" fill priority sizes="120vw" />
           <div className={styles.light}>
             <Image src="/hero-light.jpg" alt="" fill priority sizes="120vw" />
           </div>
