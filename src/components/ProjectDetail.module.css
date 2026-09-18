@@ -310,13 +310,12 @@
   .shot {
     flex-basis: 86%;
   }
-  /* pas de survol au doigt : la pastille reste visible */
+  /* Pas de survol au doigt : la pastille reste visible. Elle garde sa
+     FORME de base (rectangle dimensionné par son texte) : lui réimposer
+     un carré de 66 px coupait le mot « Agrandir » en deux. */
   .zoomBadge {
     opacity: 1;
     transform: none;
-    width: 66px;
-    height: 66px;
-    font-size: 11px;
   }
   .next {
     display: none;

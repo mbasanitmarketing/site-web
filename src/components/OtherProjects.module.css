@@ -93,20 +93,22 @@
   left: 50%;
   display: grid;
   place-items: center;
-  width: clamp(84px, 7vw, 104px);
-  height: clamp(84px, 7vw, 104px);
-  border-radius: 50%;
-  /* Même traitement que le bouton d'appel flottant : disque sombre
-     translucide, flou d'arrière-plan et anneau blanc fin. */
+  padding: clamp(9px, 1.1svh, 12px) clamp(14px, 1.5vw, 22px);
+  /* Rectangle à 2 px : la charte des boutons du site. */
+  border-radius: 2px;
+  /* Même traitement que le bouton d'appel flottant : fond sombre
+     translucide, flou d'arrière-plan et filet blanc fin. */
   border: 1.5px solid rgba(255, 255, 255, 0.9);
   background: rgba(16, 16, 20, 0.26);
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   color: #fff;
-  font-size: clamp(11px, 0.85vw, 13px);
+  font-size: clamp(10px, 0.85vw, 12px);
   font-weight: 500;
-  line-height: 1.2;
-  text-align: center;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.9);
   transition:
