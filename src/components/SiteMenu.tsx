@@ -70,9 +70,13 @@ export function SiteMenu() {
       if (e.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKey);
-    panelRef.current
-      ?.querySelector<HTMLElement>("a, button")
-      ?.focus({ preventScroll: true });
+    // Le focus va sur le PANNEAU (tabIndex -1), pas sur son premier lien :
+    // Safari mobile dessinait son anneau bleu par défaut autour de
+    // « Services » à chaque ouverture (capture client). Les lecteurs
+    // d'écran et le clavier entrent dans le dialogue exactement pareil ;
+    // la touche Tab atteint ensuite le premier lien, avec un vrai style
+    // de focus (cf. .row:focus-visible dans le module CSS).
+    panelRef.current?.focus({ preventScroll: true });
     return () => {
       window.removeEventListener("keydown", onKey);
       burgerRef.current?.focus({ preventScroll: true });
@@ -112,6 +116,7 @@ export function SiteMenu() {
         role="dialog"
         aria-modal="true"
         aria-label="Menu"
+        tabIndex={-1}
         inert={!open}
       >
         <nav className={styles.nav}>

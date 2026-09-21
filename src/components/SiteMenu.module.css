@@ -204,6 +204,38 @@
   transition-delay: calc(var(--idx, 0) * 45ms + 140ms);
 }
 
+/* Le burger récupère le focus à la fermeture du menu (accessibilité) :
+   sans règle, Safari mobile dessinait un cadre autour de lui à chaque
+   fois. Au toucher, rien ; au clavier, un cadre net et lisible sur les
+   deux fonds (clair et photo) grâce à un double contour. */
+.burger:focus {
+  outline: none;
+}
+.burger:focus-visible {
+  outline: 2px solid #070b20;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.85);
+  border-radius: 2px;
+}
+
+/* Le panneau reçoit le focus à l'ouverture sans rien montrer : c'est un
+   conteneur, pas un contrôle. */
+.panel:focus {
+  outline: none;
+}
+
+/* Focus des rangées : SEULEMENT au clavier (`:focus-visible`), en navy et
+   en rectangle à 2 px comme les boutons du site. Le rectangle bleu du
+   navigateur n'a plus lieu d'apparaître au toucher. */
+.row:focus {
+  outline: none;
+}
+.row:focus-visible {
+  outline: 2px solid #070b20;
+  outline-offset: -2px;
+  border-radius: 2px;
+}
+
 /* rangée cliquable : lien simple OU bouton d'accordéon */
 .row {
   display: flex;
