@@ -139,11 +139,12 @@ export type PullQuote = {
   role?: string;
 };
 
-/* Phrase fournie par MBA le 21/09/2026, recopiée mot à mot.
-   SANS SIGNATURE : personne ne nous a dit de qui elle est. Un témoignage
-   attribué au hasard serait un faux. Dès que MBA donne le nom (et la
-   fonction, s'il y en a une), les ajouter ici — l'affichage suit. */
+/* Phrase fournie par MBA le 21/09/2026, recopiée mot à mot, signée « D.S. »
+   sur leur indication (initiales seules : c'est celles qu'ils nous ont
+   données, on n'en déduit pas un nom complet). Une fonction pourra être
+   ajoutée en `role` si MBA en donne une. */
 export const PULL_QUOTE: PullQuote | null = {
+  author: "D.S.",
   text:
     "Les travaux ont été réalisés avec beaucoup de rigueur et de soins, dans " +
     "le respect des normes en vigueur et avec une qualité d’exécution " +

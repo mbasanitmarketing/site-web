@@ -42,6 +42,27 @@
   margin-top: -360svh;
 }
 
+/* TÉLÉPHONE : la section arrive 90svh plus tôt.
+   Sur mobile l'animation de la hero se joue en ~80vh de défilement (cf.
+   Hero.module.css, « TÉLÉPHONE »), mais le panneau bleu n'apparaissait
+   qu'à ~170vh : entre les deux, la hero restait épinglée et FIGÉE, et on
+   faisait défiler du vide (retour d'une utilisatrice Android).
+
+   On remonte donc toute la section de 90svh (-360 -> -450). Rien d'autre
+   ne bouge : sa hauteur et sa propre animation sont inchangées, elle
+   démarre simplement plus tôt. Le panneau devient visible à ~80vh, pile
+   quand la hero a fini. La hero, elle, reste épinglée sous la section
+   jusqu'à ce qu'elle soit entièrement recouverte (à ~330vh, elle se
+   retire à 440vh) : aucun bord ne se découvre.
+
+   Sur ordinateur la valeur d'origine est conservée : l'animation de la
+   hero y dure 158vh, et le panneau n'y attend pas. */
+@media (max-width: 720px) {
+  .track {
+    margin-top: -450svh;
+  }
+}
+
 .stage {
   --step-x: 34%; /* abscisse du décrochement */
   --panel-step-y: 12svh; /* décrochement du panneau à l'arrivée */

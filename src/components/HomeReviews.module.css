@@ -470,8 +470,32 @@
 /* --- Écrans étroits --------------------------------------------------- */
 
 @media (max-width: 720px) {
+  /* TÉLÉPHONE : la citation passe à 3 ou 4 lignes pour redevenir lisible.
+     Sur deux lignes elle tombait à 17 px, et l'anglaise, qui a un œil
+     très petit pour sa taille, y devenait illisible (retour client). La
+     contrainte « deux lignes » vaut pour l'ordinateur ; ici la lisibilité
+     l'emporte. */
+  .quoteText {
+    font-size: 1.75rem;
+    line-height: 1.22;
+  }
   .card {
     width: min(82vw, 330px);
+  }
+}
+
+/* Petit téléphone (écran court) : à 28 px la citation prenait 120 px de
+   plus, et la carte d'avis OUVERTE, qui garde sa hauteur, se faisait
+   rogner de 77 px (mesuré à 360 × 640). Corps intermédiaire, 3 lignes :
+   plus lisible que les 17 px d'avant, sans écraser les avis. */
+@media (max-width: 720px) and (max-height: 700px) {
+  .quoteText {
+    font-size: 1.4rem;
+  }
+  /* Marges du bandeau resserrées : elles valaient ~70 px à cette hauteur
+     et il en manquait 22 pour la carte ouverte. */
+  .band {
+    padding-block: 16px 14px;
   }
   .rule {
     width: min(240px, 60%);

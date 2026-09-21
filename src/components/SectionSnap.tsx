@@ -52,6 +52,20 @@ import Snap from "lenis/snap";
  * demandé, c'est précisément ce qu'il faut éviter.
  */
 /**
+ * DÉSACTIVÉ (false) : sur un vrai téléphone, le calage natif rendait le
+ * défilement saccadé (retour d'une utilisatrice, le jour même de son
+ * ajout). Une page bâtie sur des scènes épinglées (`position: sticky`)
+ * et un calage qui se recale pendant que le doigt lâche l'inertie ne font
+ * pas bon ménage, et la barre d'adresse mobile qui se rétracte change la
+ * hauteur visée en cours de route.
+ *
+ * Le code est conservé pour mémoire, mais il ne s'exécute plus : le
+ * défilement tactile est 100 % natif, sans rien qui s'y superpose. Ne le
+ * réactiver que pour l'essayer sur un vrai appareil.
+ */
+const CALAGE_TACTILE = false;
+
+/**
  * CALAGE NATIF, pour les écrans tactiles.
  *
  * Au doigt, un coup de pouce un peu vif emportait la page d'un trait à
@@ -136,7 +150,9 @@ export function SectionSnap() {
        le défilement paraît saccadé. Le repère vise aussi une hauteur
        d'écran qui change quand la barre d'adresse du navigateur se
        rétracte. Sur téléphone, le scroll natif fait mieux tout seul. */
-    if (matchMedia("(pointer: coarse)").matches) return calageNatif();
+    if (matchMedia("(pointer: coarse)").matches) {
+      return CALAGE_TACTILE ? calageNatif() : undefined;
+    }
 
     const snap = new Snap(lenis, {
       type: "proximity",
