@@ -134,6 +134,46 @@
   color: rgba(245, 245, 244, 0.6);
 }
 
+/* --- Pages principales ------------------------------------------ */
+
+/* Une rangée de liens entre les horaires et les mentions. Même corps et
+   même capitales que les mentions, mais plus claire : ce sont des liens
+   de navigation, pas du petit texte légal. */
+.pages ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px clamp(18px, 2.6vw, 40px);
+  margin: 0 0 clamp(22px, 4svh, 40px);
+  padding: 0;
+  list-style: none;
+}
+
+.pages a {
+  font-size: var(--small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(245, 245, 244, 0.85);
+  /* Filet qui se dessine au survol, comme les liens du reste du site. */
+  padding-bottom: 3px;
+  border-bottom: 1px solid transparent;
+  transition:
+    color 200ms ease,
+    border-color 200ms ease;
+}
+
+.pages a:hover,
+.pages a:focus-visible {
+  color: #f5f5f4;
+  border-color: rgba(245, 245, 244, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pages a {
+    transition: none;
+  }
+}
+
 /* --- Mentions : © / confidentialité / mentions légales / agence --- */
 
 .meta {

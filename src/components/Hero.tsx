@@ -57,7 +57,13 @@ export function Hero() {
   // `false` là où le navigateur sait animer sur le scroll : c'est alors
   // le CSS qui écrit `--p` (cf. Hero.module.css), sans passer par le fil
   // principal. La boucle JS reste le repli des navigateurs plus anciens.
-  useScrollProgress(trackRef, stageRef, 0.36, !SCROLL_CSS);
+  // Sur téléphone la course est divisée par deux (cf. Hero.module.css,
+  // « TÉLÉPHONE »). Lu au montage : la valeur ne sert qu'au repli JS.
+  const span =
+    typeof window !== "undefined" && matchMedia("(max-width: 720px)").matches
+      ? 0.18
+      : 0.36;
+  useScrollProgress(trackRef, stageRef, span, !SCROLL_CSS);
 
   return (
     /* data-hero-track : SiteLogo s'en sert pour savoir quand la hero est

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { GoogleReviews } from "./GoogleReviews";
 import { HORAIRES } from "@/lib/contact";
+import { PAGES } from "@/lib/pages";
 import styles from "./Footer.module.css";
 
 /**
@@ -26,6 +27,15 @@ import styles from "./Footer.module.css";
  * la section précédente apparaisse dans les zones découpées. Réservé à
  * l'accueil ; ailleurs il mordrait sur les textes du bas de PageIntro.
  */
+/* Liens du pied de page : l'accueil, puis les pages de premier niveau
+   lues dans PAGES — la même source que le menu et la transition, donc une
+   page ajoutée là apparaît ici sans rien toucher. Pour le référencement,
+   c'est aussi un maillage interne présent sur CHAQUE page. */
+const LIENS = [
+  { href: "/", label: "Accueil" },
+  ...PAGES.map((p) => ({ href: p.href, label: p.title })),
+];
+
 export function Footer({
   overlap = false,
   above = "light",
@@ -63,6 +73,19 @@ export function Footer({
         <br />
         {HORAIRES.fermeture}
       </p>
+
+      {/* Pages principales du site (demandé). */}
+      <nav className={styles.pages} aria-label="Pages du site">
+        <ul>
+          {LIENS.map((l) => (
+            <li key={l.href}>
+              <a href={l.href} data-page-transition>
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       <div className={styles.meta}>
         <span>© 2026. MBA Sanit</span>

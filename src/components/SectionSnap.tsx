@@ -51,6 +51,77 @@ import Snap from "lenis/snap";
  * Mouvement réduit : aucun calage. Un déplacement de page qu'on n'a pas
  * demandé, c'est précisément ce qu'il faut éviter.
  */
+/**
+ * CALAGE NATIF, pour les écrans tactiles.
+ *
+ * Au doigt, un coup de pouce un peu vif emportait la page d'un trait à
+ * travers plusieurs sections. Le calage Lenis (ci-dessous) ne peut pas y
+ * servir : il lance une animation JavaScript qui lutte contre l'inertie du
+ * système. Le calage CSS, lui, est géré par le navigateur, au niveau du
+ * défilement lui-même — aucun conflit.
+ *
+ * `scroll-snap-stop: always` est la pièce qui compte : le défilement ne
+ * peut PAS enjamber un point de calage, même lancé à pleine vitesse. Il
+ * s'arrête au début de chaque section et il faut un second geste pour
+ * repartir — c'est le « ralentir après chaque section » demandé.
+ *
+ * `proximity` et non `mandatory`, pour la même raison que sur ordinateur :
+ * les scènes épinglées se jouent AU FIL du défilement, un calage
+ * obligatoire les écraserait. Le milieu d'une piste n'est jamais touché.
+ *
+ * Mêmes repères qu'au bureau (début de chaque section de premier niveau
+ * qui ne recouvre pas la précédente, ou déclarée par `data-snap`), et
+ * même règle du dernier écran : aucun repère à moins d'un écran du bas,
+ * sinon le pied de page devient inatteignable.
+ */
+function calageNatif() {
+  const racine = document.documentElement;
+  let marques: HTMLElement[] = [];
+
+  const construire = () => {
+    for (const s of marques) {
+      s.style.removeProperty("scroll-snap-align");
+      s.style.removeProperty("scroll-snap-stop");
+    }
+    marques = [];
+
+    const fin = racine.scrollHeight - window.innerHeight;
+    for (const s of document.querySelectorAll<HTMLElement>(
+      "#page-root > section",
+    )) {
+      const haut = s.getBoundingClientRect().top + window.scrollY;
+      if (haut >= fin - window.innerHeight) continue;
+      const declare = s.dataset.snap?.trim();
+      const compte =
+        declare?.split(/\s+/).includes("start") ||
+        (!declare && parseFloat(getComputedStyle(s).marginTop) >= 0);
+      if (!compte) continue;
+      s.style.setProperty("scroll-snap-align", "start");
+      s.style.setProperty("scroll-snap-stop", "always");
+      marques.push(s);
+    }
+    racine.style.setProperty("scroll-snap-type", "y proximity");
+  };
+
+  construire();
+  let t = 0;
+  const onResize = () => {
+    clearTimeout(t);
+    t = window.setTimeout(construire, 250);
+  };
+  window.addEventListener("resize", onResize);
+
+  return () => {
+    window.removeEventListener("resize", onResize);
+    clearTimeout(t);
+    racine.style.removeProperty("scroll-snap-type");
+    for (const s of marques) {
+      s.style.removeProperty("scroll-snap-align");
+      s.style.removeProperty("scroll-snap-stop");
+    }
+  };
+}
+
 export function SectionSnap() {
   const lenis = useLenis();
   const pathname = usePathname();
@@ -65,7 +136,7 @@ export function SectionSnap() {
        le défilement paraît saccadé. Le repère vise aussi une hauteur
        d'écran qui change quand la barre d'adresse du navigateur se
        rétracte. Sur téléphone, le scroll natif fait mieux tout seul. */
-    if (matchMedia("(pointer: coarse)").matches) return;
+    if (matchMedia("(pointer: coarse)").matches) return calageNatif();
 
     const snap = new Snap(lenis, {
       type: "proximity",

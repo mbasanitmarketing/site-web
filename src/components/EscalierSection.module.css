@@ -324,113 +324,81 @@
     --hold: 8svh;
   }
 
-  /* Sur desktop c'est côte à côte : texte à gauche, images à droite.
-     En colonne étroite les deux se superposaient — et comme .viewport
-     vient après .copy dans le DOM, l'image passait par-dessus le texte,
-     qui devenait invisible. Ici on empile, de haut en bas :
-       intitulé (~4svh) · images 15 -> 45svh · texte 48 -> ~62svh
-       · accordéons ancrés en bas (~80 -> 96svh).
-     Les trois blocs sont calés sur la même gouttière que l'intitulé. */
-  /* Le budget vertical est serré et il est CALCULÉ, pas approximatif :
-     image 14 -> 39svh, texte à partir de 41svh, accordéons ancrés en bas.
-     Les descriptions de service ont été allongées (référencement) et
-     débordaient sur les accordéons — le texte passait DERRIÈRE eux et
-     devenait illisible. L'image est raccourcie pour rendre de la place,
-     et la description est bornée à cinq lignes : le texte entier reste
-     dans la page pour un moteur, seul l'affichage est coupé. */
-  .viewport {
-    left: clamp(16px, 2.2vw, 40px);
-    right: clamp(16px, 2.2vw, 40px);
-    width: auto;
-    top: 14svh;
-    bottom: auto;
-    height: 25svh;
-  }
-  /* Le texte et les accordéons sont deux blocs posés en absolu : rien
-     n'empêchait leurs hauteurs de se croiser. Sur un téléphone réglé sur
-     un texte plus grand, le pavé débordait et les accordéons lui
-     passaient dessus (capture client). Chacun reçoit donc SA BANDE, et le
-     texte ne peut plus déborder de la sienne. */
-  .copy {
-    left: clamp(16px, 2.2vw, 40px);
-    right: clamp(16px, 2.2vw, 40px);
-    width: auto;
-    top: 41svh;
-    bottom: auto;
-    /* Hauteur FIXE, et non un maximum : c'est elle qui garantit que rien
-       ne descend sur les accordéons, quel que soit le réglage de taille
-       de texte du téléphone. */
-    height: 24svh;
-  }
+  /* MISE EN PAGE EN COLONNE, DANS LE FLUX.
+     Sur ordinateur, texte et images sont deux blocs posés chacun de son
+     côté. En colonne étroite, les poser en absolu obligeait à deviner des
+     hauteurs : une bande fixe pour le texte le coupait net sur sa dernière
+     ligne (capture client, Android), et rien n'empêchait les accordéons de
+     lui passer dessus.
 
-  /* Dans cette bande : le titre et le bouton gardent leur taille, c'est
-     le paragraphe qui absorbe ce qui reste. Le bouton reste donc toujours
-     visible — avant, un texte réglé en très grand le poussait hors de la
-     bande et il se faisait rogner. */
-  .copyItem {
+     Ici le panneau est une vraie colonne : intitulé (absolu, en haut),
+     puis l'IMAGE, le TEXTE avec son bouton, les ACCORDÉONS. Chacun
+     prend la hauteur que son contenu demande, le suivant vient juste
+     dessous — plus rien à recalculer selon la longueur d'un paragraphe ou
+     la taille de texte du téléphone. C'est l'image, seule, qui se
+     comprime pour rendre de la place. */
+  .panel {
     display: flex;
     flex-direction: column;
-    min-height: 0;
-    height: 24svh;
+    padding: 11svh clamp(16px, 2.2vw, 40px) clamp(14px, 2.4svh, 24px);
   }
 
-  .sub {
-    /* Le paragraphe prend ce qui reste de la bande, et pas un pixel de
-       plus : c'est lui qui cède, jamais le bouton. */
-    flex: 1;
-    min-height: 0;
-    margin-top: 0.6rem;
-    font-size: 0.92rem;
-    line-height: 1.45;
-    /* Quatre lignes au maximum ; au-delà, c'est la hauteur disponible qui
-       coupe. Le paragraphe entier reste dans la page pour un moteur de
-       recherche, seul l'affichage est borné. */
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
-    overflow: hidden;
-    /* Quand c'est la hauteur de la bande qui coupe (et non le compteur de
-       lignes), la coupe tombe en plein milieu d'une ligne et ça fait
-       panne. Le fondu sur les vingt derniers pixels la rend volontaire. */
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      #000 calc(100% - 20px),
-      transparent
-    );
-    mask-image: linear-gradient(to bottom, #000 calc(100% - 20px), transparent);
+  .viewport {
+    order: 1;
+    position: relative;
+    inset: auto;
+    width: auto;
+    height: auto;
+    /* Prend ce qui reste, entre un plancher lisible et le format d'origine.
+       Le paragraphe entier s'affiche : c'est l'image qui cède. */
+    flex: 1 1 0;
+    min-height: 9svh;
+    max-height: 25svh;
   }
 
-  .cta {
+  .copy {
+    order: 2;
+    position: static;
+    width: auto;
     flex: none;
-    align-self: flex-start;
+    margin-top: clamp(14px, 2.4svh, 22px);
   }
+
   .heading {
     font-size: 1.2rem;
   }
-  .cta {
-    margin-top: 0.9rem;
+
+  /* Plus de coupe : le paragraphe s'affiche en entier, quelle que soit sa
+     longueur. Le bouton, dans le flux, se place juste sous la dernière
+     ligne — plus bas quand le texte est long, plus haut quand il est
+     court. */
+  .sub {
+    margin-top: 0.6rem;
+    font-size: 0.92rem;
+    line-height: 1.45;
   }
 
-  /* mobile : accordéons empilés, corps dans le flux.
-     Ancrés par le HAUT, juste sous la bande du texte : accrochés au bas
-     de l'écran, ils remontaient sur le texte à mesure qu'ils
-     grandissaient. */
+  .cta {
+    margin-top: 1rem;
+  }
+
+  /* Les accordéons viennent à la suite du texte, dans le flux. Réservés
+     dès le départ (invisibles jusqu'à --p 0.88) : leur place ne bouge pas
+     quand ils apparaissent, donc rien ne saute. */
   .accordions {
+    order: 3;
+    position: static;
     grid-template-columns: 1fr;
     gap: clamp(8px, 1.6svh, 14px);
-    top: 68svh;
-    bottom: auto;
+    flex: none;
+    margin-top: clamp(16px, 2.6svh, 26px);
   }
+
   .accBody p {
     font-size: 0.86rem;
     line-height: 1.45;
-    /* Trois lignes : le volet ouvert ne doit pas pousser les deux autres
-       hors de l'écran. */
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    overflow: hidden;
   }
+
   .accBody {
     position: static;
   }

@@ -54,6 +54,19 @@
     animation-timeline: --hero;
     animation-range: contain 0% contain 36%;
   }
+
+  /* TÉLÉPHONE : la même animation en deux fois moins de défilement.
+     À 36 % de la piste, elle demandait ~160vh de doigt avant d'aboutir,
+     soit une dizaine de coups de pouce sur un écran tactile (retour d'une
+     utilisatrice Android). À 18 % elle se joue en ~80vh. Seule la course
+     change ; la piste et l'arrivée de la section suivante restent
+     calées comme avant (elles sont indépendantes de cette valeur).
+     Valeur reprise dans Hero.tsx (SPAN_TEL) — les deux vont ensemble. */
+  @media (max-width: 720px) {
+    .stage {
+      animation-range: contain 0% contain 18%;
+    }
+  }
 }
 
 .stage {
