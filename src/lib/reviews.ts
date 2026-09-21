@@ -132,9 +132,20 @@ export const REVIEWS_AFFICHES: Review[] = AVIS_DEMO
  */
 export type PullQuote = {
   text: string;
-  author: string;
+  /** Signature. Facultative : sans elle, la phrase est affichée seule,
+   *  ce qui vaut mieux qu'un nom inventé. */
+  author?: string;
   /** Fonction ou contexte, sous le nom. Facultatif. */
   role?: string;
 };
 
-export const PULL_QUOTE: PullQuote | null = null;
+/* Phrase fournie par MBA le 21/09/2026, recopiée mot à mot.
+   SANS SIGNATURE : personne ne nous a dit de qui elle est. Un témoignage
+   attribué au hasard serait un faux. Dès que MBA donne le nom (et la
+   fonction, s'il y en a une), les ajouter ici — l'affichage suit. */
+export const PULL_QUOTE: PullQuote | null = {
+  text:
+    "Les travaux ont été réalisés avec beaucoup de rigueur et de soins, dans " +
+    "le respect des normes en vigueur et avec une qualité d’exécution " +
+    "irréprochable.",
+};

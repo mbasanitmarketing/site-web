@@ -405,7 +405,10 @@
 
 .quote {
   margin: 0;
-  max-width: 26ch;
+  /* 34ch et non 26 : la vraie citation fait 150 signes, contre 5 mots
+     pour la phrase d'attente. À 26ch elle tombait sur une dizaine de
+     lignes et son bandeau dépassait la hauteur de l'écran épinglé. */
+  max-width: 34ch;
 }
 
 /* L'anglaise, seul endroit du site où elle sert (cf. layout.tsx). Elle a
@@ -414,7 +417,10 @@
 .quoteText {
   margin: 0;
   font-family: var(--font-script), "Apple Chancery", cursive;
-  font-size: clamp(2rem, 4.6vw, 3.6rem);
+  /* Réduite d'un tiers pour la même raison : une phrase longue en très
+     gros corps ne tient pas dans le tiers d'écran que le bandeau occupe,
+     et elle écrasait la rangée d'avis juste au-dessus. */
+  font-size: clamp(1.4rem, 2.6vw, 2.4rem);
   font-weight: 400;
   line-height: 1.25;
   text-wrap: balance;

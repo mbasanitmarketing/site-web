@@ -290,12 +290,20 @@ export function HomeReviews() {
               <blockquote className={styles.quoteText}>
                 “{PULL_QUOTE.text}”
               </blockquote>
-              <figcaption className={styles.quoteBy}>
-                {PULL_QUOTE.role && (
-                  <span className={styles.quoteRole}>{PULL_QUOTE.role}</span>
-                )}
-                <span className={styles.quoteAuthor}>{PULL_QUOTE.author}</span>
-              </figcaption>
+              {/* Pas de signature fournie : on n'affiche pas de ligne
+                  vide, et surtout pas un nom inventé. */}
+              {(PULL_QUOTE.author || PULL_QUOTE.role) && (
+                <figcaption className={styles.quoteBy}>
+                  {PULL_QUOTE.role && (
+                    <span className={styles.quoteRole}>{PULL_QUOTE.role}</span>
+                  )}
+                  {PULL_QUOTE.author && (
+                    <span className={styles.quoteAuthor}>
+                      {PULL_QUOTE.author}
+                    </span>
+                  )}
+                </figcaption>
+              )}
             </figure>
           ) : (
             <figure className={`${styles.quote} ${styles.quoteEmpty}`}>
