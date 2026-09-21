@@ -405,11 +405,11 @@
 
 .quote {
   margin: 0;
-  /* Toute la largeur utile : c'était ELLE qui pliait la citation en cinq
-     ou six lignes, pas le corps du texte. Bornée en ch, la colonne ne
-     faisait que 338 px sur un écran de 1512. */
+  /* Colonne resserrée à 640 px : le corps a été divisé par deux, et une
+     ligne de 1400 px en petite anglaise se lit mal (l'œil perd la ligne
+     suivante). À 640 px la phrase tient encore sur deux lignes. */
   width: 100%;
-  max-width: none;
+  max-width: 640px;
 }
 
 /* L'anglaise, seul endroit du site où elle sert (cf. layout.tsx). Elle a
@@ -424,13 +424,15 @@
    * cette phrase, tracée d'un trait, mesure environ 38 fois son corps en
    * largeur. Pour tenir sur deux lignes il faut donc
    *     corps × 38 ≤ 2 × largeur utile,
-   * soit corps ≤ largeur / 19 — on prend 20, avec la marge. La règle vaut
-   * pour n'importe quelle largeur d'écran, sans point de rupture.
+   * soit corps ≤ largeur / 19 — on prend 20, avec la marge. Le plafond
+   * (1.7rem = 27 px) est la moitié de l'ancien (3.4rem), demandé : la
+   * règle de largeur ne joue plus que sur téléphone, où elle fait déjà
+   * moins. Elle vaut pour n'importe quelle largeur, sans point de rupture.
    *
    * Si la citation est un jour remplacée par une phrase NETTEMENT plus
    * longue, ce diviseur est à revoir — c'est le seul chiffre à toucher. */
   font-size: min(
-    3.4rem,
+    1.7rem,
     calc((100vw - 2 * var(--page-x)) / 20)
   );
   font-weight: 400;
