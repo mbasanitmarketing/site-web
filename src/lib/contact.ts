@@ -19,8 +19,14 @@ export const PHONE_HREF = `tel:${PHONE_E164}`;
 /** Lien WhatsApp. wa.me veut le numéro sans « + » ni espace. */
 export const WHATSAPP_HREF = `https://wa.me/${PHONE_E164.replace("+", "")}`;
 
-/** Adresse de contact affichée sur le site. */
+/** Adresse e-mail de contact affichée sur le site. */
 export const EMAIL = "contact@mbasanit.ch";
+
+/** Adresse postale, fournie par MBA le 22/09/2026. */
+export const ADRESSE = {
+  rue: "Route de Jussy 35",
+  npaVille: "1226 Thônex",
+};
 
 /**
  * Horaires d'ouverture.

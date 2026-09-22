@@ -125,6 +125,10 @@
    retrouvaient dans le vide, sans rien à quoi s'aligner. Elles reprennent
    la même marge que la note Google juste au-dessus. */
 .hours {
+  /* Porte maintenant l'adresse en plus des horaires : c'est un <address>
+     HTML, italique par défaut, à annuler pour garder le même style que le
+     reste du pied de page. */
+  font-style: normal;
   margin: clamp(34px, 7svh, 64px) 0 clamp(26px, 5svh, 48px);
   max-width: 30ch;
   font-size: var(--small);

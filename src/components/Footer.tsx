@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { GoogleReviews } from "./GoogleReviews";
-import { HORAIRES } from "@/lib/contact";
+import { ADRESSE, HORAIRES } from "@/lib/contact";
 import { PAGES } from "@/lib/pages";
 import styles from "./Footer.module.css";
 
@@ -68,11 +68,16 @@ export function Footer({
 
       {/* Horaires relevées sur la fiche Google (cf. HORAIRES) : l'heure
           d'ouverture affichée jusqu'ici, 07 h 30, était fausse. */}
-      <p className={styles.hours}>
+      <address className={styles.hours}>
+        {ADRESSE.rue}
+        <br />
+        {ADRESSE.npaVille}
+        <br />
+        <br />
         {HORAIRES.jours}, {HORAIRES.heures}
         <br />
         {HORAIRES.fermeture}
-      </p>
+      </address>
 
       {/* Pages principales du site (demandé). */}
       <nav className={styles.pages} aria-label="Pages du site">
