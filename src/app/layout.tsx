@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { draftMode } from "next/headers";
 import { Geist, Geist_Mono, Italianno } from "next/font/google";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { SiteMenu } from "@/components/SiteMenu";
@@ -6,6 +7,8 @@ import { SiteLogo } from "@/components/SiteLogo";
 import { CallButton } from "@/components/CallButton";
 import { GoogleBadge } from "@/components/GoogleBadge";
 import { PageTransition } from "@/components/PageTransition";
+import { CmsPreviewBridge } from "@/components/CmsPreviewBridge";
+import { getContactContent } from "@/lib/cms";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -33,12 +36,17 @@ export const metadata: Metadata = {
     "Installateur sanitaire et chauffagiste à Genève et en Suisse romande depuis plus de 20 ans : salles de bain sur mesure, chauffage et pompes à chaleur, douches extérieures, entretien et dépannage.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const [{ phoneLabel, phoneHref }, { isEnabled: preview }] = await Promise.all([getContactContent(), draftMode()]);
+
   return (
     <html lang="fr" className={`${geistSans.variable} ${geistMono.variable} ${script.variable}`}>
       <body className="antialiased">
+        {/* Uniquement visible dans l'aperçu de l'espace client (Draft Mode) :
+            jamais chargé pour un visiteur normal. */}
+        {preview && <CmsPreviewBridge />}
         <SmoothScroll>
-          <SiteMenu />
+          <SiteMenu phoneLabel={phoneLabel} phoneHref={phoneHref} />
           <SiteLogo />
           {/* Enveloppe ciblée par la transition de page (globals.css) */}
           <div id="page-root">{children}</div>

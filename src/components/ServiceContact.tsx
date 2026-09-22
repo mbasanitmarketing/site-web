@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { PHONE_HREF } from "@/lib/contact";
+import { getContactContent } from "@/lib/cms";
 import titre from "./Heading.module.css";
 import styles from "./ServiceContact.module.css";
 
@@ -12,7 +12,8 @@ import styles from "./ServiceContact.module.css";
  * contact est gardée côté serveur (cf. src/app/api/devis/route.ts) : la
  * poser en clair dans le HTML la ferait moissonner par les robots.
  */
-export function ServiceContact() {
+export async function ServiceContact() {
+  const { phoneHref } = await getContactContent();
   return (
     <section className={styles.wrap}>
       <div className={styles.rules} aria-hidden="true" />
@@ -48,7 +49,7 @@ export function ServiceContact() {
                 />
               </svg>
             </a>
-            <a className={styles.button} href={PHONE_HREF}>
+            <a className={styles.button} href={phoneHref}>
               Appeler l’équipe
             </a>
           </div>

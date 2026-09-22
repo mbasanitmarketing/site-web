@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { GoogleReviews } from "./GoogleReviews";
-import { ADRESSE, HORAIRES } from "@/lib/contact";
+import { getContactContent } from "@/lib/cms";
 import { PAGES } from "@/lib/pages";
 import styles from "./Footer.module.css";
 
@@ -36,7 +36,7 @@ const LIENS = [
   ...PAGES.map((p) => ({ href: p.href, label: p.title })),
 ];
 
-export function Footer({
+export async function Footer({
   overlap = false,
   above = "light",
 }: {
@@ -46,6 +46,7 @@ export function Footer({
    *  y apparaissait. */
   above?: "light" | "navy";
 }) {
+  const { street, city, hoursDays, hoursTime, hoursClosed } = await getContactContent();
   return (
     <div
       className={`${styles.shell} ${above === "navy" ? styles.shellNavy : ""} ${
@@ -66,17 +67,19 @@ export function Footer({
 
       <GoogleReviews className={styles.reviews} />
 
-      {/* Horaires relevées sur la fiche Google (cf. HORAIRES) : l'heure
-          d'ouverture affichée jusqu'ici, 07 h 30, était fausse. */}
+      {/* Horaires relevées sur la fiche Google (cf. src/lib/contact.ts, valeurs
+          par défaut) : l'heure d'ouverture affichée jusqu'ici, 07 h 30, était
+          fausse. Modifiable depuis l'espace client (src/lib/cms.ts) — chaque
+          information dans son propre <span> pour l'aperçu en direct. */}
       <address className={styles.hours}>
-        {ADRESSE.rue}
+        <span data-cms="contact.street">{street}</span>
         <br />
-        {ADRESSE.npaVille}
+        <span data-cms="contact.city">{city}</span>
         <br />
         <br />
-        {HORAIRES.jours}, {HORAIRES.heures}
+        <span data-cms="contact.hoursDays">{hoursDays}</span>, <span data-cms="contact.hoursTime">{hoursTime}</span>
         <br />
-        {HORAIRES.fermeture}
+        <span data-cms="contact.hoursClosed">{hoursClosed}</span>
       </address>
 
       {/* Pages principales du site (demandé). */}

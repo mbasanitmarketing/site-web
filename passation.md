@@ -1,6 +1,45 @@
 # Passation — Site MBA Sanit
 
-Document de reprise pour une nouvelle session. État arrêté au 6 septembre 2026.
+Document de reprise pour une nouvelle session. État arrêté au 6 septembre 2026 (voir
+l'addendum du 22 septembre ci-dessous pour ce qui a changé depuis).
+
+---
+
+## Addendum — 22 septembre 2026 : espace client (CMS)
+
+**Le périmètre a changé** : le § 1 ci-dessous dit « pas de CMS, pas de base de données,
+rien en dehors de ce dossier » — c'était vrai jusqu'ici, mais Rosie a revu le périmètre
+avec le client depuis, et ce site sert maintenant de premier test réel de l'espace
+client de l'agence (atelierwebromand.ch/espace-client). Le reste du document (§ 2 à 9,
+la hero, le décrochement, les pièges de vérification) reste valable tel quel : rien de
+ce qui est décrit plus bas n'a été touché.
+
+**Ce qui a été ajouté** (dépôt de l'agence, commit du 22/09/2026 — voir son
+`docs/CMS-CLIENT.md` § « Sites externes » pour le mécanisme général) :
+- `src/lib/cms.ts` — va chercher le contenu publié (ou brouillon, en aperçu) auprès de
+  l'agence. Retombe sur les valeurs de `src/lib/contact.ts` si l'agence est injoignable
+  ou si les variables d'environnement ne sont pas définies : **le site ne casse jamais**
+  si ce dispositif tombe en panne.
+- `src/app/api/draft/` — active/désactive le mode brouillon de Next.js (Draft Mode),
+  appelé par l'éditeur de l'agence, jamais par un visiteur.
+- `src/components/CmsPreviewBridge.tsx` — reçoit les modifications tapées dans
+  l'éditeur en direct (uniquement visible en mode brouillon).
+- `Footer.tsx`, `CallButton.tsx`, `ServiceContact.tsx`, `SiteMenu.tsx` — téléphone,
+  adresse et horaires viennent maintenant de `cms.ts` plutôt que directement de
+  `contact.ts`. **`contact.ts` reste la source des valeurs par défaut**, inchangé.
+
+**Variables d'environnement requises sur le projet Vercel de CE site** (à définir dans
+Settings > Environment Variables — absentes, le site fonctionne quand même, juste pas
+encore éditable) : `CMS_CONTENT_URL` et `CMS_PREVIEW_SECRET` — valeurs dans le
+`.env.local` local (non commité), ou à redemander à l'agence (fiche du site dans son
+admin). **Sans ces deux variables sur Vercel, l'éditeur de l'agence n'aura aucun effet
+sur le site réellement en ligne.**
+
+**Champs éditables pour l'instant** : uniquement téléphone, rue, ville, horaires
+(voir `src/lib/cms/manifests/mba-sanit.json` dans le dépôt de l'agence — volontairement
+restreint à ce qui est stable, pas les textes de service encore marqués « provisoire »
+dans ce document, ni la hero/l'escalier/le paysage scroll, trop délicats pour un premier
+passage). À étendre au fur et à mesure que le reste du contenu se stabilise.
 
 ---
 

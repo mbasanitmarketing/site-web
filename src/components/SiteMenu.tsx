@@ -6,7 +6,6 @@ import { CATEGORIES, SERVICES } from "@/lib/pages";
 import { useHeaderAutoHide } from "@/lib/useHeaderAutoHide";
 import { GoogleReviews } from "./GoogleReviews";
 import styles from "./SiteMenu.module.css";
-import { PHONE_HREF, PHONE_LABEL } from "@/lib/contact";
 
 type Entry = {
   label: string;
@@ -34,16 +33,18 @@ const ENTRIES: Entry[] = [
   { label: "Demander un devis", href: "/devis" },
 ];
 
-const PHONE = { label: PHONE_LABEL, href: PHONE_HREF };
-
 /**
  * Menu burger du site — fixe en haut à droite, présent sur toutes les
  * sections. Le bouton s'inverse sur le fond via `mix-blend-mode`
  * (Voir le module CSS). Le panneau glisse depuis la droite ; Services et
  * Réalisations se déplient en accordéon. Lenis est coupé pendant
  * l'ouverture pour verrouiller le scroll.
+ *
+ * `phoneLabel`/`phoneHref` viennent du composant serveur parent (layout.tsx,
+ * cf. src/lib/cms.ts) : ce composant est "use client", il ne peut pas aller
+ * chercher lui-même le contenu modifiable depuis l'espace client.
  */
-export function SiteMenu() {
+export function SiteMenu({ phoneLabel, phoneHref }: { phoneLabel: string; phoneHref: string }) {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<number | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -200,8 +201,10 @@ export function SiteMenu() {
               className={styles.item}
               style={{ "--idx": ENTRIES.length } as React.CSSProperties}
             >
-              <a href={PHONE.href} className={styles.row}>
-                <span className={styles.label}>{PHONE.label}</span>
+              <a href={phoneHref} className={styles.row}>
+                <span className={styles.label} data-cms="contact.phone">
+                  {phoneLabel}
+                </span>
               </a>
             </li>
           </ul>

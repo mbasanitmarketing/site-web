@@ -1,4 +1,4 @@
-import { PHONE_LABEL, WHATSAPP_HREF } from "@/lib/contact";
+import { getContactContent } from "@/lib/cms";
 import styles from "./CallButton.module.css";
 
 /**
@@ -14,15 +14,21 @@ import styles from "./CallButton.module.css";
  *
  * Le numéro reste joignable en direct ailleurs — dans le menu et dans la
  * section contact des pages de service.
+ *
+ * Numéro lu depuis l'espace client (src/lib/cms.ts) : pas de texte visible
+ * ici (juste l'icône), donc pas de `data-cms` — l'aperçu en direct ne
+ * s'applique qu'au menu et au pied de page, qui affichent le numéro en toutes
+ * lettres. Une modification publiée s'y répercute normalement au rechargement.
  */
-export function CallButton() {
+export async function CallButton() {
+  const { phoneLabel, whatsappHref } = await getContactContent();
   return (
     <a
       className={styles.call}
-      href={WHATSAPP_HREF}
+      href={whatsappHref}
       target="_blank"
       rel="noreferrer"
-      aria-label={`Écrire sur WhatsApp au ${PHONE_LABEL}`}
+      aria-label={`Écrire sur WhatsApp au ${phoneLabel}`}
     >
       {/* Bulle de message avec un combiné : la forme qu'on reconnaît,
           tracée au filet comme le reste des icônes du site. */}
