@@ -17,7 +17,13 @@ import { PrestationSteps } from "./PrestationSteps";
  * au-dessus d'eux. Épingler seulement la bande les faisait sortir de
  * l'écran, et on perdait le contexte pendant le défilement des étapes.
  */
-export function ServiceManifesto({ manifesto }: { manifesto: Manifesto }) {
+type Props = {
+  manifesto: Manifesto;
+  /** Préfixe des clés CMS de cette page de service (ex. "services.sanitaire-salles-de-bain"). */
+  cmsKey: string;
+};
+
+export function ServiceManifesto({ manifesto, cmsKey }: Props) {
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
 
@@ -38,8 +44,12 @@ export function ServiceManifesto({ manifesto }: { manifesto: Manifesto }) {
 
             <div>
               {/* h2 : le h1 de la page est le titre porté par le hero. */}
-              <h2 className={`${styles.headline} ${titre.h2}`}>{manifesto.headline}</h2>
-              <p className={styles.intro}>{manifesto.intro}</p>
+              <h2 className={`${styles.headline} ${titre.h2}`} data-cms={`${cmsKey}.headline`}>
+                {manifesto.headline}
+              </h2>
+              <p className={styles.intro} data-cms={`${cmsKey}.intro`}>
+                {manifesto.intro}
+              </p>
               <PrestationSteps steps={manifesto.blocks} />
             </div>
           </div>

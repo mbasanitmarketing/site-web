@@ -47,7 +47,20 @@ function Photo({ bureau, telephone }: { bureau: string; telephone: string }) {
   );
 }
 
-export function Hero() {
+type Props = {
+  /** Modifiables depuis l'espace client (voir src/lib/cms.ts) ; ce composant
+   *  étant côté client (animation au scroll), le contenu lui arrive en props
+   *  plutôt que d'être lu ici directement. */
+  title?: string;
+  subtitle?: string;
+  cta?: string;
+};
+
+export function Hero({
+  title = "Installations sanitaires",
+  subtitle = "& salles de bain en Suisse romande",
+  cta = "Demander un devis",
+}: Props) {
   const trackRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
 
@@ -97,9 +110,9 @@ export function Hero() {
           className={`${styles.headline} absolute z-10 w-[82vw] text-right md:w-[46vw] lg:w-[42vw]`}
         >
           <h1 className="text-[1.35rem] font-semibold uppercase leading-[1.14] tracking-tight text-white drop-shadow-[0_2px_20px_rgba(0,0,0,0.55)] md:text-[2.2vw] lg:text-[clamp(1.6rem,2vw,2.6rem)]">
-            Installations sanitaires{" "}
-            <span className={styles.sub}>
-              &amp; salles de bain en Suisse romande
+            <span data-cms="hero.title">{title}</span>{" "}
+            <span className={styles.sub} data-cms="hero.subtitle">
+              {subtitle}
             </span>
           </h1>
         </div>
@@ -108,8 +121,8 @@ export function Hero() {
         <span className={styles.trait} aria-hidden="true" />
 
         {/* CTA — apparaît en fondu au scroll et suit la montée du titre */}
-        <a className={styles.cta} href="/devis" data-page-transition>
-          Demander un devis
+        <a className={styles.cta} href="/devis" data-page-transition data-cms="hero.cta">
+          {cta}
         </a>
 
         {/* Indice de scroll — le trait seul, sans le mot (retiré). Purement

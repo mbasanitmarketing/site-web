@@ -28,7 +28,13 @@ import styles from "./ServiceNeeds.module.css";
  * gens plutôt que de chantier, et la section parle d'écoute. Elle sert
  * aussi de hero à /equipe — une photo dédiée serait mieux.
  */
-export function ServiceNeeds({ service }: { service: ServiceDetail }) {
+type Props = {
+  service: ServiceDetail;
+  /** Préfixe des clés CMS de cette page de service (ex. "services.sanitaire-salles-de-bain"). */
+  cmsKey: string;
+};
+
+export function ServiceNeeds({ service, cmsKey }: Props) {
   const trackRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
 
@@ -71,10 +77,14 @@ export function ServiceNeeds({ service }: { service: ServiceDetail }) {
         {/* Les trois cas, côte à côte, montés par le bas. */}
         <div className={styles.panel}>
           <ul className={styles.cases}>
-            {service.needs.map((n) => (
-              <li key={n.title} className={styles.case}>
-                <h4 className={styles.caseTitle}>{n.title}</h4>
-                <p className={styles.caseBody}>{n.body}</p>
+            {service.needs.map((n, i) => (
+              <li key={i} className={styles.case}>
+                <h4 className={styles.caseTitle} data-cms={`${cmsKey}.needs.${i}.title`}>
+                  {n.title}
+                </h4>
+                <p className={styles.caseBody} data-cms={`${cmsKey}.needs.${i}.body`}>
+                  {n.body}
+                </p>
               </li>
             ))}
           </ul>

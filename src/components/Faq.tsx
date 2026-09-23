@@ -67,12 +67,14 @@ export function Faq({
           {items.map((f, i) => (
             <details key={f.q} className={styles.item} open={i === 0}>
               <summary className={styles.question}>
-                <span>{f.q}</span>
+                <span data-cms={`faq.${i}.q`}>{f.q}</span>
                 {/* Deux barres : un « + » qui pivote en croix à
                     l'ouverture. Le signe dit l'état, pas la couleur. */}
                 <span className={styles.icon} aria-hidden="true" />
               </summary>
-              <p className={styles.answer}>{f.a}</p>
+              <p className={styles.answer} data-cms={`faq.${i}.a`}>
+                {f.a}
+              </p>
             </details>
           ))}
         </div>

@@ -8,6 +8,7 @@ import { Faq } from "@/components/Faq";
 import { ServiceContact } from "@/components/ServiceContact";
 import { Footer } from "@/components/Footer";
 import { SERVICES, getService, realisationsOf, slugOf } from "@/lib/pages";
+import { getFaqItems, getServiceOverride } from "@/lib/cms";
 
 export function generateStaticParams() {
   return SERVICES.map((s) => ({ slug: slugOf(s.href) }));
@@ -27,6 +28,17 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
   const page = getService(slug);
   if (!page) notFound();
 
+  // Présentation et besoins : modifiables depuis l'espace client. `slug` est
+  // aussi le préfixe de clé du manifeste CMS (`services.<slug>.*`).
+  const [override, faqItems] = await Promise.all([
+    page.manifesto && page.service
+      ? getServiceOverride(slug, { headline: page.manifesto.headline, intro: page.manifesto.intro, needs: page.service.needs })
+      : null,
+    getFaqItems(),
+  ]);
+  const manifesto = page.manifesto && override ? { ...page.manifesto, headline: override.headline, intro: override.intro } : page.manifesto;
+  const service = page.service && override ? { ...page.service, needs: override.needs } : page.service;
+
   return (
     <>
       {/* Ordre : introduction, prestation, réalisations, partenaires,
@@ -39,7 +51,7 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
           n'a pas disparu — elle est passée en première question de la FAQ,
           rédigée. */}
       <PageIntro page={page} />
-      {page.manifesto && <ServiceManifesto manifesto={page.manifesto} />}
+      {manifesto && <ServiceManifesto manifesto={manifesto} cmsKey={`services.${slug}`} />}
       {/* Les réalisations montent juste après « La prestation » : on voit
           le travail avant de lire le reste. Elles ne sont donc plus
           collées à la FAQ — celle-ci ne glisse plus par-dessus, faute
@@ -51,10 +63,10 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
         />
       )}
       <Partners headline="Un réseau de partenaires solide" />
-      {page.service && <ServiceNeeds service={page.service} />}
-      {page.service && (
+      {service && <ServiceNeeds service={service} cmsKey={`services.${slug}`} />}
+      {service && (
         <Faq
-          items={page.service.faq}
+          items={faqItems}
           lede="Zones d’intervention, chantiers, entretien : les réponses aux questions qui reviennent."
         />
       )}

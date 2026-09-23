@@ -1,5 +1,6 @@
 import { draftMode } from "next/headers";
 import { ADRESSE, EMAIL, HORAIRES, PHONE_LABEL } from "./contact";
+import { EQUIPE, FAQ_ITEMS, VALEURS } from "./pages";
 
 /**
  * Contenu modifiable depuis l'espace client de l'Atelier Web Romand
@@ -22,7 +23,8 @@ import { ADRESSE, EMAIL, HORAIRES, PHONE_LABEL } from "./contact";
  */
 
 type TextOverride = { fr?: string; en?: string };
-type Overrides = Record<string, TextOverride | { url: string; alt?: string } | undefined>;
+type CollectionOverride = Record<string, string>[];
+type Overrides = Record<string, TextOverride | { url: string; alt?: string } | CollectionOverride | undefined>;
 
 async function fetchOverrides(): Promise<Overrides> {
   const url = process.env.CMS_CONTENT_URL;
@@ -50,10 +52,20 @@ async function fetchOverrides(): Promise<Overrides> {
 
 function text(overrides: Overrides, key: string, fallback: string): string {
   const value = overrides[key];
-  if (value && typeof value === "object" && "fr" in value && typeof value.fr === "string" && value.fr.trim()) {
+  if (value && typeof value === "object" && !Array.isArray(value) && "fr" in value && typeof value.fr === "string" && value.fr.trim()) {
     return value.fr;
   }
   return fallback;
+}
+
+/** Élément d'une "collection" (voir docs/CMS-CLIENT.md) : chaîne vide = pas encore saisi, on retombe sur le repli. */
+function pick(value: string | undefined, fallback: string): string {
+  return value && value.trim() ? value : fallback;
+}
+
+function collectionOf(overrides: Overrides, key: string): CollectionOverride | null {
+  const value = overrides[key];
+  return Array.isArray(value) ? value : null;
 }
 
 export type ContactContent = {
@@ -87,5 +99,88 @@ export async function getContactContent(): Promise<ContactContent> {
     hoursDays: text(overrides, "contact.hoursDays", HORAIRES.jours),
     hoursTime: text(overrides, "contact.hoursTime", HORAIRES.heures),
     hoursClosed: text(overrides, "contact.hoursClosed", HORAIRES.fermeture),
+  };
+}
+
+export type HeroContent = { title: string; subtitle: string; cta: string };
+
+/** Titre, sous-titre et bouton du hero de la page d'accueil. */
+export async function getHeroContent(): Promise<HeroContent> {
+  const overrides = await fetchOverrides();
+  return {
+    title: text(overrides, "hero.title", "Installations sanitaires"),
+    subtitle: text(overrides, "hero.subtitle", "& salles de bain en Suisse romande"),
+    cta: text(overrides, "hero.cta", "Demander un devis"),
+  };
+}
+
+export type ValeurItem = { title: string; body: string };
+
+/** Les trois arguments de réassurance (page d'accueil et page équipe). */
+export async function getValeurs(): Promise<ValeurItem[]> {
+  const overrides = await fetchOverrides();
+  const items = collectionOf(overrides, "valeurs");
+  if (!items) return VALEURS;
+  return items.map((item, i) => ({
+    title: pick(item.title, VALEURS[i]?.title ?? ""),
+    body: pick(item.body, VALEURS[i]?.body ?? ""),
+  }));
+}
+
+export type EquipeItem = { photo: string; nom: string; role: string; texte: string };
+
+/**
+ * Les trois portraits de l'équipe. La photo reste celle du fichier d'origine
+ * (voir EQUIPE dans pages.ts) : elle n'est pas modifiable depuis l'espace
+ * client (pas d'envoi de photo par élément de collection pour l'instant), un
+ * effectif à taille fixe côté manifeste CMS le garantit.
+ */
+export async function getEquipe(): Promise<EquipeItem[]> {
+  const overrides = await fetchOverrides();
+  const items = collectionOf(overrides, "equipe");
+  return EQUIPE.map((person, i) => ({
+    photo: person.photo,
+    nom: pick(items?.[i]?.nom, person.nom ?? ""),
+    role: pick(items?.[i]?.role, person.role ?? ""),
+    texte: pick(items?.[i]?.texte, person.texte ?? ""),
+  }));
+}
+
+export type FaqOverrideItem = { q: string; a: string };
+
+/** Questions fréquentes, partagées par la page d'accueil et les trois pages de prestation. */
+export async function getFaqItems(): Promise<FaqOverrideItem[]> {
+  const overrides = await fetchOverrides();
+  const items = collectionOf(overrides, "faq");
+  if (!items || items.length === 0) return FAQ_ITEMS;
+  return items.map((item, i) => ({
+    q: pick(item.q, FAQ_ITEMS[i]?.q ?? ""),
+    a: pick(item.a, FAQ_ITEMS[i]?.a ?? ""),
+  }));
+}
+
+export type ServiceOverride = { headline: string; intro: string; needs: { title: string; body: string }[] };
+
+/**
+ * Présentation et besoins d'une page de service (`slug` = segment d'URL,
+ * ex. "sanitaire-salles-de-bain" — identique au préfixe de clé du manifeste
+ * CMS `services.<slug>.*`). `fallback` : valeurs d'origine de pages.ts.
+ */
+export async function getServiceOverride(
+  slug: string,
+  fallback: ServiceOverride,
+): Promise<ServiceOverride> {
+  const overrides = await fetchOverrides();
+  const prefix = `services.${slug}.`;
+  const needsOverride = collectionOf(overrides, `${prefix}needs`);
+  return {
+    headline: text(overrides, `${prefix}headline`, fallback.headline),
+    intro: text(overrides, `${prefix}intro`, fallback.intro),
+    needs: needsOverride
+      ? needsOverride.map((item, i) => ({
+          title: pick(item.title, fallback.needs[i]?.title ?? ""),
+          body: pick(item.body, fallback.needs[i]?.body ?? ""),
+        }))
+      : fallback.needs,
   };
 }

@@ -1,17 +1,18 @@
 import { Faq } from "./Faq";
-import { FAQ_ITEMS } from "@/lib/pages";
+import { getFaqItems } from "@/lib/cms";
 
 /* --- Questions fréquentes -------------------------------------------- */
 
 /**
- * Mêmes questions que sur les pages de service : elles sont écrites une
- * seule fois (FAQ_ITEMS, dans src/lib/pages.ts). Deux FAQ qui
- * divergeraient sur les mêmes questions seraient pires qu'une seule.
+ * Mêmes questions que sur les pages de service : une seule source
+ * (getFaqItems, dans src/lib/cms.ts, repli sur FAQ_ITEMS de pages.ts). Deux
+ * FAQ qui divergeraient sur les mêmes questions seraient pires qu'une seule.
  */
-export function HomeFaq() {
+export async function HomeFaq() {
+  const items = await getFaqItems();
   return (
     <Faq
-      items={FAQ_ITEMS}
+      items={items}
       lede="Ce qu’on nous demande le plus souvent, avant un premier rendez-vous."
     />
   );

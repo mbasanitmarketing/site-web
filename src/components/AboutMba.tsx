@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRef } from "react";
 import { useScrollProgress } from "@/lib/useScrollProgress";
-import { EQUIPE, VALEURS } from "@/lib/pages";
+import type { EquipeItem, ValeurItem } from "@/lib/cms";
 import { BackdropLines } from "./BackdropLines";
 import chip from "./Chip.module.css";
 import styles from "./AboutMba.module.css";
@@ -46,7 +46,14 @@ const ICONES = [
  * temps que la section équipe vienne la recouvrir. Tout dérive de --p,
  * cf. le module CSS pour les bornes.
  */
-export function AboutMba() {
+type Props = {
+  /** Modifiables depuis l'espace client (voir src/lib/cms.ts) ; composant
+   *  côté client (animation au scroll), le contenu lui arrive en props. */
+  valeurs: ValeurItem[];
+  equipe: EquipeItem[];
+};
+
+export function AboutMba({ valeurs, equipe }: Props) {
   const trackRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
 
@@ -72,21 +79,25 @@ export function AboutMba() {
         </p>
 
         <ul className={styles.cards}>
-          {VALEURS.map((v, i) => (
+          {valeurs.map((v, i) => (
             /* --i : le rang de la carte. C'est lui qui décale son entrée,
                une après l'autre — une seule règle CSS pour les trois. */
             <li
-              key={v.title}
+              key={i}
               className={styles.card}
               style={{ "--i": i } as React.CSSProperties}
             >
               <span className={styles.badge} aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  {ICONES[i]}
+                  {ICONES[i] ?? ICONES[ICONES.length - 1]}
                 </svg>
               </span>
-              <h3 className={styles.cardTitle}>{v.title}</h3>
-              <p className={styles.cardBody}>{v.body}</p>
+              <h3 className={styles.cardTitle} data-cms={`valeurs.${i}.title`}>
+                {v.title}
+              </h3>
+              <p className={styles.cardBody} data-cms={`valeurs.${i}.body`}>
+                {v.body}
+              </p>
             </li>
           ))}
         </ul>
@@ -102,7 +113,7 @@ export function AboutMba() {
         </p>
 
         <ul className={styles.people}>
-          {EQUIPE.map((p) => (
+          {equipe.map((p, i) => (
             <li key={p.photo} className={styles.person}>
               <div className={styles.portrait}>
                 {/* alt vide : décoratif tant qu'on n'a pas les noms — une
@@ -116,11 +127,19 @@ export function AboutMba() {
               </div>
               {p.nom && (
                 <p className={styles.personName}>
-                  {p.nom}
-                  {p.role && <span className={styles.personRole}>{p.role}</span>}
+                  <span data-cms={`equipe.${i}.nom`}>{p.nom}</span>
+                  {p.role && (
+                    <span className={styles.personRole} data-cms={`equipe.${i}.role`}>
+                      {p.role}
+                    </span>
+                  )}
                 </p>
               )}
-              {p.texte && <p className={styles.personTexte}>{p.texte}</p>}
+              {p.texte && (
+                <p className={styles.personTexte} data-cms={`equipe.${i}.texte`}>
+                  {p.texte}
+                </p>
+              )}
             </li>
           ))}
         </ul>
