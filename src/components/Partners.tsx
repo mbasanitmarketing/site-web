@@ -32,11 +32,19 @@ import styles from "./Partners.module.css";
  * un logo inventé affirmerait un partenariat qui n'existe peut-être pas.
  */
 export function Partners({ headline }: { headline: string }) {
-  const items =
+  // Fonction de `i` (le rang de la copie), pas une liste figée : les
+  // logos sont maintenant de vrais liens, et seule la première copie doit
+  // rester atteignable au clavier (cf. `piste` plus bas — les autres sont
+  // dupliquées pour boucher le cadre, `aria-hidden` seul ne les retire
+  // pas du parcours Tab dans tous les navigateurs).
+  const buildItems = (i: number) =>
     PARTNERS.length > 0
-      ? PARTNERS.map((p) => ({ key: p.name, node: <Logo p={p} /> }))
-      : Array.from({ length: PARTNER_SLOTS }, (_, i) => ({
-          key: `slot-${i}`,
+      ? PARTNERS.map((p) => ({
+          key: p.name,
+          node: <Logo p={p} tabIndex={i > 0 ? -1 : undefined} />,
+        }))
+      : Array.from({ length: PARTNER_SLOTS }, (_, j) => ({
+          key: `slot-${j}`,
           node: <span className={styles.slot}>Logo</span>,
         }));
 
@@ -83,7 +91,7 @@ export function Partners({ headline }: { headline: string }) {
         i === 0 && PARTNERS.length === 0 ? "Logos à fournir" : undefined
       }
     >
-      {items.map((it) => (
+      {buildItems(i).map((it) => (
         <li key={it.key} className={styles.item}>
           {it.node}
         </li>
@@ -149,7 +157,8 @@ export function Partners({ headline }: { headline: string }) {
           style={
             {
               "--copies": copies,
-              "--n": items.length,
+              "--n":
+                PARTNERS.length > 0 ? PARTNERS.length : PARTNER_SLOTS,
             } as React.CSSProperties
           }
         >
@@ -160,14 +169,43 @@ export function Partners({ headline }: { headline: string }) {
   );
 }
 
-function Logo({ p }: { p: { name: string; logo: string } }) {
+/**
+ * Chaque logo repose sur sa propre pastille : gris effacé, coins adoucis
+ * — le traitement standard des bandeaux de partenaires (demandé). Les
+ * logos sont en niveaux de gris au repos et retrouvent leur couleur au
+ * survol, pour qu'un bandeau de trois marques différentes (Stoppa en
+ * rouge/gris, AD Concepts en noir, PJP en bleu/vert) ne jure pas.
+ *
+ * Chaque pastille est un lien vers le site du partenaire (demandé) : un
+ * site externe, donc `target="_blank"` + `rel="noreferrer"`, jamais
+ * `data-page-transition` (réservé aux routes internes). Les copies (piste
+ * dupliquée pour la boucle du marquee) restent atteignables au clavier —
+ * `tabIndex` : -1 sur les copies dupliquées (cf. `buildItems`), pour que
+ * Tab ne fasse pas défiler trois fois le même lien avant d'atteindre la
+ * section suivante. */
+function Logo({
+  p,
+  tabIndex,
+}: {
+  p: { name: string; logo: string; url: string };
+  tabIndex?: number;
+}) {
   return (
-    <Image
-      className={styles.logo}
-      src={p.logo}
-      alt={p.name}
-      width={190}
-      height={64}
-    />
+    <a
+      className={styles.tile}
+      href={p.url}
+      target="_blank"
+      rel="noreferrer"
+      tabIndex={tabIndex}
+      aria-label={`${p.name} — voir le site (nouvel onglet)`}
+    >
+      <Image
+        className={styles.logo}
+        src={p.logo}
+        alt={p.name}
+        width={190}
+        height={64}
+      />
+    </a>
   );
 }

@@ -117,13 +117,50 @@
   display: grid;
   place-items: center;
   flex: none;
-  height: clamp(44px, 4.6vw, 64px);
+  height: clamp(64px, 6.6vw, 96px);
+}
+
+/* La pastille : gris effacé, coins adoucis — pas le bleu du bandeau
+   derrière (--band), un neutre qui se détache légèrement de lui pour
+   qu'on voie qu'il y a une carte, pas juste un logo posé sur le fond. */
+/* C'est maintenant un <a> (lien vers le site du partenaire, demandé) :
+   on lui retire la mise en forme de lien par défaut. */
+.tile {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: clamp(12px, 1.4vw, 20px) clamp(20px, 2.2vw, 32px);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.55);
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 220ms ease;
+}
+
+.item:hover .tile,
+.tile:focus-visible {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.tile:focus-visible {
+  outline: 2px solid rgba(11, 11, 12, 0.55);
+  outline-offset: 2px;
 }
 
 .logo {
   width: auto;
   height: 100%;
   object-fit: contain;
+  /* Niveaux de gris au repos, couleur au survol : un bandeau de marques
+     différentes (rouge, noir, bleu/vert) reste sobre tant qu'on ne
+     s'y arrête pas. */
+  filter: grayscale(1) opacity(0.82);
+  transition: filter 220ms ease;
+}
+
+.item:hover .logo,
+.tile:focus-visible .logo {
+  filter: none;
 }
 
 /* Emplacement en attente du fichier : visiblement un trou, pas un logo. */
@@ -254,7 +291,9 @@
 @media (prefers-reduced-motion: reduce) {
   .label,
   .headline,
-  .viewport {
+  .viewport,
+  .tile,
+  .logo {
     transition: none;
   }
 }

@@ -798,16 +798,38 @@ export const HERO_COURT: ReadonlySet<string> = new Set(
 /**
  * Logos des partenaires.
  *
- * VIDE tant que MBA ne les a pas fournis. On ne met pas de marques
- * inventées sur le site d'un client : afficher un logo, c'est affirmer un
- * partenariat commercial. Tant que la liste est vide, la section montre
- * des emplacements — la mise en page se juge, rien n'est affirmé.
+ * Trois partenaires réels, confirmés par MBA le 24/09/2026 : Pascal
+ * Stoppa SA (carrelage, Carouge), AD Concepts 2.1 SARL (architecture,
+ * Grand-Lancy), PJP SA (électricité, Chêne-Bourg). Logos récupérés sur
+ * leurs sites officiels respectifs (stoppa-carrelage.ch, adconcepts21.ch,
+ * pjpsa.ch) — celui de PJP est recadré sur leur seule marque, sans la
+ * baseline ni l'adresse de leur bannière d'origine.
  *
- * Pour les brancher : déposer les fichiers dans /public, puis
- *   { name: "Nom du fabricant", logo: "/partenaire-xxx.svg" }
+ * Chaque logo pointe vers le site du partenaire (demandé) : PJP n'a que
+ * du http (leur certificat https ne correspond pas à leur domaine — lien
+ * en clair plutôt qu'un https qui déclencherait un avertissement).
+ *
+ * Pour ajouter un partenaire : déposer le fichier dans /public, puis
+ *   { name: "Nom", logo: "/partenaire-xxx.png", url: "https://…" }
  * SVG monochrome de préférence, ou PNG sur fond transparent.
  */
-export const PARTNERS: { name: string; logo: string }[] = [];
+export const PARTNERS: { name: string; logo: string; url: string }[] = [
+  {
+    name: "Pascal Stoppa SA — Carrelages & revêtements",
+    logo: "/partenaire-stoppa.png",
+    url: "https://www.stoppa-carrelage.ch",
+  },
+  {
+    name: "AD Concepts 2.1 SARL — Architecture",
+    logo: "/partenaire-ad-concepts-2.png",
+    url: "https://www.adconcepts21.ch",
+  },
+  {
+    name: "PJP SA — Électricité & télécommunication",
+    logo: "/partenaire-pjp.png",
+    url: "http://pjpsa.ch",
+  },
+];
 
 /** Nombre d'emplacements montrés tant que PARTNERS est vide. */
 /** Pages sans ouverture (PageIntro) : leur contenu commence directement
