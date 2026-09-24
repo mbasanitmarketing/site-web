@@ -28,6 +28,49 @@
   height: calc(100svh + (var(--count, 4) - 1) * 78svh);
 }
 
+/* --- Animation pilotée par le scroll du navigateur ----------------------
+ *
+ * `--p` est par défaut écrite en JavaScript à chaque image (cf.
+ * useScrollProgress). Sur Android, le défilement est porté par un fil
+ * séparé du JavaScript : quand celui-ci est occupé, l'image du doigt
+ * avance et `--p` reste en retard — les étapes restaient bloquées sur la
+ * première, ou sautaient (retour client, capture à l'appui). C'est le
+ * même défaut que celui corrigé sur la hero ; il touchait cette section
+ * parce qu'elle n'avait pas encore reçu le même traitement.
+ *
+ * Là où le navigateur sait animer SUR le scroll lui-même, `--p` lui est
+ * confiée : elle est alors liée à la position de défilement, elle ne
+ * peut plus être en retard dessus. `contain 0% -> contain 100%` parce
+ * que `span` vaut 1 ici (cf. ServiceManifesto.tsx) : toute la course de
+ * la piste, du moment où son haut touche le haut de l'écran jusqu'à ce
+ * que son bas le touche — exactement ce que calcule la boucle JS pour
+ * span=1. Ailleurs, rien ne change, le JS reste le repli. */
+@property --p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@keyframes progresseManifesto {
+  from {
+    --p: 0;
+  }
+  to {
+    --p: 1;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .track {
+    view-timeline: --manifesto block;
+  }
+  .stage {
+    animation: progresseManifesto linear both;
+    animation-timeline: --manifesto;
+    animation-range: contain 0% contain 100%;
+  }
+}
+
 /* Toute la section s'épingle ici — titre et chapô compris. */
 .stage {
   position: sticky;
