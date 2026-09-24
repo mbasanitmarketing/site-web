@@ -490,6 +490,25 @@
     min-height: 220px;
     max-height: 320px;
   }
+  /* `.panel` reste piloté par `--p` (transform + clip-path), calculée
+     en JS à partir de la géométrie piste/scène d'un épinglage qui
+     n'existe plus ici (`.track`/`.stage` en hauteur automatique juste
+     au-dessus) : `--p` reste bloquée près de 0, ce qui vaut ici
+     `--panel-y: 100svh` — le panneau ENTIER (photo, texte, accordéons)
+     se peint un plein écran plus bas que sa vraie place dans la page.
+     Ce qu'on voyait était donc le fond de la hero, dans le vide laissé
+     par le panneau disparu (retour client : section noire, invisible).
+     Plus d'animation à jouer ici : panneau fixe, pleinement visible. */
+  .panel {
+    transform: none;
+    clip-path: none;
+  }
+  /* Les accordéons n'apparaissent normalement qu'à la fin du palier
+     (--p > 0.88) : avec --p bloquée à 0, ils resteraient invisibles
+     pour toujours. Plus de scène à dérouler : visibles d'emblée. */
+  .accordions {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
