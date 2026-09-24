@@ -517,26 +517,17 @@
     --step: 40deg;
     /* Portrait sur mobile : en 3:2 l'image ne prenait que 23 % de la
        hauteur d'écran. Les photos sont recadrées au centre par
-       object-fit, on perd leurs bords gauche et droit.
-       90 -> 96vw : c'est LARGEUR qui bornait la diapo ici (8:9 d'une
-       largeur proche de l'écran reste sous le plafond svh ci-dessous),
-       pas la hauteur d'écran comme on le pensait — remonter le plafond
-       svh seul ne changeait donc rien. Il restait une bande blanche sous
-       la photo avant le bouton WhatsApp, un gâchis d'écran d'autant plus
-       visible sur fond clair (retour client). */
-    --slide-w: 96vw;
-    /* Portrait 8:9, mais borné par la hauteur d'écran passé un certain
-       point : sur un téléphone très étroit mais haut, c'est cette limite
-       qui reprend la main au-delà de ~900px de haut. */
-    --slide-h: min(calc(var(--slide-w) * 9 / 8), 62svh);
+       object-fit, on perd leurs bords gauche et droit. */
+    --slide-w: 90vw;
+    /* Portrait 8:9, mais borné par la hauteur d'écran : sur un petit
+       téléphone le chapô s'enroule sur plus de lignes et l'image venait
+       le toucher. Au-delà de ~740px de haut, c'est le 8:9 qui gagne. */
+    --slide-h: min(calc(var(--slide-w) * 9 / 8), 50svh);
   }
   /* La diapo est bien plus haute : on descend l'axe du cylindre pour
-     qu'elle ne remonte pas dans le chapô. Réajusté avec le plafond
-     ci-dessus (56 -> 57%, mesuré) pour que la diapo, plus grande, garde
-     un peu d'espace libre au-dessus et en dessous plutôt que de mordre
-     sur le chapô. */
+     qu'elle ne remonte pas dans le chapô. */
   .rail {
-    top: 58%;
+    top: 56%;
   }
   /* Deux colonnes de 34vw ne tiennent pas sur un téléphone : les blocs
      s'empilent, tous deux alignés à gauche — un paragraphe court ferré à
@@ -558,35 +549,6 @@
     grid-row: auto;
     justify-self: start;
     text-align: left;
-  }
-}
-
-/* ÉCRAN COURT (mobile) : la diapo redevient plus petite.
- *
- * `.rail { top: 57% }` est un point fixe : sur un écran normal, la diapo
- * (dimensionnée en `vw`, donc indépendante de la hauteur) a de la place
- * de chaque côté de ce point. Sur un écran plus court, le chapô occupe
- * une part plus grande de la hauteur totale et la MÊME diapo, à la même
- * taille, se retrouve à cheval dessus (mesuré à 360×620 : elle mordait
- * de 49px sur le chapô). On réduit la diapo pour cette plage — mêmes
- * proportions (8:9), simplement plus petite. */
-@media (max-width: 720px) and (max-height: 840px) {
-  .stage {
-    --slide-w: 62vw;
-  }
-  .rail {
-    top: 61%;
-  }
-  /* Sur cette plage, EscalierSection se déroule sans épinglage (cf. son
-     propre repli, MÊME seuil ici) : sa piste redevient courte, au lieu
-     des ~640vh d'une scène épinglée. Le chevauchement de -200svh ci-dessus
-     supposait cette scène longue pour venir couvrir sa toute fin ; avec
-     Escalier courte, il remontait bien plus haut et recouvrait TOUTE sa
-     piste (constaté : Escalier invisible, masqué par cette section,
-     retour client). Plus de scène longue à chevaucher : la piste reprend
-     simplement après le contenu qui la précède. */
-  .track {
-    margin-top: 0;
   }
 }
 
