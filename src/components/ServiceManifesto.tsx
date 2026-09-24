@@ -9,6 +9,12 @@ import styles from "./ServiceManifesto.module.css";
 import { BackdropLines } from "./BackdropLines";
 import { PrestationSteps } from "./PrestationSteps";
 
+/** Le navigateur sait-il animer sur la position de défilement ? Même test
+ *  que Hero.tsx : les deux doivent s'accorder, ils lisent la même chose. */
+const SCROLL_CSS =
+  typeof CSS !== "undefined" &&
+  CSS.supports?.("animation-timeline: view()") === true;
+
 /**
  * Section « La prestation » — un repère à gauche, à droite la grande
  * ligne, le chapô, puis la bande des quatre étapes.
@@ -27,7 +33,17 @@ export function ServiceManifesto({ manifesto, cmsKey }: Props) {
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
 
-  useScrollProgress(trackRef, stageRef, 1);
+  // BUG CORRIGÉ : cette ligne tournait TOUJOURS, même quand le CSS
+  // ci-dessous prenait le relais (cf. ServiceManifesto.module.css,
+  // « Animation pilotée par le scroll du navigateur »). Les deux
+  // écrivaient `--p` sur le même nœud à chaque image ; l'animation CSS
+  // l'emporte dans la cascade sur une simple écriture JS, donc le JS
+  // devenait inopérant SANS RIEN SIGNALER — si l'animation CSS restait
+  // bloquée sur un appareil (détectée comme prise en charge, mais
+  // défaillante à l'exécution), rien ne prenait le relais : la section
+  // restait figée sur la première étape (retour client, Android). Même
+  // garde que sur la hero : le JS ne tourne que si le CSS ne peut pas.
+  useScrollProgress(trackRef, stageRef, 1, !SCROLL_CSS);
 
   return (
     <section className={styles.wrap}>
