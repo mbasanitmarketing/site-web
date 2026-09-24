@@ -371,10 +371,18 @@
     width: auto;
     height: auto;
     /* Prend ce qui reste, entre un plancher lisible et le format d'origine.
-       Le paragraphe entier s'affiche : c'est l'image qui cède. */
+       Le paragraphe entier s'affiche : c'est l'image qui cède.
+       Plafond remonté (était 25svh) : sur un écran normal la photo
+       n'avait pas besoin d'être si petite, il restait de la place
+       (retour client — « la photo est toute petite »). */
     flex: 1 1 0;
-    min-height: 9svh;
-    max-height: 25svh;
+    /* Le plafond n'était pas le problème : la photo n'y touchait même
+       pas, elle était écrasée par ce que le texte et les accordéons
+       prenaient avant elle. C'est le PLANCHER qui compte — remonté de
+       9 à 22svh pour qu'elle garde une part correcte de l'écran même
+       sur un panneau chargé. */
+    min-height: 22svh;
+    max-height: 36svh;
   }
 
   .copy {
@@ -422,6 +430,65 @@
 
   .accBody {
     position: static;
+  }
+}
+
+/* ÉCRAN COURT (mobile) : plus d'épinglage.
+ *
+ * `.stage` a une hauteur FIXE (100svh) parce qu'elle reste épinglée
+ * pendant l'animation. Sur un Android dont la barre d'adresse ne se
+ * rétracte pas, la hauteur RÉELLEMENT visible peut descendre bien en
+ * dessous de ce que `svh` promet — et dans une colonne flex de hauteur
+ * fixe trop courte pour son contenu (photo + texte + 3 accordéons), la
+ * photo (seule à céder, `flex-grow`) s'écrase jusqu'à son plancher, et le
+ * reste peut se faire couper par `overflow: hidden` (retour client :
+ * photo minuscule, contenu qui semble manquer).
+ *
+ * Cette règle existait avant la réécriture de la mise en page mobile en
+ * colonne ; elle s'est perdue en route. En dessous du seuil, la section
+ * n'est plus épinglée : chaque bloc prend sa vraie hauteur dans le flux
+ * normal, rien ne peut plus l'écraser.
+ *
+ * SEUIL — mesuré, pas estimé : à 380×720 le panneau (photo au plancher
+ * + texte + 3 accordéons) a besoin d'environ 813px et déborde donc déjà
+ * franchement ; à 380×860 il tient tout juste (~21px de marge). Le seuil
+ * est calé sous cette deuxième valeur, avec un peu de marge de sécurité
+ * plutôt qu'au ras du calcul. */
+@media (max-width: 720px) and (max-height: 840px),
+  (max-width: 720px) and (prefers-reduced-motion: reduce) {
+  .track {
+    height: auto;
+    margin-top: 0;
+  }
+  .stage {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+  .panel {
+    /* `.panel` reste `position: absolute; inset: 0` par défaut (règle de
+       base, pensée pour un `.stage` de hauteur fixe) : sans le remettre
+       dans le flux ici, il continuait de chercher un ancêtre positionné
+       avec une hauteur définie — qu'il n'avait plus, `.stage` étant
+       passée en hauteur automatique juste au-dessus. Résultat mesuré :
+       une hauteur délirante (4608px) et un contenu éclaté. */
+    position: static;
+    /* Le grand retrait du haut dégageait le header FIXE pendant que la
+       section restait épinglée dessous ; en flux normal, la page défile
+       sous le header comme partout ailleurs sur le site, cette réserve
+       n'a plus cette raison d'être — mais `.eyebrow` (« Services ») reste
+       positionné en absolu par-dessus le panneau (règle de base) : sans
+       assez de marge ici, la photo remontait sous son propre titre
+       (mesuré : 10px de recouvrement). */
+    padding-top: clamp(56px, 9svh, 76px);
+  }
+  .viewport {
+    /* Plus de place à ménager pour le texte qui suit : la photo prend
+       une hauteur confortable et fixe, comme le reste du site. */
+    flex: none;
+    height: 32svh;
+    min-height: 220px;
+    max-height: 320px;
   }
 }
 
