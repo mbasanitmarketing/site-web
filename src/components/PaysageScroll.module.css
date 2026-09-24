@@ -570,12 +570,23 @@
  * taille, se retrouve à cheval dessus (mesuré à 360×620 : elle mordait
  * de 49px sur le chapô). On réduit la diapo pour cette plage — mêmes
  * proportions (8:9), simplement plus petite. */
-@media (max-width: 720px) and (max-height: 780px) {
+@media (max-width: 720px) and (max-height: 840px) {
   .stage {
     --slide-w: 62vw;
   }
   .rail {
     top: 61%;
+  }
+  /* Sur cette plage, EscalierSection se déroule sans épinglage (cf. son
+     propre repli, MÊME seuil ici) : sa piste redevient courte, au lieu
+     des ~640vh d'une scène épinglée. Le chevauchement de -200svh ci-dessus
+     supposait cette scène longue pour venir couvrir sa toute fin ; avec
+     Escalier courte, il remontait bien plus haut et recouvrait TOUTE sa
+     piste (constaté : Escalier invisible, masqué par cette section,
+     retour client). Plus de scène longue à chevaucher : la piste reprend
+     simplement après le contenu qui la précède. */
+  .track {
+    margin-top: 0;
   }
 }
 
