@@ -84,8 +84,16 @@
      bloc. Ne pas les repositionner séparément. */
   --gutter: clamp(24px, 12.7vw, 200px); /* 163 px @1280 : bord droit commun */
   --headline-bottom: 37.3%; /* + rise/2 -> bas du titre à 46,2 % @p=1 */
-  --gap-title-trait: clamp(16px, 3.2svh, 34px); /* 27 px @832 */
-  --trait-h: clamp(70px, 14.7svh, 150px); /* 122 px @832 */
+  /* Description ajoutée sous le titre (demandé) : deux lignes, alignées à
+     droite comme le titre. Elle s'intercale dans la même chaîne de
+     `bottom` que le trait et le CTA — eux ne bougent pas dans le code,
+     c'est la chaîne qui les redescend d'autant. Le trait est raccourci
+     un peu (--trait-h) pour lui laisser de la place sans trop grossir
+     le groupe entier. */
+  --gap-title-desc: clamp(8px, 1.5svh, 16px); /* titre -> description */
+  --desc-h: clamp(34px, 6.4svh, 48px); /* hauteur réservée, ~2 lignes */
+  --gap-title-trait: clamp(14px, 2.8svh, 30px); /* description -> trait */
+  --trait-h: clamp(60px, 12.6svh, 128px); /* raccourci (était 150px) */
   --gap-trait-cta: clamp(18px, 3.7svh, 40px); /* 31 px @832 */
   --cta-h: clamp(38px, 5.4svh, 54px); /* 45 px @832 */
 
@@ -198,11 +206,60 @@
   opacity: clamp(0.18, calc(0.18 + (var(--p, 0) - 0.15) * 1.7447), 1);
 }
 
+/* --- Description : deux lignes sous le titre, alignées à droite ---
+ * Même largeur et même bord droit que le titre (--gutter), même montée
+ * au scroll (--rise). Elle apparaît juste après le titre, avant le trait
+ * — un temps d'avance qui suit la lecture naturelle (titre -> chapô ->
+ * bouton). `-webkit-line-clamp` la borne à deux lignes ; si le texte est
+ * un jour plus long, le fondu sur la dernière ligne rend la coupe
+ * volontaire plutôt qu'un bug (même idiome qu'ailleurs sur le site, cf.
+ * EscalierSection). */
+.description {
+  --in: clamp(0, calc((var(--p, 0) - 0.1) / 0.16), 1);
+
+  position: absolute;
+  right: var(--gutter);
+  bottom: calc(var(--headline-bottom) - var(--gap-title-desc) - var(--desc-h));
+  z-index: 10;
+  width: min(46ch, 82vw);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(12.5px, 1vw, 15px);
+  line-height: 1.5;
+  text-align: right;
+  text-wrap: pretty;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 calc(100% - 1.5em),
+    transparent
+  );
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 1.5em), transparent);
+  opacity: var(--in);
+  transform: translateY(calc(var(--rise) / 2 - var(--p, 0) * var(--rise)));
+}
+
+@media (min-width: 768px) {
+  .description {
+    width: min(40ch, 46vw);
+  }
+}
+
+@media (min-width: 1024px) {
+  .description {
+    width: min(36ch, 42vw);
+  }
+}
+
 /* --- Trait qui relie le titre au CTA ---
- * Fin trait vertical sur la gouttière droite, entre le bas du titre et le
- * haut du CTA (cf. maquette « allumer le feu »). Il se TRACE au scroll
- * (opacité + scaleY depuis le haut) et MONTE avec le titre et le CTA
- * (même terme `--rise`), pour que le groupe reste solidaire.
+ * Fin trait vertical sur la gouttière droite, entre le bas de la
+ * description et le haut du CTA (cf. maquette « allumer le feu »). Il se
+ * TRACE au scroll (opacité + scaleY depuis le haut) et MONTE avec le
+ * titre et le CTA (même terme `--rise`), pour que le groupe reste
+ * solidaire.
  */
 .trait {
   --lin: clamp(0, calc((var(--p, 0) - 0.06) / 0.16), 1);
@@ -210,7 +267,8 @@
   position: absolute;
   right: var(--gutter);
   bottom: calc(
-    var(--headline-bottom) - var(--gap-title-trait) - var(--trait-h)
+    var(--headline-bottom) - var(--gap-title-desc) - var(--desc-h) -
+      var(--gap-title-trait) - var(--trait-h)
   );
   z-index: 10;
   width: 1px;
@@ -235,8 +293,9 @@
   position: absolute;
   right: var(--gutter);
   bottom: calc(
-    var(--headline-bottom) - var(--gap-title-trait) - var(--trait-h) -
-      var(--gap-trait-cta) - var(--cta-h)
+    var(--headline-bottom) - var(--gap-title-desc) - var(--desc-h) -
+      var(--gap-title-trait) - var(--trait-h) - var(--gap-trait-cta) -
+      var(--cta-h)
   );
   z-index: 10;
   display: inline-flex;
@@ -301,6 +360,10 @@
   }
   .sub {
     opacity: 1;
+  }
+  .description {
+    opacity: 1;
+    transform: none;
   }
   .trait {
     opacity: 1;

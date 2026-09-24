@@ -53,12 +53,16 @@ type Props = {
    *  plutôt que d'être lu ici directement. */
   title?: string;
   subtitle?: string;
+  /** Chapô sous le titre, deux lignes (demandé) : rédigé pour le
+   *  référencement (métiers, zone) plutôt qu'en simple accroche. */
+  description?: string;
   cta?: string;
 };
 
 export function Hero({
   title = "Installations sanitaires",
   subtitle = "& salles de bain en Suisse romande",
+  description = "Installations sanitaires, chauffage et pompes à chaleur à Genève et en Suisse romande, pour particuliers et régies immobilières.",
   cta = "Demander un devis",
 }: Props) {
   const trackRef = useRef<HTMLElement>(null);
@@ -116,6 +120,11 @@ export function Hero({
             </span>
           </h1>
         </div>
+
+        {/* Chapô : deux lignes sous le titre, alignées à droite comme lui. */}
+        <p className={styles.description} data-cms="hero.description">
+          {description}
+        </p>
 
         {/* Trait titre -> CTA : se trace au scroll, monte avec le groupe */}
         <span className={styles.trait} aria-hidden="true" />
