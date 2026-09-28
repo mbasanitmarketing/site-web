@@ -230,7 +230,7 @@ export const VALEURS: { title: string; body: string }[] = [
     body: "Notre équipe, experte depuis plus de 25 ans, vous accompagne sur tous vos projets d’aménagement sanitaire les plus ambitieux.",
   },
   {
-    title: "Rapidité et passion",
+    title: "Rapidité et rigueur",
     body: "Nous nous engageons durablement auprès de nos clients. Nous vous accompagnons de la pose jusqu’à l’entretien. Nous sommes particulièrement adaptés aux suivis de régies et aux chantiers ambitieux.",
   },
   {
