@@ -829,6 +829,21 @@ export const PARTNERS: { name: string; logo: string; url: string }[] = [
     logo: "/partenaire-pjp.png",
     url: "http://pjpsa.ch",
   },
+  {
+    name: "Debrunner Acifer",
+    logo: "/partenaire-debrunner-acifer.png",
+    url: "https://shop.d-a.ch/sm/de/",
+  },
+  {
+    name: "Engel AG",
+    logo: "/partenaire-engel.png",
+    url: "https://www.engel.ch/",
+  },
+  {
+    name: "Clim Diffusion",
+    logo: "/partenaire-clim-diffusion.png",
+    url: "https://www.clim-diffusion.com/",
+  },
 ];
 
 /** Nombre d'emplacements montrés tant que PARTNERS est vide. */
