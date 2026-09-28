@@ -226,8 +226,8 @@ export const DESCRIPTIONS: Record<string, string> = {
    qui divergeraient seraient pires qu'une. */
 export const VALEURS: { title: string; body: string }[] = [
   {
-    title: "20 ans d’expertise",
-    body: "Notre équipe, experte depuis plus de 20 ans, vous accompagne sur tous vos projets d’aménagement sanitaire les plus ambitieux.",
+    title: "25 ans d’expertise",
+    body: "Notre équipe, experte depuis plus de 25 ans, vous accompagne sur tous vos projets d’aménagement sanitaire les plus ambitieux.",
   },
   {
     title: "Rapidité et passion",
