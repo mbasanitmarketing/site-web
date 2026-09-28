@@ -461,6 +461,22 @@
   line-height: 1;
 }
 
+/* BUREAU : la citation est agrandie (retour client : trop petite). Colonne
+   élargie à 920 px et corps plafonné à 2,5rem (40 px) : 38 × 40 = 1520 px
+   ≤ 2 × 920, la phrase tient donc toujours sur deux lignes. Le téléphone
+   garde la règle de largeur ci-dessus. */
+@media (min-width: 721px) {
+  .quote {
+    max-width: 920px;
+  }
+  .quoteText {
+    font-size: min(2.5rem, calc((100vw - 2 * var(--page-x)) / 20));
+  }
+  .quoteAuthor {
+    font-size: clamp(1.4rem, 2vw, 1.9rem);
+  }
+}
+
 /* Emplacement en attente : grisé, pour qu'on voie la place réservée sans
    le prendre pour une vraie citation. */
 .quoteEmpty .quoteText {
