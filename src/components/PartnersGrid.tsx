@@ -17,9 +17,18 @@ import { BackdropLines } from "./BackdropLines";
  *  Ce sont des photos de chantier MBA, pas des images d'illustration. */
 const PHOTOS: Record<number | "center", string> = {
   0: "/realisation-chaufferie.jpg",
+  6: "/realisation-douche-exterieure-1.jpg",
   7: "/realisation-salle-de-bain.jpg",
   center: "/realisation-salle-deau.jpg",
 };
+
+/** Une case sans logo ne reste jamais vide : à défaut d'une photo choisie
+ *  pour elle ci-dessus, elle prend la suivante de cette réserve. */
+const RESERVE = [
+  "/realisation-douche-exterieure-2.jpg",
+  "/realisation-salle-de-bain.jpg",
+  "/realisation-chaufferie.jpg",
+];
 
 /** Cases de la grille : 6 colonnes × 2 rangées, moins le bloc central de
  *  2 × 2 occupé par le titre — soit 8 logos pour remplir la trame.
@@ -112,39 +121,43 @@ export function PartnersGrid() {
                 className={styles.cell}
                 style={{ ["--d" as string]: delays[i] ?? 0 }}
               >
-                <Image
-                  className={styles.logo}
-                  src={p.logo}
-                  alt={p.name}
-                  width={190}
-                  height={64}
-                />
+                {/* Un vrai lien, sans nofollow : ces logos sont des
+                    liens sortants vers les sites des partenaires. */}
+                <a
+                  className={styles.link}
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label={p.name}
+                >
+                  <Image
+                    className={styles.logo}
+                    src={p.logo}
+                    alt={p.name}
+                    width={190}
+                    height={64}
+                  />
+                </a>
               </div>
             ))}
 
             {Array.from({ length: vides }, (_, i) => {
               const rang = items.length + i;
-              const photo = PHOTOS[rang];
+              const photo = PHOTOS[rang] ?? RESERVE[i % RESERVE.length];
               return (
                 <div
                   key={`vide-${i}`}
-                  className={`${styles.cell} ${
-                    photo ? styles.photoCell : styles.slot
-                  }`}
+                  className={`${styles.cell} ${styles.photoCell}`}
                   style={{ ["--d" as string]: delays[rang] ?? 0 }}
                 >
-                  {photo ? (
-                    /* alt vide : décorative. La photo ne dit rien que le
-                       titre de la section ne dise déjà. */
-                    <Image
-                      src={photo}
-                      alt=""
-                      fill
-                      sizes="(max-width: 720px) 50vw, 18vw"
-                    />
-                  ) : (
-                    <span className={styles.slotLabel}>Logo</span>
-                  )}
+                  {/* alt vide : décorative. La photo ne dit rien que le
+                      titre de la section ne dise déjà. */}
+                  <Image
+                    src={photo}
+                    alt=""
+                    fill
+                    sizes="(max-width: 720px) 50vw, 18vw"
+                  />
                 </div>
               );
             })}
