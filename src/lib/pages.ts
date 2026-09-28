@@ -256,31 +256,29 @@ export const EQUIPE: {
   /** Deux lignes sous le portrait. */
   texte?: string;
 }[] = [
-  /* ATTENTION — les RÔLES ci-dessous sont des PROPOSITIONS, pas des faits :
-     MBA n'a donné que les prénoms et la place de chacun sur la photo. Fred
-     est bien l'interlocuteur (il nous l'a dit) ; la spécialité prêtée à
-     Greg et à Yoan est à confirmer ou à remplacer par Fred avant la mise
-     en ligne. Un champ vide n'affiche rien, c'est le repli sûr. */
+  /* Textes rédigés d'après les mots de MBA sur chacun (spécialités,
+     années de métier, qualités). Le rôle de Yoan, « Sur les chantiers »,
+     est un intitulé neutre : MBA n'a pas donné sa spécialité. */
   {
     photo: "/equipe-portrait-1.jpg",
     nom: "Greg",
-    role: "Installations sanitaires",
+    role: "Chauffage et sanitaire",
     texte:
-      "Sur le chantier au quotidien : alimentations, évacuations et pose des appareils, jusqu’aux finitions.",
+      "Spécialiste du chauffage et du sanitaire depuis 23 ans, une force tranquille, toujours disponible et très bon organisateur. Chez lui, la gentillesse passe avant tout.",
   },
   {
     photo: "/equipe-portrait-2.jpg",
     nom: "Fred",
     role: "Votre interlocuteur",
     texte:
-      "Il vient sur place, prend les mesures, établit le devis et suit le chantier jusqu’à la réception.",
+      "Spécialiste sanitaire depuis 25 ans, il allie efficacité, douceur et gentillesse. Le détail et la précision guident chacun de ses gestes, du devis à la réception.",
   },
   {
     photo: "/equipe-portrait-3.jpg",
     nom: "Yoan",
-    role: "Chauffage et eau chaude",
+    role: "Sur les chantiers",
     texte:
-      "Chaudières, pompes à chaleur et production d’eau chaude : de l’étude de l’existant à la mise en service.",
+      "Méticuleux de père en fils, il travaille avec la discrétion qui fait la confiance : les lieux sont respectés et le chantier reste soigné jusqu’au dernier jour.",
   },
 ];
 
