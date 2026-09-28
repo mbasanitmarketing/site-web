@@ -16,11 +16,15 @@ import { BackdropLines } from "./BackdropLines";
  *
  *  Ce sont des photos de chantier MBA, pas des images d'illustration. */
 const PHOTOS: Record<number | "center", string> = {
-  0: "/realisation-chaufferie.jpg",
-  6: "/realisation-douche-exterieure-1.jpg",
+  0: "/realisation-douche-exterieure-1.jpg",
   7: "/realisation-salle-de-bain.jpg",
   center: "/realisation-salle-deau.jpg",
 };
+
+/** Où poser les photos, par ordre de priorité : haut à gauche et bas à
+ *  droite (cf. la maquette), puis les autres cases à mesure qu'il y en a
+ *  à combler. */
+const PLACES_PHOTO = [7, 0, 4, 3, 1, 6, 2, 5];
 
 /** Une case sans logo ne reste jamais vide : à défaut d'une photo choisie
  *  pour elle ci-dessus, elle prend la suivante de cette réserve. */
@@ -69,6 +73,23 @@ export function PartnersGrid() {
   const items = PARTNERS.slice(0, SLOTS);
   const vides = SLOTS - items.length;
 
+  // Les photos se posent aux places de PLACES_PHOTO (coins opposés, jamais
+  // côte à côte), les logos remplissent les cases restantes dans l'ordre.
+  const placesPhoto = PLACES_PHOTO.slice(0, vides);
+  let prochainLogo = 0;
+  let prochainePhoto = 0;
+  const cases: (
+    | { type: "logo"; p: (typeof PARTNERS)[number] }
+    | { type: "photo"; photo: string }
+  )[] = Array.from({ length: SLOTS }, (_, i) =>
+    placesPhoto.includes(i)
+      ? {
+          type: "photo" as const,
+          photo: PHOTOS[i] ?? RESERVE[prochainePhoto++ % RESERVE.length],
+        }
+      : { type: "logo" as const, p: items[prochainLogo++] },
+  );
+
   const trackRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -115,52 +136,48 @@ export function PartnersGrid() {
           <BackdropLines />
 
           <div ref={gridRef} className={styles.grid}>
-            {items.map((p, i) => (
-              <div
-                key={p.name}
-                className={styles.cell}
-                style={{ ["--d" as string]: delays[i] ?? 0 }}
-              >
-                {/* Un vrai lien, sans nofollow : ces logos sont des
-                    liens sortants vers les sites des partenaires. */}
-                <a
-                  className={styles.link}
-                  href={p.url}
-                  target="_blank"
-                  rel="noopener"
-                  aria-label={p.name}
-                >
-                  <Image
-                    className={styles.logo}
-                    src={p.logo}
-                    alt={p.name}
-                    width={190}
-                    height={64}
-                  />
-                </a>
-              </div>
-            ))}
-
-            {Array.from({ length: vides }, (_, i) => {
-              const rang = items.length + i;
-              const photo = PHOTOS[rang] ?? RESERVE[i % RESERVE.length];
-              return (
+            {cases.map((c, i) =>
+              c.type === "logo" ? (
                 <div
-                  key={`vide-${i}`}
+                  key={c.p.name}
+                  className={styles.cell}
+                  style={{ ["--d" as string]: delays[i] ?? 0 }}
+                >
+                  {/* Un vrai lien, sans nofollow : ces logos sont des
+                      liens sortants vers les sites des partenaires. */}
+                  <a
+                    className={styles.link}
+                    href={c.p.url}
+                    target="_blank"
+                    rel="noopener"
+                    aria-label={c.p.name}
+                  >
+                    <Image
+                      className={styles.logo}
+                      src={c.p.logo}
+                      alt={c.p.name}
+                      width={190}
+                      height={64}
+                    />
+                  </a>
+                </div>
+              ) : (
+                <div
+                  key={`photo-${i}`}
                   className={`${styles.cell} ${styles.photoCell}`}
-                  style={{ ["--d" as string]: delays[rang] ?? 0 }}
+                  style={{ ["--d" as string]: delays[i] ?? 0 }}
                 >
                   {/* alt vide : décorative. La photo ne dit rien que le
                       titre de la section ne dise déjà. */}
                   <Image
-                    src={photo}
+                    src={c.photo}
                     alt=""
                     fill
                     sizes="(max-width: 720px) 50vw, 18vw"
                   />
                 </div>
-              );
-            })}
+              ),
+            )}
 
             {/* Le trou : il se place explicitement au centre de la trame,
                 donc il ne dépend pas de l'ordre des cases autour. */}
