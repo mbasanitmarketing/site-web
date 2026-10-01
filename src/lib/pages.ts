@@ -533,11 +533,37 @@ export const SERVICES: PageContent[] = [
     kicker: "Suisse romande",
     display: "Genève, Carouge, Grand-Lancy et tout le canton",
     displaySmall: true,
-    manifesto: manifesto(
-      "De l’entretien courant au dépannage.",
-      "Une installation bien entretenue tombe moins souvent en panne et dure plus longtemps. Nous assurons l’entretien régulier de vos équipements sanitaires et de chauffage, et nous intervenons en dépannage à Genève et alentour, sur nos installations comme sur celles que nous reprenons.",
-      "votre intervention",
-    ),
+    /* Manifeste propre, pas le gabarit commun (rendez-vous / devis /
+       chantier / réception) : un dépannage ou un entretien ne suit pas
+       le déroulement d'un chantier. Intitulés et corps repris des mots
+       que tapent les gens dans ce cas précis — panne, fuite, plus d'eau
+       chaude, canalisation bouchée, contrat d'entretien, détartrage —
+       pour qu'on les retrouve que la demande parte d'une panne ou
+       qu'elle suive un chantier (entretien de ce qui vient d'être posé). */
+    manifesto: {
+      label: "La prestation",
+      headline: "De l’appel à la panne résolue, puis l’entretien qui l’évite.",
+      intro:
+        "Une installation bien entretenue tombe moins souvent en panne et dure plus longtemps. Nous assurons l’entretien régulier de vos équipements sanitaires et de chauffage, et nous intervenons en dépannage à Genève et alentour, sur nos installations comme sur celles que nous reprenons.",
+      blocks: [
+        {
+          title: "Le signalement de la panne",
+          body: "Plus d’eau chaude, chauffage en panne, fuite d’eau, chasse d’eau qui fuit, canalisation ou évacuation bouchée : vous nous appelez, vous décrivez ce qui se passe, nous convenons d’un horaire d’intervention à Genève et alentour.",
+        },
+        {
+          title: "Le diagnostic sur place",
+          body: "Nous localisons l’origine de la panne — chaudière, pompe à chaleur, robinetterie, canalisation — et vous expliquons ce qu’il faut réparer avant d’intervenir, sans surprise sur la facture.",
+        },
+        {
+          title: "Le dépannage",
+          body: "Réparation de la fuite, débouchage de la canalisation, remise en route de la production d’eau chaude ou du chauffage, remplacement d’un robinet ou d’un mitigeur défectueux : nous remettons l’installation en état de fonctionner.",
+        },
+        {
+          title: "L’entretien qui évite la prochaine panne",
+          body: "Une fois l’urgence réglée — ou après la réception d’un chantier — nous proposons un contrat d’entretien : détartrage, contrôle des organes de sécurité, révision de la chaudière ou de la pompe à chaleur, pour les régies immobilières comme pour les propriétaires de villas.",
+        },
+      ],
+    },
     relatedRealisations: { category: "douches-amenagements-exterieurs", label: "extérieurs" },
     service: service([
       {
