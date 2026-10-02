@@ -98,7 +98,7 @@ export async function Footer({
       <div className={styles.meta}>
         <span>© 2026. MBA Sanit</span>
         <a href="#privacy">Politique de confidentialité</a>
-        <a href="#mentions-legales">Mentions légales</a>
+        <a href="/mentions-legales">Mentions légales</a>
         <a
           className={styles.agency}
           href="https://www.atelierwebromand.ch"

@@ -1,0 +1,42 @@
+.page {
+  /* Les repères fixes (menu à gauche, logo à droite) occupent le haut de
+     l'écran : le texte démarre en dessous. */
+  padding: clamp(110px, 18svh, 180px) var(--page-x) clamp(56px, 9svh, 110px);
+  background: #f5f5f4;
+  color: #0b0b0c;
+}
+
+.title {
+  max-width: 760px;
+  margin: 0 auto clamp(28px, 5svh, 52px);
+}
+
+.block {
+  max-width: 760px;
+  margin: 0 auto clamp(26px, 4svh, 40px);
+}
+
+.block h2 {
+  margin: 0 0 0.6em;
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+.block p {
+  margin: 0 0 0.9em;
+  font-size: clamp(15px, 1.1vw, 17px);
+  line-height: 1.7;
+  color: rgba(11, 11, 12, 0.78);
+}
+
+.block a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.block a:hover,
+.block a:focus-visible {
+  color: #0b0b0c;
+}
