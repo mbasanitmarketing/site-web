@@ -5,4 +5,4 @@
  * pas affichée : il n'y a encore rien à accepter. Ce n'est pas un secret
  * (il apparaît dans le code de la page de tout site qui l'utilise).
  */
-export const GA_MEASUREMENT_ID = "";
+export const GA_MEASUREMENT_ID = "G-F0SDMMSBZY";
