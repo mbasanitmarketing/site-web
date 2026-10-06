@@ -1,0 +1,65 @@
+.banner {
+  position: fixed;
+  left: clamp(12px, 2vw, 24px);
+  bottom: clamp(12px, 2vw, 24px);
+  /* Au-dessus du burger (100), du badge Google et du bouton d'appel (80) :
+     tant que le choix n'est pas fait, c'est la seule chose à traiter. */
+  z-index: 120;
+  width: min(440px, calc(100vw - 2 * clamp(12px, 2vw, 24px)));
+  padding: 18px 20px;
+  background: #070b20;
+  color: #f5f5f4;
+  border: 1px solid rgba(245, 245, 244, 0.25);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+.text {
+  margin: 0 0 16px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: rgba(245, 245, 244, 0.82);
+}
+
+.text a {
+  color: #f5f5f4;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Même charte que les boutons texte du site, version fond sombre ; les
+   deux boutons sont identiques : refuser ne doit pas être plus discret. */
+.btn {
+  flex: 1;
+  padding: 11px 16px;
+  border: 1px solid rgba(245, 245, 244, 0.85);
+  border-radius: 2px;
+  background: transparent;
+  color: #f5f5f4;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  background: #f5f5f4;
+  color: #070b20;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+}

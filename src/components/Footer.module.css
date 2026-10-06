@@ -206,6 +206,21 @@
   color: inherit;
   text-decoration: none;
 }
+/* Bouton « Gérer les cookies » : il doit se lire comme les liens voisins. */
+.cookieBtn {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.cookieBtn:hover {
+  color: #f5f5f4;
+}
+
 .meta a:hover {
   color: #f5f5f4;
 }

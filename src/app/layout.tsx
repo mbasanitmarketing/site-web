@@ -8,6 +8,7 @@ import { CallButton } from "@/components/CallButton";
 import { GoogleBadge } from "@/components/GoogleBadge";
 import { PageTransition } from "@/components/PageTransition";
 import { CmsPreviewBridge } from "@/components/CmsPreviewBridge";
+import { CookieConsent } from "@/components/CookieConsent";
 import { getContactContent } from "@/lib/cms";
 import "./globals.css";
 
@@ -53,6 +54,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           <CallButton />
           <GoogleBadge />
           <PageTransition />
+          <CookieConsent />
         </SmoothScroll>
       </body>
     </html>

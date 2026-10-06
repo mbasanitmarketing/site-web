@@ -73,7 +73,7 @@ export default async function Page() {
           </p>
         </section>
 
-        <section className={styles.block}>
+        <section className={styles.block} id="donnees">
           <h2>Protection des données</h2>
           <p>
             Les informations que vous nous transmettez par le formulaire de
@@ -81,6 +81,15 @@ export default async function Page() {
             votre projet) servent uniquement à répondre à votre demande et à
             assurer le suivi de votre dossier. Elles ne sont ni vendues ni
             cédées à des tiers à des fins commerciales.
+          </p>
+          <p>
+            Avec votre accord uniquement, nous utilisons Google Analytics
+            (Google LLC, États-Unis) pour mesurer la fréquentation du site :
+            pages consultées, durée de visite, provenance approximative. Cet
+            outil dépose des cookies sur votre appareil et transmet ces
+            données à Google. Aucun cookie de mesure n’est déposé avant votre
+            consentement ; vous pouvez le refuser, ou revenir sur votre choix
+            à tout moment via « Gérer les cookies » en bas de page.
           </p>
           <p>
             Conformément à la loi fédérale sur la protection des données

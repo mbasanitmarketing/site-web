@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { GoogleReviews } from "./GoogleReviews";
+import { CookieSettingsButton } from "./CookieConsent";
 import { getContactContent } from "@/lib/cms";
 import { PAGES } from "@/lib/pages";
 import styles from "./Footer.module.css";
@@ -99,6 +100,7 @@ export async function Footer({
         <span>© 2026. MBA Sanit</span>
         <a href="#privacy">Politique de confidentialité</a>
         <a href="/mentions-legales">Mentions légales</a>
+        <CookieSettingsButton className={styles.cookieBtn} />
         <a
           className={styles.agency}
           href="https://www.atelierwebromand.ch"
