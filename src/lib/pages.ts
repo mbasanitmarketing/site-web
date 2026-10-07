@@ -171,7 +171,7 @@ export const PAGES: PageContent[] = [
     href: "/equipe",
     title: "L’équipe",
     image: "/equipe.jpg",
-    lede: "Installateurs sanitaires et chauffagistes, nous cumulons plus de vingt ans de métier. Une équipe resserrée, un interlocuteur unique, pour les villas, les régies immobilières et les entreprises de Genève et de Suisse romande.",
+    lede: "Installateurs sanitaires et chauffagistes, nous cumulons plus de vingt-cinq ans de métier. Une équipe resserrée, un interlocuteur unique, pour les villas, les régies immobilières et les entreprises de Genève et de Suisse romande.",
     cue: "Nous rencontrer",
     /* Avec une cible, le repère devient un VRAI bouton (cf. PageIntro) :
        même verre dépoli et même rectangle à 2 px que sur les pages de
@@ -378,7 +378,7 @@ const QUESTIONS = [
   {
     q: "Depuis combien de temps exercez-vous ?",
     a:
-      "Notre équipe a plus de vingt ans de métier. C’est ce qui nous permet de " +
+      "Notre équipe a plus de vingt-cinq ans de métier. C’est ce qui nous permet de " +
       "prendre des chantiers ambitieux et d’intervenir sur des installations très " +
       "différentes les unes des autres.",
   },

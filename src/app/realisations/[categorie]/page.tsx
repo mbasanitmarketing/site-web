@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { PageIntro } from "@/components/PageIntro";
 import { CategoryCarousel } from "@/components/CategoryCarousel";
 import { Footer } from "@/components/Footer";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbLd, graph, pageMetadata } from "@/lib/seo";
 import { CATEGORIES, getCategory, realisationsOf, slugOf } from "@/lib/pages";
 
 export function generateStaticParams() {
@@ -16,7 +18,7 @@ export async function generateMetadata({
   const { categorie } = await params;
   const page = getCategory(categorie);
   if (!page) return { title: "MBA Sanit" };
-  return { title: `${page.title} — MBA Sanit`, description: page.lede };
+  return pageMetadata(page.href, page.image);
 }
 
 export default async function Page({
@@ -28,6 +30,15 @@ export default async function Page({
 
   return (
     <>
+      <JsonLd
+        data={graph(
+          breadcrumbLd([
+            { name: "Accueil", path: "/" },
+            { name: "Réalisations", path: "/realisations" },
+            { name: page.title, path: page.href },
+          ]),
+        )}
+      />
       <PageIntro page={page} />
       {/* Les réalisations sur une rangée qui défile, avec flèches. */}
       <CategoryCarousel items={realisationsOf(categorie)} />

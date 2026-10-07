@@ -1,14 +1,12 @@
 import { PageIntro } from "@/components/PageIntro";
 import { CardGrid } from "@/components/CardGrid";
 import { Footer } from "@/components/Footer";
+import { pageMetadata } from "@/lib/seo";
 import { CATEGORIES, requirePage } from "@/lib/pages";
 
 const PAGE = requirePage("/realisations");
 
-export const metadata = {
-  title: `${PAGE.title} — MBA Sanit`,
-  description: PAGE.lede,
-};
+export const metadata = pageMetadata("/realisations", PAGE.image);
 
 export default function Page() {
   return (

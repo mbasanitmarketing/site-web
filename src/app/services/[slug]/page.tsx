@@ -9,6 +9,8 @@ import { ServiceContact } from "@/components/ServiceContact";
 import { Footer } from "@/components/Footer";
 import { SERVICES, getService, realisationsOf, slugOf } from "@/lib/pages";
 import { getFaqItems, getServiceOverride } from "@/lib/cms";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbLd, graph, pageMetadata, serviceLd } from "@/lib/seo";
 
 export function generateStaticParams() {
   return SERVICES.map((s) => ({ slug: slugOf(s.href) }));
@@ -20,7 +22,7 @@ export async function generateMetadata({ params }: PageProps<"/services/[slug]">
   const { slug } = await params;
   const page = getService(slug);
   if (!page) return { title: "MBA Sanit" };
-  return { title: `${page.title} — MBA Sanit`, description: page.lede };
+  return pageMetadata(page.href, page.image);
 }
 
 export default async function Page({ params }: PageProps<"/services/[slug]">) {
@@ -41,6 +43,16 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
 
   return (
     <>
+      <JsonLd
+        data={graph(
+          serviceLd(page),
+          breadcrumbLd([
+            { name: "Accueil", path: "/" },
+            { name: "Services", path: "/services" },
+            { name: page.title, path: page.href },
+          ]),
+        )}
+      />
       {/* Ordre : introduction, prestation, réalisations, partenaires,
           besoins, questions, contact.
 

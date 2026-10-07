@@ -65,7 +65,7 @@ export const REVIEWS: Review[] = [
    ne désignent personne.
    ===================================================================== */
 
-export const AVIS_DEMO = true;
+export const AVIS_DEMO = false;
 
 const DEMO: Review[] = [
   {

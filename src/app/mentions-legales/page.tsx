@@ -1,14 +1,10 @@
 import { Footer } from "@/components/Footer";
+import { pageMetadata } from "@/lib/seo";
 import { getContactContent } from "@/lib/cms";
 import titre from "@/components/Heading.module.css";
 import styles from "./page.module.css";
 
-export const metadata = {
-  title: "Mentions légales — MBA Sanit",
-  description:
-    "Mentions légales du site de MBA Sanit, installateur sanitaire et chauffagiste à Genève : éditeur, hébergement, propriété intellectuelle et protection des données.",
-  alternates: { canonical: "/mentions-legales" },
-};
+export const metadata = pageMetadata("/mentions-legales");
 
 /* Pas d'ouverture photo (PageIntro) : une page de texte, qui arrive
    directement en haut. Les coordonnées viennent de la même source que le
@@ -89,7 +85,9 @@ export default async function Page() {
             outil dépose des cookies sur votre appareil et transmet ces
             données à Google. Aucun cookie de mesure n’est déposé avant votre
             consentement ; vous pouvez le refuser, ou revenir sur votre choix
-            à tout moment via « Gérer les cookies » en bas de page.
+            à tout moment via « Gérer les cookies » en bas de page. Le détail figure
+            dans notre{" "}
+            <a href="/confidentialite">politique de confidentialité</a>.
           </p>
           <p>
             Conformément à la loi fédérale sur la protection des données

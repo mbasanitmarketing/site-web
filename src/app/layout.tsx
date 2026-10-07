@@ -10,6 +10,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { CmsPreviewBridge } from "@/components/CmsPreviewBridge";
 import { CookieConsent } from "@/components/CookieConsent";
 import { getContactContent } from "@/lib/cms";
+import { OG_IMAGE, SEO, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -32,16 +33,32 @@ const script = Italianno({
 });
 
 export const metadata: Metadata = {
-  title: "MBA Sanit — Sanitaire, chauffage et salles de bain à Genève",
-  description:
-    "Installateur sanitaire et chauffagiste à Genève et en Suisse romande depuis plus de 20 ans : salles de bain sur mesure, chauffage et pompes à chaleur, douches extérieures, entretien et dépannage.",
+  metadataBase: new URL(SITE_URL),
+  title: SEO["/"].title,
+  description: SEO["/"].description,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "fr_CH",
+    siteName: SITE_NAME,
+    url: "/",
+    title: SEO["/"].title,
+    description: SEO["/"].description,
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "MBA Sanit, installateur sanitaire et chauffagiste à Genève" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SEO["/"].title,
+    description: SEO["/"].description,
+    images: [OG_IMAGE],
+  },
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const [{ phoneLabel, phoneHref }, { isEnabled: preview }] = await Promise.all([getContactContent(), draftMode()]);
 
   return (
-    <html lang="fr" className={`${geistSans.variable} ${geistMono.variable} ${script.variable}`}>
+    <html lang="fr-CH" className={`${geistSans.variable} ${geistMono.variable} ${script.variable}`}>
       <body className="antialiased">
         {/* Uniquement visible dans l'aperçu de l'espace client (Draft Mode) :
             jamais chargé pour un visiteur normal. */}

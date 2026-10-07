@@ -1,13 +1,11 @@
 import { DevisForm } from "@/components/DevisForm";
 import { Footer } from "@/components/Footer";
-import { requirePage } from "@/lib/pages";
+import { pageMetadata } from "@/lib/seo";
 
-const PAGE = requirePage("/devis");
 
-export const metadata = {
-  title: `${PAGE.title} — MBA Sanit`,
-  description: PAGE.lede,
-};
+
+
+export const metadata = pageMetadata("/devis");
 
 /* Pas d'ouverture (PageIntro) ici : le formulaire est l'unique raison de
    venir sur cette page, il arrive donc directement en haut. C'est lui qui
