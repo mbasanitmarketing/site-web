@@ -67,3 +67,18 @@ export function ProjectLinks({
     </section>
   );
 }
+
+/** Renvoi vers un guide pratique, sur une page de service. */
+export function GuideLink({ href, label }: { href: string; label: string }) {
+  return (
+    <section className={styles.wrap}>
+      <div className={styles.inner}>
+        <p className={styles.outro}>
+          <strong>Une panne en ce moment ?</strong> Avant de nous appeler,
+          quelques vérifications simples peuvent aider : lisez notre guide{" "}
+          <a href={href}>{label}</a>
+        </p>
+      </div>
+    </section>
+  );
+}

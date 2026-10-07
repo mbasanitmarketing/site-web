@@ -10,6 +10,7 @@ import { Footer } from "@/components/Footer";
 import { FAQ_SERVICE, SERVICES, getService, realisationsOf, slugOf } from "@/lib/pages";
 import { getFaqItems, getServiceOverride } from "@/lib/cms";
 import { JsonLd } from "@/components/JsonLd";
+import { GuideLink } from "@/components/SeoIntro";
 import { breadcrumbLd, faqLd, graph, pageMetadata, serviceLd } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -81,6 +82,12 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
       )}
       <Partners headline="Un réseau de partenaires solide" />
       {service && <ServiceNeeds service={service} cmsKey={`services.${slug}`} />}
+      {slug === "entretien-depannage" && (
+        <GuideLink
+          href="/guides/plus-d-eau-chaude"
+          label="Plus d’eau chaude : que faire avant d’appeler ?"
+        />
+      )}
       {service && (
         <Faq
           items={faq}

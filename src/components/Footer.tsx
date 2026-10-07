@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { GoogleReviews } from "./GoogleReviews";
 import { CookieSettingsButton } from "./CookieConsent";
 import { getContactContent } from "@/lib/cms";
@@ -93,6 +94,11 @@ export async function Footer({
               </a>
             </li>
           ))}
+          {/* Les guides ne sont pas dans PAGES (le menu et la transition en
+              dépendent) : lien simple, sans balayage. */}
+          <li>
+            <Link href="/guides">Guides</Link>
+          </li>
         </ul>
       </nav>
 

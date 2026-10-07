@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { GUIDES } from "@/lib/guides";
 import { CATEGORIES, PAGES, REALISATIONS, SERVICES } from "@/lib/pages";
 import { SITE_URL } from "@/lib/seo";
 
@@ -17,6 +18,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...PAGES.map((p) => entry(p.href, p.href === "/devis" ? 0.9 : 0.8)),
     ...CATEGORIES.map((p) => entry(p.href, 0.7)),
     ...REALISATIONS.map((p) => entry(p.href, 0.6)),
+    entry("/guides", 0.6),
+    ...GUIDES.map((g) => entry(`/guides/${g.slug}`, 0.7)),
     entry("/mentions-legales", 0.2),
     entry("/confidentialite", 0.2),
   ];

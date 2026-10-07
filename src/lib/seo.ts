@@ -99,6 +99,11 @@ export const SEO: Record<string, { title: string; description: string }> = {
     description:
       "Décrivez votre projet sanitaire ou de chauffage : MBA Sanit vous recontacte pour convenir d’une visite sur place, puis vous remet un devis détaillé.",
   },
+  "/guides": {
+    title: "Guides pratiques sanitaire et chauffage | MBA Sanit",
+    description:
+      "Panne d’eau chaude, fuite, chauffage : les bons réflexes et les vérifications simples, expliqués par les installateurs de MBA Sanit à Genève.",
+  },
   "/mentions-legales": {
     title: "Mentions légales | MBA Sanit",
     description:
@@ -114,33 +119,38 @@ export const SEO: Record<string, { title: string; description: string }> = {
 /** Métadonnées d'une page : titre, description, adresse officielle
  *  (canonical) et aperçus de partage. `image` : chemin d'une photo du
  *  site ; sans elle, l'image de partage par défaut. */
-export function pageMetadata(path: string, image?: string): Metadata {
-  const seo = SEO[path];
-  if (!seo) throw new Error(`Pas de métadonnées SEO pour ${path} (src/lib/seo.ts)`);
+export function buildMetadata(
+  path: string,
+  title: string,
+  description: string,
+  image?: string,
+): Metadata {
   const img = image ?? OG_IMAGE;
   const images = image
     ? [{ url: img }]
     : [{ url: img, width: 1200, height: 630, alt: "MBA Sanit, installateur sanitaire et chauffagiste à Genève" }];
   return {
-    title: seo.title,
-    description: seo.description,
+    title,
+    description,
     alternates: { canonical: path },
     openGraph: {
       type: "website",
       locale: "fr_CH",
       siteName: SITE_NAME,
       url: path,
-      title: seo.title,
-      description: seo.description,
+      title,
+      description,
       images,
     },
-    twitter: {
-      card: "summary_large_image",
-      title: seo.title,
-      description: seo.description,
-      images: [img],
-    },
+    twitter: { card: "summary_large_image", title, description, images: [img] },
   };
+}
+
+/** Métadonnées d'une page listée dans SEO. */
+export function pageMetadata(path: string, image?: string): Metadata {
+  const seo = SEO[path];
+  if (!seo) throw new Error(`Pas de métadonnées SEO pour ${path} (src/lib/seo.ts)`);
+  return buildMetadata(path, seo.title, seo.description, image);
 }
 
 /* --- Données structurées (JSON-LD) -------------------------------- */
@@ -248,5 +258,30 @@ export function breadcrumbLd(items: { name: string; path: string }[]) {
       name: it.name,
       item: `${SITE_URL}${it.path}`,
     })),
+  };
+}
+
+/** Un guide : article signé par l'entreprise (pas par une personne : le
+ *  texte est relu par l'équipe, mais n'est pas attribué à un nom). */
+export function articleLd(a: {
+  path: string;
+  title: string;
+  description: string;
+  image: string;
+  date: string;
+  updated: string;
+}) {
+  return {
+    "@type": "Article",
+    "@id": `${SITE_URL}${a.path}#article`,
+    headline: a.title,
+    description: a.description,
+    image: `${SITE_URL}${a.image}`,
+    datePublished: a.date,
+    dateModified: a.updated,
+    inLanguage: "fr-CH",
+    mainEntityOfPage: `${SITE_URL}${a.path}`,
+    author: { "@id": ORG_ID },
+    publisher: { "@id": ORG_ID },
   };
 }
