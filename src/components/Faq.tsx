@@ -48,7 +48,9 @@ export function Faq({
               de la colonne les écartait l'un de l'autre et la phrase se
               retrouvait à flotter au milieu du vide. */}
           <div>
-            <h2 className={`${styles.title} ${titre.h2}`}>Questions fréquentes</h2>
+            <h2 className={`${styles.title} ${titre.h2}`}>
+              Questions fréquentes<span className="sr-only"> sur le sanitaire et le chauffage à Genève</span>
+            </h2>
             <p className={styles.lede}>{lede}</p>
           </div>
 
@@ -58,7 +60,7 @@ export function Faq({
               <p className={styles.cardSub}>Contactez notre équipe&nbsp;!</p>
             </div>
             <a className={styles.cardCta} href="/devis" data-page-transition>
-              Vers le formulaire
+              Vers le formulaire<span className="sr-only"> de demande de devis</span>
             </a>
           </div>
         </div>

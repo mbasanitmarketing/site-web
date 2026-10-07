@@ -127,7 +127,9 @@ export function EscalierSection() {
           {/* Un vrai titre de section, pas un <p> stylé : c'est le seul
               niveau de plan entre le H1 de la hero et les noms de service
               en dessous. Rien ne change à l'écran. */}
-          <h2 className={`${styles.eyebrow} ${titre.h2} ${titre.onDark}`}>Services</h2>
+          <h2 className={`${styles.eyebrow} ${titre.h2} ${titre.onDark}`}>
+            Services<span className="sr-only"> sanitaire, chauffage et dépannage à Genève</span>
+          </h2>
 
           {/* texte de gauche */}
           <div className={styles.copy}>
@@ -139,7 +141,7 @@ export function EscalierSection() {
                 <h3 className={styles.heading}>{it.heading}</h3>
                 <p className={styles.sub}>{it.sub}</p>
                 <a className={styles.cta} href={it.href} data-page-transition>
-                  Découvrir le service
+                  Découvrir le service<span className="sr-only"> : {it.heading}</span>
                 </a>
               </div>
             ))}

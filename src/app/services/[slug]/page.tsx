@@ -7,10 +7,10 @@ import { RealisationsCarousel } from "@/components/RealisationsCarousel";
 import { Faq } from "@/components/Faq";
 import { ServiceContact } from "@/components/ServiceContact";
 import { Footer } from "@/components/Footer";
-import { SERVICES, getService, realisationsOf, slugOf } from "@/lib/pages";
+import { FAQ_SERVICE, SERVICES, getService, realisationsOf, slugOf } from "@/lib/pages";
 import { getFaqItems, getServiceOverride } from "@/lib/cms";
 import { JsonLd } from "@/components/JsonLd";
-import { breadcrumbLd, graph, pageMetadata, serviceLd } from "@/lib/seo";
+import { breadcrumbLd, faqLd, graph, pageMetadata, serviceLd } from "@/lib/seo";
 
 export function generateStaticParams() {
   return SERVICES.map((s) => ({ slug: slugOf(s.href) }));
@@ -38,6 +38,10 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
       : null,
     getFaqItems(),
   ]);
+  // Questions propres au métier d'abord, puis la zone d'intervention et la
+  // prise de contact (première et dernière de la liste commune).
+  const communes = [faqItems[0], faqItems[faqItems.length - 1]].filter(Boolean);
+  const faq = [...(FAQ_SERVICE[slug] ?? []), ...communes];
   const manifesto = page.manifesto && override ? { ...page.manifesto, headline: override.headline, intro: override.intro } : page.manifesto;
   const service = page.service && override ? { ...page.service, needs: override.needs } : page.service;
 
@@ -46,6 +50,7 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
       <JsonLd
         data={graph(
           serviceLd(page),
+          faqLd(faq),
           breadcrumbLd([
             { name: "Accueil", path: "/" },
             { name: "Services", path: "/services" },
@@ -78,7 +83,7 @@ export default async function Page({ params }: PageProps<"/services/[slug]">) {
       {service && <ServiceNeeds service={service} cmsKey={`services.${slug}`} />}
       {service && (
         <Faq
-          items={faqItems}
+          items={faq}
           lede="Zones d’intervention, chantiers, entretien : les réponses aux questions qui reviennent."
         />
       )}

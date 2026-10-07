@@ -164,7 +164,7 @@ export function PaysageScroll() {
                   href={r.href}
                   data-page-transition
                 >
-                  Voir le projet
+                  Voir le projet<span className="sr-only"> : {r.title}</span>
                 </a>
               </div>
             ))}
@@ -181,7 +181,9 @@ export function PaysageScroll() {
             descriptions. Ici il vient en premier, et c'est la grille qui
             le renvoie à droite sur grand écran. */}
         <div className={styles.head}>
-          <h2 className={`${styles.title} ${titre.h2}`}>Nos réalisations</h2>
+          <h2 className={`${styles.title} ${titre.h2}`}>
+            Nos réalisations<span className="sr-only"> de salles de bain, chauffage et douches à Genève</span>
+          </h2>
 
           <p className={`${styles.lede} ${styles.ledeLeft}`}>
             Nous réalisons vos projets sanitaires en Suisse romande, et nous

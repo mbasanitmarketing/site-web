@@ -108,8 +108,8 @@ export type HeroContent = { title: string; subtitle: string; cta: string };
 export async function getHeroContent(): Promise<HeroContent> {
   const overrides = await fetchOverrides();
   return {
-    title: text(overrides, "hero.title", "Installations sanitaires"),
-    subtitle: text(overrides, "hero.subtitle", "& salles de bain en Suisse romande"),
+    title: text(overrides, "hero.title", "Installateur sanitaire"),
+    subtitle: text(overrides, "hero.subtitle", "et chauffagiste à Genève"),
     cta: text(overrides, "hero.cta", "Demander un devis"),
   };
 }

@@ -415,6 +415,84 @@ export const ZONE = {
  *  mêmes questions seraient pires qu'une seule. */
 export const FAQ_ITEMS = [ZONE, ...QUESTIONS];
 
+/** Questions propres à chaque métier, affichées avant les questions
+ *  communes. Chaque réponse ne reprend que ce que le site dit déjà de
+ *  l'activité de MBA : pas de délai, pas de prix, pas de garantie. Une FAQ
+ *  identique sur toutes les pages se concurrencerait elle-même. */
+export const FAQ_SERVICE: Record<string, { q: string; a: string }[]> = {
+  "sanitaire-salles-de-bain": [
+    {
+      q: "Pouvez-vous rénover une salle de bain complète ?",
+      a: "Oui. Nous reprenons l’installation de A à Z : dépose de l’ancienne installation, alimentations et évacuations, pose de la douche ou de la baignoire, du meuble vasque, du WC et de la robinetterie. Nous coordonnons les autres métiers pour vous livrer une pièce finie.",
+    },
+    {
+      q: "Peut-on remplacer un seul appareil sanitaire ?",
+      a: "Oui : WC suspendu, lavabo, receveur de douche, mitigeur ou chauffe-eau. Nous le remplaçons proprement en l’adaptant aux raccordements existants, sans toucher au reste de la pièce.",
+    },
+    {
+      q: "Que faire en cas de fuite ou d’humidité ?",
+      a: "En cas de fuite active, fermez l’arrivée d’eau (vanne d’arrêt ou compteur) en attendant notre passage. Nous localisons ensuite l’origine, réparons ce qui doit l’être et vous conseillons sur ce qu’il vaut mieux remplacer avant la prochaine panne.",
+    },
+    {
+      q: "Comment est établi le devis d’une salle de bain ?",
+      a: "Après une visite sur place pour relever l’existant et comprendre vos attentes. Vous recevez un devis poste par poste : fournitures, main-d’œuvre et options clairement séparées, discuté avec vous ou avec votre régie avant de fixer le calendrier.",
+    },
+    {
+      q: "Intervenez-vous dans un logement occupé ?",
+      a: "Oui. Un interlocuteur unique suit les travaux du premier au dernier jour, nous protégeons les lieux et limitons les coupures d’eau, y compris en logement occupé.",
+    },
+  ],
+  "chauffage-pompes-a-chaleur": [
+    {
+      q: "Quand faut-il remplacer une chaudière ?",
+      a: "Quand elle arrive en fin de vie, tombe en panne à répétition ou consomme trop. Nous dimensionnons le nouvel équipement, déposons l’ancien et remettons l’installation en service en limitant la coupure de chauffage.",
+    },
+    {
+      q: "Peut-on passer du mazout ou du gaz à une pompe à chaleur ?",
+      a: "Cela demande d’examiner le bâtiment, les émetteurs (radiateurs ou sol chauffant) et la production d’eau chaude. Nous vous aidons à choisir une solution adaptée, puis nous l’installons et la mettons en service.",
+    },
+    {
+      q: "Pourquoi certains radiateurs restent-ils froids ?",
+      a: "Radiateurs froids, circuits déséquilibrés, vannes bloquées : nous remplaçons les radiateurs, reprenons les conduites et équilibrons le réseau pour une chaleur homogène dans toutes les pièces.",
+    },
+    {
+      q: "Travaillez-vous sur le chauffage des immeubles gérés par une régie ?",
+      a: "Oui. Nous étudions l’installation existante, coordonnons le chantier avec la régie ou le propriétaire pour limiter les coupures, et restons votre contact pour l’entretien ensuite.",
+    },
+    {
+      q: "Le chauffage et l’eau chaude sont-ils traités ensemble ?",
+      a: "Oui : la production de chaleur et d’eau chaude sanitaire (chaudière ou pompe à chaleur, ballon) est étudiée comme un tout, de la chaufferie à la distribution.",
+    },
+  ],
+  "entretien-depannage": [
+    {
+      q: "Que faire si je n’ai plus d’eau chaude ?",
+      a: "Vérifiez que l’alimentation de l’appareil n’est pas coupée, puis appelez-nous : nous établissons le diagnostic sur place et remettons la production d’eau chaude en état de fonctionner.",
+    },
+    {
+      q: "Que faire en cas de fuite d’eau ?",
+      a: "Fermez l’arrivée d’eau (vanne d’arrêt ou compteur), puis appelez-nous. Nous établissons le diagnostic sur place et réparons la fuite.",
+    },
+    {
+      q: "Que contrôlez-vous lors d’un entretien ?",
+      a: "La production de chaleur et d’eau chaude, le détartrage, les organes de sécurité et la robinetterie.",
+    },
+    {
+      q: "Proposez-vous des contrats d’entretien ?",
+      a: "Oui, aux régies immobilières et aux propriétaires de villas. Une installation entretenue régulièrement tombe moins souvent en panne et dure plus longtemps.",
+    },
+    {
+      q: "Intervenez-vous sur des installations que vous n’avez pas posées ?",
+      a: "Oui, sur nos installations comme sur celles que nous reprenons.",
+    },
+    {
+      q: "Une petite réparation vaut-elle le déplacement ?",
+      a: "Oui : chasse d’eau qui coule, robinet qui goutte, siphon à changer, mitigeur à remplacer. Ces petites interventions évitent souvent une réparation plus lourde.",
+    },
+  ],
+};
+
+
 const COMMUNES = [
   "Genève",
   "Carouge",
@@ -462,7 +540,7 @@ export const SERVICES: PageContent[] = [
     href: "/services/sanitaire-salles-de-bain",
     title: "Sanitaire & salles de bain",
     image: "/realisation-salle-de-bain.jpg",
-    alt: "Salle de bain réalisée par MBA Sanit",
+    alt: "Salle de bain au carrelage vert, meuble vasque en bois et miroir encastré",
     lede: "Installation sanitaire et rénovation de salles de bain à Genève : alimentation, évacuation, appareils et robinetterie, posés avec un soin particulier pour les finitions.",
     cue: "Demander un devis",
     cueHref: "/devis",
@@ -494,7 +572,7 @@ export const SERVICES: PageContent[] = [
     href: "/services/chauffage-pompes-a-chaleur",
     title: "Chauffage & pompes à chaleur",
     image: "/realisation-chaufferie.jpg",
-    alt: "Chaufferie installée par MBA Sanit",
+    alt: "Chaufferie avec pompe à chaleur, ballon d’eau chaude et conduites isolées",
     lede: "Chauffage et pompes à chaleur à Genève et en Suisse romande : remplacement de chaudière, passage à la pompe à chaleur, production d’eau chaude, distribution et radiateurs.",
     cue: "Demander un devis",
     cueHref: "/devis",
@@ -526,7 +604,7 @@ export const SERVICES: PageContent[] = [
     href: "/services/entretien-depannage",
     title: "Entretien & dépannage",
     image: "/realisation-salle-deau.jpg",
-    alt: "Salle d’eau réalisée par MBA Sanit",
+    alt: "Salle d’eau avec douche à l’italienne vitrée, faïence bleue et sol en terrazzo",
     lede: "Entretien et dépannage sanitaire et chauffage à Genève : fuites, engorgements, pannes d’eau chaude, et contrats d’entretien pour les régies immobilières et les propriétaires.",
     cue: "Nous appeler",
     cueHref: PHONE_HREF,
@@ -564,7 +642,7 @@ export const SERVICES: PageContent[] = [
         },
       ],
     },
-    relatedRealisations: { category: "douches-amenagements-exterieurs", label: "extérieurs" },
+    relatedRealisations: { category: "chauffage-pompes-a-chaleur", label: "chauffage" },
     service: service([
       {
         title: "Entretien périodique",
@@ -591,7 +669,7 @@ export const CATEGORIES: PageContent[] = [
     href: "/realisations/sanitaire-salles-de-bain",
     title: "Sanitaire & salles de bain",
     image: "/realisation-salle-de-bain.jpg",
-    alt: "Salle de bain réalisée par MBA Sanit",
+    alt: "Salle de bain au carrelage vert, meuble vasque en bois et miroir encastré",
     lede: "Salles de bain et salles d’eau réalisées par MBA Sanit à Genève et en Suisse romande : rénovations complètes et installations sanitaires sur mesure.",
     cue: "Voir les réalisations",
     kicker: "Suisse romande",
@@ -603,7 +681,7 @@ export const CATEGORIES: PageContent[] = [
     href: "/realisations/chauffage-pompes-a-chaleur",
     title: "Chauffage & pompes à chaleur",
     image: "/realisation-chaufferie.jpg",
-    alt: "Chaufferie installée par MBA Sanit",
+    alt: "Chaufferie avec pompe à chaleur, ballon d’eau chaude et conduites isolées",
     lede: "Chaufferies et pompes à chaleur installées par MBA Sanit : production de chaleur, eau chaude sanitaire et distribution, à Genève et en Suisse romande.",
     cue: "Voir les réalisations",
     kicker: "Suisse romande",
@@ -617,7 +695,7 @@ export const CATEGORIES: PageContent[] = [
     href: "/realisations/douches-amenagements-exterieurs",
     title: "Douches et aménagements extérieurs",
     image: "/realisation-douche-exterieure-1.jpg",
-    alt: "Douche extérieure en pierre réalisée par MBA Sanit",
+    alt: "Douche extérieure en pierre naturelle et inox dans un jardin",
     lede: "Douches extérieures, fontaines et aménagements de jardin réalisés par MBA Sanit à Genève et en Suisse romande.",
     cue: "Voir les réalisations",
     kicker: "Suisse romande",
@@ -677,7 +755,7 @@ export const REALISATIONS: Realisation[] = [
     href: "/realisations/sanitaire-salles-de-bain/salle-de-bain",
     title: "Salle de bain",
     image: "/realisation-salle-de-bain.jpg",
-    alt: "Salle de bain réalisée par MBA Sanit",
+    alt: "Salle de bain au carrelage vert, meuble vasque en bois et miroir encastré",
     lede: "Une salle de bain au carrelage vert profond, meuble vasque en bois et miroir encastré : une rénovation complète pensée jusqu’aux finitions.",
     /* Pas de repère sur une fiche projet : « Réalisation suivante »
        annonçait un lien qui n’existe pas ici. */
@@ -695,8 +773,8 @@ export const REALISATIONS: Realisation[] = [
     ],
     meta: meta("Sanitaire & salles de bain", "Rénovation complète, alimentation et évacuation, pose des appareils et de la robinetterie"),
     gallery: [
-      { src: "/realisation-salle-de-bain.jpg", alt: "Salle de bain réalisée par MBA Sanit" },
-      { src: "/realisation-salle-deau.jpg", alt: "Salle d’eau réalisée par MBA Sanit" },
+      { src: "/realisation-salle-de-bain.jpg", alt: "Salle de bain au carrelage vert, meuble vasque en bois et miroir encastré" },
+      { src: "/realisation-salle-deau.jpg", alt: "Salle d’eau avec douche à l’italienne vitrée, faïence bleue et sol en terrazzo" },
     ],
   },
   {
@@ -704,7 +782,7 @@ export const REALISATIONS: Realisation[] = [
     href: "/realisations/sanitaire-salles-de-bain/salle-deau",
     title: "Salle d’eau",
     image: "/realisation-salle-deau.jpg",
-    alt: "Salle d’eau réalisée par MBA Sanit",
+    alt: "Salle d’eau avec douche à l’italienne vitrée, faïence bleue et sol en terrazzo",
     lede: "Une salle d’eau avec douche à l’italienne vitrée, faïence bleue et sol en terrazzo : des lignes nettes et un entretien facile.",
     /* Pas de repère sur une fiche projet : « Réalisation suivante »
        annonçait un lien qui n’existe pas ici. */
@@ -722,8 +800,8 @@ export const REALISATIONS: Realisation[] = [
     ],
     meta: meta("Sanitaire & salles de bain", "Douche à l’italienne, évacuation linéaire, WC suspendu, robinetterie"),
     gallery: [
-      { src: "/realisation-salle-de-bain.jpg", alt: "Salle de bain réalisée par MBA Sanit" },
-      { src: "/realisation-salle-deau.jpg", alt: "Salle d’eau réalisée par MBA Sanit" },
+      { src: "/realisation-salle-de-bain.jpg", alt: "Salle de bain au carrelage vert, meuble vasque en bois et miroir encastré" },
+      { src: "/realisation-salle-deau.jpg", alt: "Salle d’eau avec douche à l’italienne vitrée, faïence bleue et sol en terrazzo" },
     ],
   },
   {
@@ -731,7 +809,7 @@ export const REALISATIONS: Realisation[] = [
     href: "/realisations/chauffage-pompes-a-chaleur/chaufferie",
     title: "Chaufferie",
     image: "/realisation-chaufferie.jpg",
-    alt: "Chaufferie installée par MBA Sanit",
+    alt: "Chaufferie avec pompe à chaleur, ballon d’eau chaude et conduites isolées",
     lede: "Une chaufferie moderne avec pompe à chaleur, ballon d’eau chaude et distribution entièrement reprise.",
     /* Pas de repère sur une fiche projet : « Réalisation suivante »
        annonçait un lien qui n’existe pas ici. */
@@ -749,7 +827,7 @@ export const REALISATIONS: Realisation[] = [
     ],
     meta: meta("Chauffage & pompes à chaleur", "Pompe à chaleur, production d’eau chaude, distribution et mise en service"),
     gallery: [
-      { src: "/realisation-chaufferie.jpg", alt: "Chaufferie installée par MBA Sanit" },
+      { src: "/realisation-chaufferie.jpg", alt: "Chaufferie avec pompe à chaleur, ballon d’eau chaude et conduites isolées" },
     ],
   },
   {
@@ -757,7 +835,7 @@ export const REALISATIONS: Realisation[] = [
     href: "/realisations/douches-amenagements-exterieurs/douche-exterieure-pierre",
     title: "Douche extérieure en pierre",
     image: "/realisation-douche-exterieure-1.jpg",
-    alt: "Douche extérieure en pierre réalisée par MBA Sanit",
+    alt: "Douche extérieure en pierre naturelle et inox dans un jardin",
     lede: "Une douche extérieure en pierre naturelle et inox, intégrée au jardin : alimentation et évacuation pensées pour durer dehors.",
     /* Pas de repère sur une fiche projet : « Réalisation suivante »
        annonçait un lien qui n’existe pas ici. */
@@ -775,8 +853,8 @@ export const REALISATIONS: Realisation[] = [
     ],
     meta: meta("Douches et aménagements extérieurs", "Douche extérieure, alimentation eau chaude et froide, évacuation, mise hors gel"),
     gallery: [
-      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure en pierre réalisée par MBA Sanit" },
-      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure en bois réalisée par MBA Sanit" },
+      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure en pierre naturelle et inox dans un jardin" },
+      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure habillée de bois dans un jardin" },
     ],
   },
   {
@@ -784,7 +862,7 @@ export const REALISATIONS: Realisation[] = [
     href: "/realisations/douches-amenagements-exterieurs/douche-exterieure-bois",
     title: "Douche extérieure en bois",
     image: "/realisation-douche-exterieure-2.jpg",
-    alt: "Douche extérieure en bois réalisée par MBA Sanit",
+    alt: "Douche extérieure habillée de bois dans un jardin",
     lede: "Une douche extérieure habillée de bois, pour profiter du jardin : un aménagement simple, robuste et facile à entretenir.",
     /* Pas de repère sur une fiche projet : « Réalisation suivante »
        annonçait un lien qui n’existe pas ici. */
@@ -802,8 +880,8 @@ export const REALISATIONS: Realisation[] = [
     ],
     meta: meta("Douches et aménagements extérieurs", "Douche extérieure, raccordements, évacuation, mise hors gel"),
     gallery: [
-      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure en pierre réalisée par MBA Sanit" },
-      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure en bois réalisée par MBA Sanit" },
+      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure en pierre naturelle et inox dans un jardin" },
+      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure habillée de bois dans un jardin" },
     ],
   },
 ];

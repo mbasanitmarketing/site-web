@@ -247,7 +247,7 @@ export function HomeReviews() {
         <BackdropLines arc />
 
         <div className={styles.head}>
-          <h2 className={`${styles.title} ${titre.h2}`}>Au plus près de vous&nbsp;!</h2>
+          <h2 className={`${styles.title} ${titre.h2}`}>Au plus près de vous&nbsp;!<span className="sr-only"> Avis clients de MBA Sanit à Genève</span></h2>
           <span className={styles.rule} aria-hidden="true" />
           <p className={styles.lede}>
             Villas, régies immobilières et immeubles d’entreprises : nous
