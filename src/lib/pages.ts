@@ -170,7 +170,7 @@ export const PAGES: PageContent[] = [
   {
     href: "/equipe",
     title: "L’équipe",
-    image: "/equipe.jpg",
+    image: "/equipe-2026.jpg",
     lede: "Installateurs sanitaires et chauffagistes, nous cumulons plus de vingt-cinq ans de métier. Une équipe resserrée, un interlocuteur unique, pour les villas, les régies immobilières et les entreprises de Genève et de Suisse romande.",
     cue: "Nous rencontrer",
     /* Avec une cible, le repère devient un VRAI bouton (cf. PageIntro) :
@@ -239,16 +239,13 @@ export const VALEURS: { title: string; body: string }[] = [
   },
 ];
 
-/* Portraits découpés dans la photo d'équipe (public/equipe.jpg) : les
-   trois hommes, de gauche à droite.
- 
-   FRED est CERTAIN : c'est celui du milieu, MBA l'a dit explicitement.
- 
-   Greg à gauche et Yoan à droite : confirmé par MBA, l'ordre n'est donc
-   pas celui dans lequel les prénoms ont été donnés. On met un prénom sur
-   le visage de quelqu'un — d'où la question posée plutôt qu'une
-   supposition. Un `nom` laissé vide n'affiche aucune légende, c'est le
-   repli sûr. */
+/* Portraits découpés dans la photo d'équipe (public/equipe-2026.jpg). Sur
+   cette photo, de gauche à droite : Fred (barbu, lunettes), Yoan (casquette),
+   Greg (le plus âgé). Les cartes gardent l'ordre Greg, Fred, Yoan : chaque
+   portrait est donc pris sur le bon visage, pas à la bonne place de la photo
+   de groupe. Les noms viennent des visages reconnus d'une photo à l'autre
+   (l'ancienne avait l'ordre Greg, Fred, Yoan) : à confirmer par MBA. Un `nom`
+   laissé vide n'affiche aucune légende, c'est le repli sûr. */
 export const EQUIPE: {
   photo: string;
   nom?: string;
@@ -260,21 +257,21 @@ export const EQUIPE: {
      années de métier, qualités). Le rôle de Yoan, « Sur les chantiers »,
      est un intitulé neutre : MBA n'a pas donné sa spécialité. */
   {
-    photo: "/equipe-portrait-1.jpg",
+    photo: "/equipe-portrait-1-2026.jpg",
     nom: "Greg",
     role: "Chauffage et sanitaire",
     texte:
       "Spécialiste du chauffage et du sanitaire depuis 23 ans, une force tranquille, toujours disponible et très bon organisateur. Chez lui, la gentillesse passe avant tout.",
   },
   {
-    photo: "/equipe-portrait-2.jpg",
+    photo: "/equipe-portrait-2-2026.jpg",
     nom: "Fred",
     role: "Votre interlocuteur",
     texte:
       "Spécialiste sanitaire depuis 25 ans, il allie efficacité, douceur et gentillesse. Le détail et la précision guident chacun de ses gestes, du devis à la réception.",
   },
   {
-    photo: "/equipe-portrait-3.jpg",
+    photo: "/equipe-portrait-3-2026.jpg",
     nom: "Yoan",
     role: "Sur les chantiers",
     texte:

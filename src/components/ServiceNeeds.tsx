@@ -57,7 +57,7 @@ export function ServiceNeeds({ service, cmsKey }: Props) {
 
         <div className={styles.media}>
           <Image
-            src="/equipe.jpg"
+            src="/equipe-2026.jpg"
             alt=""
             fill
             sizes="100vw"
