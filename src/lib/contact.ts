@@ -22,10 +22,10 @@ export const WHATSAPP_HREF = `https://wa.me/${PHONE_E164.replace("+", "")}`;
 /** Adresse e-mail de contact affichée sur le site. */
 export const EMAIL = "contact@mbasanit.ch";
 
-/** Adresse postale, fournie par MBA le 22/09/2026. */
+/** Adresse postale. Nouvelle adresse (Satigny) communiquée par MBA le 07/10/2026 ; remplace Route de Jussy 35, Thônex. */
 export const ADRESSE = {
-  rue: "Route de Jussy 35",
-  npaVille: "1226 Thônex",
+  rue: "Route de Terre à Mousson 7, Box 24",
+  npaVille: "1242 Satigny",
 };
 
 /**
