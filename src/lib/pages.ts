@@ -164,7 +164,7 @@ export const PAGES: PageContent[] = [
   {
     href: "/realisations",
     title: "Réalisations",
-    image: "/services-2.jpg",
+    image: "/hero-realisations.jpg",
     lede: "Salles de bain, chaufferies, douches et aménagements extérieurs : une sélection de chantiers menés par MBA Sanit à Genève et en Suisse romande, de la conception aux finitions.",
     cue: "Voir le catalogue",
     kicker: "Nos chantiers",
@@ -758,6 +758,7 @@ export const REALISATIONS: Realisation[] = [
     href: "/realisations/sanitaire-salles-de-bain/salle-de-bain-combles",
     title: "Salle de bain sous les combles",
     image: "/realisation-salle-de-bain-combles-2.jpg",
+    heroImage: "/hero-fiche-salle-de-bain.jpg",
     alt: "Salle de bain sous les combles vue côté WC suspendu, avec baignoire et carrelage gris grand format",
     lede: "Une salle de bain aménagée sous les combles : baignoire encastrée, meuble vasque suspendu et WC suspendu, dans un carrelage grand format qui épouse la pente du toit.",
     cue: "",
@@ -780,6 +781,7 @@ export const REALISATIONS: Realisation[] = [
     href: "/realisations/sanitaire-salles-de-bain/salle-deau",
     title: "Salle d’eau",
     image: "/realisation-salle-deau-bois.jpg",
+    heroImage: "/hero-fiche-salle-deau.jpg",
     alt: "Salle d’eau avec meuble vasque suspendu en bois clair, miroir lumineux et WC suspendu",
     lede: "Une salle d’eau compacte : meuble vasque suspendu en bois clair, miroir lumineux, WC suspendu et douche attenante.",
     cue: "",
@@ -801,6 +803,7 @@ export const REALISATIONS: Realisation[] = [
     href: "/realisations/sanitaire-salles-de-bain/douche-interieure",
     title: "Douche intérieure",
     image: "/realisation-douche-interieure.jpg",
+    heroImage: "/hero-sanitaire.jpg",
     alt: "Douche carrelée avec pomme de tête carrée en inox, mitigeur encastré et douchette sur flexible",
     lede: "Une douche carrelée du sol au plafond, avec pomme de tête en inox, mitigeur encastré et caniveau d’évacuation linéaire.",
     cue: "",
@@ -822,6 +825,7 @@ export const REALISATIONS: Realisation[] = [
     href: "/realisations/chauffage-pompes-a-chaleur/chaufferie",
     title: "Chaufferie",
     image: "/realisation-chaufferie.jpg",
+    heroImage: "/hero-chauffage.jpg",
     alt: "Chaufferie avec pompe à chaleur, ballon d’eau chaude et conduites isolées",
     lede: "Une chaufferie moderne avec pompe à chaleur, ballon d’eau chaude et distribution entièrement reprise.",
     /* Pas de repère sur une fiche projet : « Réalisation suivante »
@@ -848,6 +852,7 @@ export const REALISATIONS: Realisation[] = [
     href: "/realisations/douches-amenagements-exterieurs/douche-exterieure-pierre",
     title: "Douche extérieure en pierre",
     image: "/realisation-douche-exterieure-1.jpg",
+    heroImage: "/hero-fiche-douche-exterieure.jpg",
     alt: "Douche extérieure en pierre naturelle et inox dans un jardin",
     lede: "Une douche extérieure en pierre naturelle et inox, intégrée au jardin : alimentation et évacuation pensées pour durer dehors.",
     /* Pas de repère sur une fiche projet : « Réalisation suivante »
@@ -871,21 +876,11 @@ export const REALISATIONS: Realisation[] = [
   },
 ];
 
-/* L'ouverture d'une fiche est le panoramique de sa catégorie, pas la photo
-   du projet : celle-ci est déjà dans la galerie juste en dessous, la
-   montrer deux fois était redondant. */
-for (const r of REALISATIONS) {
-  r.heroImage = CATEGORIES.find((c) => slugOf(c.href) === r.category)?.heroImage;
-}
-
-/** Pages dont l'ouverture est une BANNIÈRE basse, et non une photo plein
- *  écran : les fiches projet. La photo y est déjà reprise juste en
- *  dessous, dans la galerie — la montrer en grand une première fois ne
- *  servait qu'à retarder la lecture. Déclaré ici pour que le calque de
- *  transition (qui rend le même composant) tombe au même endroit. */
-export const HERO_COURT: ReadonlySet<string> = new Set(
-  REALISATIONS.map((r) => r.href),
-);
+/** Pages dont l'ouverture est une bannière basse. Vide : les fiches projet
+ *  s'ouvrent en grand, sur une photo d'ambiance (`heroImage`) qui n'est pas
+ *  celle du projet — celle-ci reste dans la galerie, plus bas. Gardé pour
+ *  que le calque de transition lise la même liste que PageIntro. */
+export const HERO_COURT: ReadonlySet<string> = new Set<string>();
 
 /* --- Partenaires --------------------------------------------------- */
 
