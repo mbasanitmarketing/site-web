@@ -66,7 +66,7 @@ export function ServiceNeeds({ service, cmsKey }: Props) {
           <div className={styles.onImage}>
             {/* Sous-titre de la section, dont « MBA, toute une équipe à votre écoute » est le h2. */}
             <h3 className={`${styles.headline} ${titre.h2} ${titre.onDark}`}>
-              Les situations qui amènent à appeler.
+              Un projet, une panne, un doute : appelez-nous.
             </h3>
             <a className={styles.cta} href="/devis" data-page-transition>
               Demander un devis

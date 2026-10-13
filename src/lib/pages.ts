@@ -539,8 +539,8 @@ export const SERVICES: PageContent[] = [
   {
     href: "/services/sanitaire-salles-de-bain",
     title: "Sanitaire & salles de bain",
-    image: "/realisation-salle-de-bain-combles-2.jpg",
-    alt: "Salle de bain sous les combles vue côté WC suspendu, avec baignoire et carrelage gris grand format",
+    image: "/services-4.jpg",
+    alt: "Salle de bain en pierre beige avec meuble vasque suspendu blanc et miroir rétroéclairé",
     lede: "Installation sanitaire et rénovation de salles de bain à Genève : alimentation, évacuation, appareils et robinetterie, posés avec un soin particulier pour les finitions.",
     cue: "Demander un devis",
     cueHref: "/devis",
@@ -571,8 +571,8 @@ export const SERVICES: PageContent[] = [
   {
     href: "/services/chauffage-pompes-a-chaleur",
     title: "Chauffage & pompes à chaleur",
-    image: "/realisation-chaufferie.jpg",
-    alt: "Chaufferie avec pompe à chaleur, ballon d’eau chaude et conduites isolées",
+    image: "/services-2.jpg",
+    alt: "Chaufferie avec chaudière rouge, ballon d’eau chaude et conduites isolées",
     lede: "Chauffage et pompes à chaleur à Genève et en Suisse romande : remplacement de chaudière, passage à la pompe à chaleur, production d’eau chaude, distribution et radiateurs.",
     cue: "Demander un devis",
     cueHref: "/devis",
@@ -603,8 +603,8 @@ export const SERVICES: PageContent[] = [
   {
     href: "/services/entretien-depannage",
     title: "Entretien & dépannage",
-    image: "/realisation-salle-deau-bois.jpg",
-    alt: "Salle d’eau avec meuble vasque suspendu en bois clair, miroir lumineux et WC suspendu",
+    image: "/services-3.jpg",
+    alt: "Salle d’eau avec WC suspendu noir, niche éclairée et plante verte",
     lede: "Entretien et dépannage sanitaire et chauffage à Genève : fuites, engorgements, pannes d’eau chaude, et contrats d’entretien pour les régies immobilières et les propriétaires.",
     cue: "Nous appeler",
     cueHref: PHONE_HREF,
