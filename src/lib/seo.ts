@@ -62,17 +62,22 @@ export const SEO: Record<string, { title: string; description: string }> = {
   "/realisations/douches-amenagements-exterieurs": {
     title: "Douches extérieures et aménagements jardin | MBA Sanit",
     description:
-      "Douches extérieures en pierre ou en bois, fontaines et aménagements de jardin réalisés à Genève et en Suisse romande.",
+      "Douches extérieures, fontaines et aménagements de jardin réalisés à Genève et en Suisse romande.",
   },
-  "/realisations/sanitaire-salles-de-bain/salle-de-bain": {
-    title: "Salle de bain carrelage vert et meuble bois | MBA Sanit",
+  "/realisations/sanitaire-salles-de-bain/salle-de-bain-combles": {
+    title: "Salle de bain sous les combles, baignoire encastrée | MBA Sanit",
     description:
-      "Salle de bain au carrelage vert profond, meuble vasque en bois et miroir encastré : une rénovation complète pensée jusqu’aux finitions.",
+      "Salle de bain sous les combles : baignoire encastrée, meuble vasque et WC suspendus, carrelage grand format posé jusqu’au plafond.",
   },
   "/realisations/sanitaire-salles-de-bain/salle-deau": {
-    title: "Salle d’eau, douche à l’italienne et terrazzo | MBA Sanit",
+    title: "Salle d’eau, meuble vasque et WC suspendus | MBA Sanit",
     description:
-      "Salle d’eau avec douche à l’italienne vitrée, faïence bleue et sol en terrazzo : des lignes nettes et un entretien facile.",
+      "Salle d’eau compacte : meuble vasque suspendu en bois clair, miroir lumineux, WC suspendu et carrelage grand format.",
+  },
+  "/realisations/sanitaire-salles-de-bain/douche-interieure": {
+    title: "Douche intérieure carrelée, robinetterie encastrée | MBA Sanit",
+    description:
+      "Douche carrelée du sol au plafond : pomme de tête en inox, mitigeur encastré, douchette et caniveau d’évacuation linéaire.",
   },
   "/realisations/chauffage-pompes-a-chaleur/chaufferie": {
     title: "Chaufferie avec pompe à chaleur et ballon | MBA Sanit",
@@ -83,11 +88,6 @@ export const SEO: Record<string, { title: string; description: string }> = {
     title: "Douche extérieure en pierre naturelle et inox | MBA Sanit",
     description:
       "Douche extérieure en pierre naturelle et inox, intégrée au jardin : alimentation et évacuation pensées pour durer dehors.",
-  },
-  "/realisations/douches-amenagements-exterieurs/douche-exterieure-bois": {
-    title: "Douche extérieure habillée de bois | MBA Sanit",
-    description:
-      "Douche extérieure habillée de bois pour profiter du jardin : un aménagement simple, robuste et facile à entretenir.",
   },
   "/equipe": {
     title: "L’équipe MBA Sanit, sanitaire et chauffage à Genève",

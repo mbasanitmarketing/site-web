@@ -26,6 +26,9 @@ const nextConfig: NextConfig = {
       ["/devis-gratuit", "/devis"],
       ["/mentions", "/mentions-legales"],
       ["/impressum", "/mentions-legales"],
+      /* Fiches de réalisations retirées (photos non réelles). */
+      ["/realisations/sanitaire-salles-de-bain/salle-de-bain", "/realisations/sanitaire-salles-de-bain"],
+      ["/realisations/douches-amenagements-exterieurs/douche-exterieure-bois", "/realisations/douches-amenagements-exterieurs"],
     ];
     return anciennes.map(([source, destination]) => ({
       source,

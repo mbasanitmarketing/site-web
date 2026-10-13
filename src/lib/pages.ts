@@ -37,6 +37,9 @@ export type PageContent = {
   /** Ouverture sans photo : fond uni. Le calque de transition lit le MÊME
    *  objet, il ne peut donc pas balayer une image que la page n'a pas. */
   heroPlain?: boolean;
+  /** Photo propre à la bannière d'ouverture, quand elle diffère de
+   *  `image` (celle des cartes et du partage). Panoramique de préférence. */
+  heroImage?: string;
   /** Rend cette ligne en petit (~15 px) plutôt qu'en grande ligne : elle
    *  porte une zone d'intervention, pas une accroche. Le calque de
    *  transition lit le MÊME objet, les deux ne peuvent donc pas tomber sur
@@ -536,8 +539,8 @@ export const SERVICES: PageContent[] = [
   {
     href: "/services/sanitaire-salles-de-bain",
     title: "Sanitaire & salles de bain",
-    image: "/realisation-salle-de-bain.jpg",
-    alt: "Salle de bain au carrelage vert, meuble vasque en bois et miroir encastré",
+    image: "/realisation-salle-de-bain-combles-2.jpg",
+    alt: "Salle de bain sous les combles vue côté WC suspendu, avec baignoire et carrelage gris grand format",
     lede: "Installation sanitaire et rénovation de salles de bain à Genève : alimentation, évacuation, appareils et robinetterie, posés avec un soin particulier pour les finitions.",
     cue: "Demander un devis",
     cueHref: "/devis",
@@ -600,8 +603,8 @@ export const SERVICES: PageContent[] = [
   {
     href: "/services/entretien-depannage",
     title: "Entretien & dépannage",
-    image: "/realisation-salle-deau.jpg",
-    alt: "Salle d’eau avec douche à l’italienne vitrée, faïence bleue et sol en terrazzo",
+    image: "/realisation-salle-deau-bois.jpg",
+    alt: "Salle d’eau avec meuble vasque suspendu en bois clair, miroir lumineux et WC suspendu",
     lede: "Entretien et dépannage sanitaire et chauffage à Genève : fuites, engorgements, pannes d’eau chaude, et contrats d’entretien pour les régies immobilières et les propriétaires.",
     cue: "Nous appeler",
     cueHref: PHONE_HREF,
@@ -665,8 +668,9 @@ export const CATEGORIES: PageContent[] = [
   {
     href: "/realisations/sanitaire-salles-de-bain",
     title: "Sanitaire & salles de bain",
-    image: "/realisation-salle-de-bain.jpg",
-    alt: "Salle de bain au carrelage vert, meuble vasque en bois et miroir encastré",
+    image: "/realisation-salle-de-bain-combles-2.jpg",
+    heroImage: "/hero-sanitaire.jpg",
+    alt: "Salle de bain sous les combles vue côté WC suspendu, avec baignoire et carrelage gris grand format",
     lede: "Salles de bain et salles d’eau réalisées par MBA Sanit à Genève et en Suisse romande : rénovations complètes et installations sanitaires sur mesure.",
     cue: "Voir les réalisations",
     kicker: "Suisse romande",
@@ -749,56 +753,66 @@ const meta = (categorie: string, prestations: string) => [
 export const REALISATIONS: Realisation[] = [
   {
     category: "sanitaire-salles-de-bain",
-    href: "/realisations/sanitaire-salles-de-bain/salle-de-bain",
-    title: "Salle de bain",
-    image: "/realisation-salle-de-bain.jpg",
-    alt: "Salle de bain au carrelage vert, meuble vasque en bois et miroir encastré",
-    lede: "Une salle de bain au carrelage vert profond, meuble vasque en bois et miroir encastré : une rénovation complète pensée jusqu’aux finitions.",
-    /* Pas de repère sur une fiche projet : « Réalisation suivante »
-       annonçait un lien qui n’existe pas ici. */
+    href: "/realisations/sanitaire-salles-de-bain/salle-de-bain-combles",
+    title: "Salle de bain sous les combles",
+    image: "/realisation-salle-de-bain-combles-2.jpg",
+    alt: "Salle de bain sous les combles vue côté WC suspendu, avec baignoire et carrelage gris grand format",
+    lede: "Une salle de bain aménagée sous les combles : baignoire encastrée, meuble vasque suspendu et WC suspendu, dans un carrelage grand format qui épouse la pente du toit.",
     cue: "",
     kicker: "Suisse romande",
     display: "Sur mesure",
-    /* Ligne normale (15 px) : sur une fiche projet, l’affiche géante
-       écrasait le nom du projet juste à côté. */
     displaySmall: true,
- 
     lieu: "Suisse romande",
     body: [
-      "Cette salle de bain a été entièrement repensée : dépose de l’ancienne installation, reprise des alimentations et des évacuations, puis pose d’un meuble vasque suspendu en bois, d’un WC et de la robinetterie. Le carrelage vert profond et le bois clair donnent à la pièce une atmosphère chaleureuse.",
-      "Sur ce type de rénovation, tout se joue dans les détails : alignement des appareils sur le calepinage du carrelage, raccordements invisibles, niches et miroir intégrés. C’est ce soin des finitions que nos clients viennent chercher, qu’il s’agisse d’une villa ou d’un appartement en immeuble.",
+      "Sous une pente de toit, chaque appareil doit trouver sa place au centimètre près. La baignoire est encastrée dans un tablier carrelé, le meuble vasque est suspendu pour dégager le sol, et le WC suspendu laisse voir le carrelage jusqu’au bas du mur.",
+      "Le carrelage grand format est posé du sol au plafond sur les parois de la baignoire. Les raccordements, la robinetterie et le bâti-support du WC sont intégrés aux cloisons : il ne reste visible que ce qui sert.",
     ],
-    meta: meta("Sanitaire & salles de bain", "Rénovation complète, alimentation et évacuation, pose des appareils et de la robinetterie"),
+    meta: meta("Sanitaire & salles de bain", "Rénovation complète, baignoire, meuble vasque et WC suspendus, robinetterie"),
     gallery: [
-      { src: "/realisation-salle-de-bain.jpg", alt: "Salle de bain au carrelage vert, meuble vasque en bois et miroir encastré" },
-      { src: "/realisation-salle-deau.jpg", alt: "Salle d’eau avec douche à l’italienne vitrée, faïence bleue et sol en terrazzo" },
+      { src: "/realisation-salle-de-bain-combles-1.jpg", alt: "Salle de bain sous les combles, baignoire encastrée dans un tablier carrelé, meuble vasque suspendu blanc et miroir lumineux" },
+      { src: "/realisation-salle-de-bain-combles-2.jpg", alt: "Salle de bain sous les combles vue côté WC suspendu, avec baignoire et carrelage gris grand format" },
     ],
   },
   {
     category: "sanitaire-salles-de-bain",
     href: "/realisations/sanitaire-salles-de-bain/salle-deau",
     title: "Salle d’eau",
-    image: "/realisation-salle-deau.jpg",
-    alt: "Salle d’eau avec douche à l’italienne vitrée, faïence bleue et sol en terrazzo",
-    lede: "Une salle d’eau avec douche à l’italienne vitrée, faïence bleue et sol en terrazzo : des lignes nettes et un entretien facile.",
-    /* Pas de repère sur une fiche projet : « Réalisation suivante »
-       annonçait un lien qui n’existe pas ici. */
+    image: "/realisation-salle-deau-bois.jpg",
+    alt: "Salle d’eau avec meuble vasque suspendu en bois clair, miroir lumineux et WC suspendu",
+    lede: "Une salle d’eau compacte : meuble vasque suspendu en bois clair, miroir lumineux, WC suspendu et douche attenante.",
     cue: "",
     kicker: "Suisse romande",
     display: "Aménagement",
-    /* Ligne normale (15 px) : sur une fiche projet, l’affiche géante
-       écrasait le nom du projet juste à côté. */
     displaySmall: true,
- 
     lieu: "Suisse romande",
     body: [
-      "La douche à l’italienne occupe toute la largeur de la pièce : receveur de plain-pied, caniveau d’évacuation linéaire, paroi vitrée fixe et colonne de douche avec pomme de tête. Une niche carrelée intégrée à la paroi évite tout accessoire rapporté.",
-      "Le WC suspendu, avec son bâti-support caché dans le coffrage, libère le sol et simplifie le nettoyage. Faïence bleue posée à la verticale et terrazzo au sol : une salle d’eau sobre, pensée pour durer.",
+      "Dans une pièce de petite taille, le meuble vasque suspendu et le WC suspendu libèrent le sol et facilitent l’entretien. Le bâti-support et ses commandes sont encastrés dans le mur carrelé.",
+      "Le carrelage gris grand format est posé jusqu’au plafond, avec le sol imitation bois en contraste : une pièce sobre, pensée pour durer.",
     ],
-    meta: meta("Sanitaire & salles de bain", "Douche à l’italienne, évacuation linéaire, WC suspendu, robinetterie"),
+    meta: meta("Sanitaire & salles de bain", "Meuble vasque suspendu, WC suspendu, robinetterie, raccordements encastrés"),
     gallery: [
-      { src: "/realisation-salle-de-bain.jpg", alt: "Salle de bain au carrelage vert, meuble vasque en bois et miroir encastré" },
-      { src: "/realisation-salle-deau.jpg", alt: "Salle d’eau avec douche à l’italienne vitrée, faïence bleue et sol en terrazzo" },
+      { src: "/realisation-salle-deau-bois.jpg", alt: "Salle d’eau avec meuble vasque suspendu en bois clair, miroir lumineux et WC suspendu" },
+    ],
+  },
+  {
+    category: "sanitaire-salles-de-bain",
+    href: "/realisations/sanitaire-salles-de-bain/douche-interieure",
+    title: "Douche intérieure",
+    image: "/realisation-douche-interieure.jpg",
+    alt: "Douche carrelée avec pomme de tête carrée en inox, mitigeur encastré et douchette sur flexible",
+    lede: "Une douche carrelée du sol au plafond, avec pomme de tête en inox, mitigeur encastré et caniveau d’évacuation linéaire.",
+    cue: "",
+    kicker: "Suisse romande",
+    display: "Aménagement",
+    displaySmall: true,
+    lieu: "Suisse romande",
+    body: [
+      "Cette douche est équipée d’une pomme de tête carrée en inox, d’un mitigeur encastré avec inverseur et d’une douchette sur flexible. L’évacuation se fait par un caniveau linéaire, au pied de la paroi.",
+      "Les raccordements sont entièrement encastrés derrière le carrelage. Le calepinage des joints suit les lignes de la robinetterie, pour un résultat net et facile à nettoyer.",
+    ],
+    meta: meta("Sanitaire & salles de bain", "Douche à l’italienne, robinetterie encastrée, évacuation linéaire"),
+    gallery: [
+      { src: "/realisation-douche-interieure.jpg", alt: "Douche carrelée avec pomme de tête carrée en inox, mitigeur encastré et douchette sur flexible" },
     ],
   },
   {
@@ -851,34 +865,6 @@ export const REALISATIONS: Realisation[] = [
     meta: meta("Douches et aménagements extérieurs", "Douche extérieure, alimentation eau chaude et froide, évacuation, mise hors gel"),
     gallery: [
       { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure en pierre naturelle et inox dans un jardin" },
-      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure habillée de bois dans un jardin" },
-    ],
-  },
-  {
-    category: "douches-amenagements-exterieurs",
-    href: "/realisations/douches-amenagements-exterieurs/douche-exterieure-bois",
-    title: "Douche extérieure en bois",
-    image: "/realisation-douche-exterieure-2.jpg",
-    alt: "Douche extérieure habillée de bois dans un jardin",
-    lede: "Une douche extérieure habillée de bois, pour profiter du jardin : un aménagement simple, robuste et facile à entretenir.",
-    /* Pas de repère sur une fiche projet : « Réalisation suivante »
-       annonçait un lien qui n’existe pas ici. */
-    cue: "",
-    kicker: "Suisse romande",
-    display: "Extérieur",
-    /* Ligne normale (15 px) : sur une fiche projet, l’affiche géante
-       écrasait le nom du projet juste à côté. */
-    displaySmall: true,
- 
-    lieu: "Suisse romande",
-    body: [
-      "Cette douche extérieure associe une paroi en bois brut à une colonne de douche en inox, sur un receveur en pierre sombre. Les raccordements sont dissimulés derrière la paroi et l’eau est évacuée proprement, sans détremper le jardin autour.",
-      "Nous réalisons ce type d’aménagement pour les jardins et les terrasses de villas à Genève et en Suisse romande, avec une attention particulière à l’hivernage de l’installation.",
-    ],
-    meta: meta("Douches et aménagements extérieurs", "Douche extérieure, raccordements, évacuation, mise hors gel"),
-    gallery: [
-      { src: "/realisation-douche-exterieure-1.jpg", alt: "Douche extérieure en pierre naturelle et inox dans un jardin" },
-      { src: "/realisation-douche-exterieure-2.jpg", alt: "Douche extérieure habillée de bois dans un jardin" },
     ],
   },
 ];

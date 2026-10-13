@@ -17,8 +17,8 @@ import { BackdropLines } from "./BackdropLines";
  *  Ce sont des photos de chantier MBA, pas des images d'illustration. */
 const PHOTOS: Record<number | "center", string> = {
   0: "/realisation-douche-exterieure-1.jpg",
-  7: "/realisation-salle-de-bain.jpg",
-  center: "/realisation-salle-deau.jpg",
+  7: "/realisation-salle-de-bain-combles-1.jpg",
+  center: "/realisation-salle-deau-bois.jpg",
 };
 
 /** Où poser les photos, par ordre de priorité : haut à gauche et bas à
@@ -29,8 +29,8 @@ const PLACES_PHOTO = [7, 0, 4, 3, 1, 6, 2, 5];
 /** Une case sans logo ne reste jamais vide : à défaut d'une photo choisie
  *  pour elle ci-dessus, elle prend la suivante de cette réserve. */
 const RESERVE = [
-  "/realisation-douche-exterieure-2.jpg",
-  "/realisation-salle-de-bain.jpg",
+  "/realisation-douche-interieure.jpg",
+  "/realisation-salle-de-bain-combles-2.jpg",
   "/realisation-chaufferie.jpg",
 ];
 

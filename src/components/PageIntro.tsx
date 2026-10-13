@@ -88,7 +88,7 @@ export function PageIntro({
         <div className={styles.banner}>
           <Image
             className={styles.image}
-            src={page.image}
+            src={page.heroImage ?? page.image}
             alt=""
             fill
             priority
