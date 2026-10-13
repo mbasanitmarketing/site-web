@@ -111,7 +111,7 @@ export function PageIntro({
         <>
           <Image
             className={styles.image}
-            src={page.image}
+            src={page.heroImage ?? page.image}
             alt=""
             fill
             priority

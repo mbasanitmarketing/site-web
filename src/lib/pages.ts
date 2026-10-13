@@ -871,6 +871,13 @@ export const REALISATIONS: Realisation[] = [
   },
 ];
 
+/* L'ouverture d'une fiche est le panoramique de sa catégorie, pas la photo
+   du projet : celle-ci est déjà dans la galerie juste en dessous, la
+   montrer deux fois était redondant. */
+for (const r of REALISATIONS) {
+  r.heroImage = CATEGORIES.find((c) => slugOf(c.href) === r.category)?.heroImage;
+}
+
 /** Pages dont l'ouverture est une BANNIÈRE basse, et non une photo plein
  *  écran : les fiches projet. La photo y est déjà reprise juste en
  *  dessous, dans la galerie — la montrer en grand une première fois ne
