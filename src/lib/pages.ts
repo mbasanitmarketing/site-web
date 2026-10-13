@@ -40,6 +40,9 @@ export type PageContent = {
   /** Photo propre à la bannière d'ouverture, quand elle diffère de
    *  `image` (celle des cartes et du partage). Panoramique de préférence. */
   heroImage?: string;
+  /** Variante mobile (≤ 720 px) de la photo d'ouverture, quand le cadrage
+   *  du plein écran bureau ne convient pas à un écran étroit. */
+  imageMobile?: string;
   /** Rend cette ligne en petit (~15 px) plutôt qu'en grande ligne : elle
    *  porte une zone d'intervention, pas une accroche. Le calque de
    *  transition lit le MÊME objet, les deux ne peuvent donc pas tomber sur
@@ -174,6 +177,7 @@ export const PAGES: PageContent[] = [
     href: "/equipe",
     title: "L’équipe",
     image: "/equipe-2026.jpg",
+    imageMobile: "/equipe-mobile-2026.jpg",
     lede: "Installateurs sanitaires et chauffagistes, nous cumulons plus de vingt-cinq ans de métier. Une équipe resserrée, un interlocuteur unique, pour les villas, les régies immobilières et les entreprises de Genève et de Suisse romande.",
     cue: "Nous rencontrer",
     /* Avec une cible, le repère devient un VRAI bouton (cf. PageIntro) :
@@ -243,11 +247,11 @@ export const VALEURS: { title: string; body: string }[] = [
 ];
 
 /* Portraits découpés dans la photo d'équipe (public/equipe-2026.jpg). Sur
-   cette photo, de gauche à droite : Fred (barbu, lunettes), Yoan (casquette),
-   Greg (le plus âgé). Les cartes gardent l'ordre Greg, Fred, Yoan : chaque
+   cette photo, de gauche à droite : Fred (barbu, lunettes), Yoann (casquette),
+   Greg (le plus âgé). Les cartes gardent l'ordre Greg, Fred, Yoann : chaque
    portrait est donc pris sur le bon visage, pas à la bonne place de la photo
    de groupe. Les noms viennent des visages reconnus d'une photo à l'autre
-   (l'ancienne avait l'ordre Greg, Fred, Yoan) : à confirmer par MBA. Un `nom`
+   (l'ancienne avait l'ordre Greg, Fred, Yoann) : à confirmer par MBA. Un `nom`
    laissé vide n'affiche aucune légende, c'est le repli sûr. */
 export const EQUIPE: {
   photo: string;
@@ -257,25 +261,25 @@ export const EQUIPE: {
   texte?: string;
 }[] = [
   /* Textes rédigés d'après les mots de MBA sur chacun (spécialités,
-     années de métier, qualités). Le rôle de Yoan, « Sur les chantiers »,
+     années de métier, qualités). Le rôle de Yoann, « Sur les chantiers »,
      est un intitulé neutre : MBA n'a pas donné sa spécialité. */
   {
     photo: "/equipe-portrait-1-2026.jpg",
     nom: "Greg",
-    role: "Chauffage et sanitaire",
+    role: "Sanitaire",
     texte:
-      "Spécialiste du chauffage et du sanitaire depuis 23 ans, une force tranquille, toujours disponible et très bon organisateur. Chez lui, la gentillesse passe avant tout.",
+      "Spécialiste du sanitaire depuis 23 ans, une force tranquille, toujours disponible et très bon organisateur. Chez lui, la gentillesse passe avant tout.",
   },
   {
     photo: "/equipe-portrait-2-2026.jpg",
     nom: "Fred",
     role: "Votre interlocuteur",
     texte:
-      "Spécialiste sanitaire depuis 25 ans, il allie efficacité, douceur et gentillesse. Le détail et la précision guident chacun de ses gestes, du devis à la réception.",
+      "Spécialiste du chauffage depuis 25 ans, il allie efficacité, douceur et gentillesse. Le détail et la précision guident chacun de ses gestes, du devis à la réception.",
   },
   {
     photo: "/equipe-portrait-3-2026.jpg",
-    nom: "Yoan",
+    nom: "Yoann",
     role: "Sur les chantiers",
     texte:
       "Méticuleux de père en fils, il travaille avec la discrétion qui fait la confiance : les lieux sont respectés et le chantier reste soigné jusqu’au dernier jour.",

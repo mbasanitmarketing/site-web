@@ -92,7 +92,7 @@ export const SEO: Record<string, { title: string; description: string }> = {
   "/equipe": {
     title: "L’équipe MBA Sanit, sanitaire et chauffage à Genève",
     description:
-      "Greg, Fred et Yoan : installateurs sanitaires et chauffagistes à Genève, 25 ans de métier, un interlocuteur unique du devis à l’entretien.",
+      "Greg, Fred et Yoann : installateurs sanitaires et chauffagistes à Genève, 25 ans de métier, un interlocuteur unique du devis à l’entretien.",
   },
   "/devis": {
     title: "Devis sanitaire ou chauffage à Genève | MBA Sanit",

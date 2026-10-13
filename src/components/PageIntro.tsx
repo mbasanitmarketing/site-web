@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ArtImage } from "./ArtImage";
 import Link from "next/link";
 import {
   CATEGORIES,
@@ -109,13 +110,11 @@ export function PageIntro({
           rien à faire lire. Le fond uni de .intro suffit. */}
       {!page.heroPlain && (
         <>
-          <Image
+          <ArtImage
             className={styles.image}
             src={page.heroImage ?? page.image}
-            alt=""
-            fill
+            mobileSrc={page.imageMobile}
             priority
-            sizes="100vw"
           />
           <div className={styles.scrim} />
         </>

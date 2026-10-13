@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { ArtImage } from "./ArtImage";
 import { useRef } from "react";
 import type { ServiceDetail } from "@/lib/pages";
 import { useScrollProgress } from "@/lib/useScrollProgress";
@@ -56,11 +56,9 @@ export function ServiceNeeds({ service, cmsKey }: Props) {
         <h2 className={`${styles.label} ${titre.h2}`}>MBA, toute une équipe à votre écoute</h2>
 
         <div className={styles.media}>
-          <Image
+          <ArtImage
             src="/equipe-2026.jpg"
-            alt=""
-            fill
-            sizes="100vw"
+            mobileSrc="/equipe-mobile-2026.jpg"
             className={styles.image}
           />
           <div className={styles.onImage}>
