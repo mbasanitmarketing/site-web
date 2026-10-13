@@ -3,6 +3,7 @@ import Link from "next/link";
 import { GoogleReviews } from "./GoogleReviews";
 import { CookieSettingsButton } from "./CookieConsent";
 import { getContactContent } from "@/lib/cms";
+import { EMAIL } from "@/lib/contact";
 import { PAGES } from "@/lib/pages";
 import styles from "./Footer.module.css";
 
@@ -77,6 +78,10 @@ export async function Footer({
         <span data-cms="contact.street">{street}</span>
         <br />
         <span data-cms="contact.city">{city}</span>
+        <br />
+        <a className={styles.mail} href={`mailto:${EMAIL}`}>
+          {EMAIL}
+        </a>
         <br />
         <br />
         <span data-cms="contact.hoursDays">{hoursDays}</span>, <span data-cms="contact.hoursTime">{hoursTime}</span>

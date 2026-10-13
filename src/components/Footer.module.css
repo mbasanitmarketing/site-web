@@ -138,6 +138,22 @@
   color: rgba(245, 245, 244, 0.6);
 }
 
+/* L'adresse e-mail reste en minuscules : en capitales, elle se lit mal et
+   ne se recopie pas. */
+.mail {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(245, 245, 244, 0.35);
+}
+
+.mail:hover {
+  color: #f5f5f4;
+  text-decoration-color: currentColor;
+}
+
 /* --- Pages principales ------------------------------------------ */
 
 /* Une rangée de liens entre les horaires et les mentions. Même corps et
